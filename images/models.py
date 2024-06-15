@@ -8,26 +8,36 @@ IMAGE_MAX_LENGTH = 64
 IMAGE_DIR = "images"
 
 class Category(models.Model):
+
+    class Meta:
+        verbose_name_plural = "categories"
+
     name = models.CharField(
         null=False,
         blank=False,
-        editable=False,
+        editable=True,
         max_length=CATEGORY_MAX_LENGTH,
     )
+
+    def __str__(self) -> str:
+        return self.name
 
 class Tag(models.Model):
     name = models.CharField(
         null=False,
         blank=False,
-        editable=False,
+        editable=True,
         max_length=TAG_MAX_LENGTH,
     )
+
+    def __str__(self) -> str:
+        return self.name
 
 class Image(models.Model):
 
     def _upload_to(self, filename):
         ext = splitext(filename)[1]
-        return f'{IMAGE_DIR}/{self.id}.{ext}'
+        return f'{IMAGE_DIR}/{self.id}{ext}'
 
     id = models.UUIDField(
         primary_key=True,
@@ -39,6 +49,7 @@ class Image(models.Model):
     name = models.CharField(
         null=False,
         blank=False,
+        editable=False,
         max_length=IMAGE_MAX_LENGTH
     )
     date_uploaded = models.DateTimeField(
@@ -55,6 +66,7 @@ class Image(models.Model):
     image = models.ImageField(
         null=False,
         blank=False,
+        editable=True,
         upload_to=_upload_to,
     )
     tags = models.ManyToManyField(
@@ -67,3 +79,6 @@ class Image(models.Model):
         null=True,
         on_delete=models.SET_NULL,
     )
+
+    def __str__(self) -> str:
+        return self.image.path
