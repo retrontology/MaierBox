@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from .models import Image, Tag, Category
-from .forms import ImageForm
+from .forms import ImageForm, TagForm, CategoryForm
 
 def view(request):
     pass
@@ -17,3 +17,19 @@ def upload(request):
 
 def add(request):
     return render(request, 'images/add.html', {'form': ImageForm()})
+
+def add_tag(request):
+    form = TagForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return HttpResponse(status=204)
+    else:
+        return HttpResponse(status=400)
+    
+def add_category(request):
+    form = CategoryForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return HttpResponse(status=204)
+    else:
+        return HttpResponse(status=400)
