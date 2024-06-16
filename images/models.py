@@ -1,6 +1,6 @@
 from django.db import models
 from uuid import uuid4
-from os.path import splitext
+from os.path import splitext, basename
 
 TAG_MAX_LENGTH = 24
 CATEGORY_MAX_LENGTH = 24
@@ -36,6 +36,7 @@ class Tag(models.Model):
 class Image(models.Model):
 
     def _upload_to(self, filename):
+        filename = basename(filename)
         ext = splitext(filename)[1]
         return f'{IMAGE_DIR}/{self.id}{ext}'
 
