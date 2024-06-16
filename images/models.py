@@ -16,6 +16,7 @@ class Category(models.Model):
         null=False,
         blank=False,
         editable=True,
+        unique=True,
         max_length=CATEGORY_MAX_LENGTH,
     )
 
@@ -27,6 +28,7 @@ class Tag(models.Model):
         null=False,
         blank=False,
         editable=True,
+        unique=True,
         max_length=TAG_MAX_LENGTH,
     )
 
@@ -63,6 +65,7 @@ class Image(models.Model):
         null=False,
         blank=False,
         auto_now=True,
+        editable=False,
     )
     image = models.ImageField(
         null=False,
@@ -82,4 +85,4 @@ class Image(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.image.path
+        return basename(self.image.path)

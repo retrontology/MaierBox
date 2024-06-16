@@ -7,4 +7,4 @@ class ImageForm(forms.ModelForm):
 
     class Meta:
         model = Image
-        fields = ['image', 'name', 'category', 'tags',]
+        fields = ['image', 'category', 'tags',]
