@@ -1,12 +1,6 @@
 # forms.py
 from django import forms
-from .models import Image, Tag, Category
-
-
-class ImageForm(forms.ModelForm):
-    class Meta:
-        model = Image
-        fields = ['image', 'category', 'tags',]
+from .models import WebImage, Tag, Category
 
 class TagForm(forms.ModelForm):
     class Meta:
