@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Upload Image</title>
-</head>
-<body>
-    <form action="{% url 'images:upload' %}" method = "post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="image">Client Name</label>
-        <input type="file" id="image" name="image">
-        <button type="submit">Upload</button>
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<script src="{% static 'images/upload.js' %}"></script>
+<form enctype="multipart/form-data" method="POST" id="files_form">
+    {% csrf_token %}
+    <input multiple="" type="file">
+    <button type="upload" id="upload_button">Upload</button>
+</form>
+<progress></progress>
+{% endblock %}
