@@ -19,31 +19,28 @@ function uploadError(data){
     
 }
 
-function uploadImage(image) {
-    let data = {
-        'image': image,
-        'csrfmiddlewaretoken': getCSRF(),
-    };
-    $.ajax({
-        url: '/images/upload',
-        dataType: 'json',
-        type: 'POST',
-        data: data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: uploadSuccess, 
-        error: uploadError,
-    });
-    return false;
-}
+async function uploadImage(image) {
 
-function button_clicked() {
-    const form = document.getElementById("files_form");
-    const submitter = document.getElementById("upload_button");
-    const formData = new FormData(form, submitter);
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("csrfmiddlewaretoken", getCSRF());
+  
+    try {
+      const response = await fetch("/images/upload", {
+        method: "POST",
+        // Set the FormData instance as the request body
+        body: formData,
+      });
+      console.log(await response.json());
+    } catch (e) {
+      console.error(e);
+    }
+  }
+  
 
+function images_changed(images) {
     
+    for (let image in images.files) {
+        uploadImage(image)
+    }
 }
-
-$(':button').on('click', button_clicked);

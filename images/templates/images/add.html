@@ -2,10 +2,8 @@
 {% load static %}
 {% block body %}
 <script src="{% static 'images/upload.js' %}"></script>
-<form enctype="multipart/form-data" method="POST" id="files_form">
-    {% csrf_token %}
-    <input multiple="" type="file">
-    <button type="upload" id="upload_button">Upload</button>
+<form enctype="multipart/form-data" id="files_form">
+    <input multiple="" type="file" onchange="images_changed(this);">
 </form>
 <progress></progress>
 {% endblock %}
