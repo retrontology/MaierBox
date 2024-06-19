@@ -1,10 +1,11 @@
 from django.shortcuts import render, HttpResponse
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from .models import WebImage, Tag, Category, ORIGINAL_SUBSAMPLING, ORIGINAL_QUALITY, SCALED_MAX, THUMBNAIL_MAX, SCALED_SUBSAMPLING, SCALED_QUALITY, THUMBNAIL_SUBSAMPLING, THUMBNAIL_QUALITY
+from .models import WebImage, Tag, Category, Watermark, ORIGINAL_SUBSAMPLING, ORIGINAL_QUALITY, SCALED_MAX, THUMBNAIL_MAX, SCALED_SUBSAMPLING, SCALED_QUALITY, THUMBNAIL_SUBSAMPLING, THUMBNAIL_QUALITY
 from .forms import TagForm, CategoryForm
 from PIL import Image
 from io import BytesIO
 from uuid import uuid4
+from .util import gen_thumbnail
 
 def view(request):
     pass
@@ -14,6 +15,11 @@ def upload(request):
     if not 'image' in request.FILES:
         HttpResponse(status=400)
 
+    if 'watermark' in request.POST:
+        watermark = Watermark.objects.get('watermark')
+    else:
+        watermark = Watermark.objects.first()
+    
     uploaded = request.FILES['image']
     id = uuid4()
     new_name = f'{id}.jpg'
@@ -32,6 +38,21 @@ def upload(request):
 
     image_bytes = BytesIO(uploaded.read())
     image = Image.open(image_bytes)
+
+    thumbnail_data = gen_thumbnail(image)
+    thumbnail = InMemoryUploadedFile(
+        thumbnail_data,
+        'thumbnail',
+        new_name,
+        'JPEG',
+        None,
+        None
+    )
+    fields['thumbnail'] = thumbnail
+
+    image = watermark.draw(image)
+    fields['watermark'] = watermark
+
     jpeg_data = BytesIO()
     image.save(
         jpeg_data,
@@ -74,27 +95,7 @@ def upload(request):
     else:
         fields['scaled'] = None
     
-    thumbnail = image.copy()
-    thumbnail.thumbnail(
-        (THUMBNAIL_MAX,THUMBNAIL_MAX),
-        Image.LANCZOS
-    )
-    thumbnail_data = BytesIO()
-    thumbnail.save(
-        thumbnail_data,
-        'jpeg',
-        subsampling=SCALED_SUBSAMPLING,
-        quality=SCALED_QUALITY
-    )
-    thumbnail = InMemoryUploadedFile(
-        thumbnail_data,
-        'thumbnail',
-        new_name,
-        'JPEG',
-        None,
-        None
-    )
-    fields['thumbnail'] = thumbnail
+    
 
     fields['name'] = uploaded.name
 
