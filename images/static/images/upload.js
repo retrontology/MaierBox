@@ -11,36 +11,35 @@ function getCSRF() {
     return null;
 }
 
-function uploadSuccess(data){
-    
+function uploadSuccess(request){
+    console.log(request.responseText);
 }
 
-function uploadError(data){
-    
+function uploadError(request){
+    console.log(request.responseText);
 }
 
-async function uploadImage(image) {
+function uploadImage(image) {
 
+    const request = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("image", image);
     formData.append("csrfmiddlewaretoken", getCSRF());
-  
-    try {
-      const response = await fetch("/images/upload", {
-        method: "POST",
-        // Set the FormData instance as the request body
-        body: formData,
-      });
-      console.log(await response.json());
-    } catch (e) {
-      console.error(e);
-    }
-  }
-  
+    request.open("POST", '/images/upload', true);
+    request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.status === 200) {
+            uploadSuccess(request);
+        }
+        else {
+            uploadError(request);
+        }
+    };
+    request.send(formData);
+}
 
 function images_changed(images) {
     
-    for (let image in images.files) {
-        uploadImage(image)
+    for (let i in images.files) {
+        uploadImage(images.files[i])
     }
 }
