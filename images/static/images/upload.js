@@ -20,26 +20,25 @@ function uploadError(request){
 }
 
 function uploadImage(image) {
-
     const request = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("image", image);
     formData.append("csrfmiddlewaretoken", getCSRF());
     request.open("POST", '/images/upload', true);
     request.onreadystatechange = () => {
-        if (request.readyState === 4 && request.status === 200) {
-            uploadSuccess(request);
+        if (request.readyState === 4) {
+            if (request.status === 204)
+                uploadSuccess(request);
+            else
+                uploadError(request);
         }
-        else {
-            uploadError(request);
-        }
+        
     };
     request.send(formData);
 }
 
 function images_changed(images) {
-    
-    for (let i in images.files) {
+    for (let i = 0; i < images.files.length; i++) {
         uploadImage(images.files[i])
     }
 }

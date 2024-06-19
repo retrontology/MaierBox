@@ -2,8 +2,5 @@
 {% load static %}
 {% block body %}
 <script src="{% static 'images/upload.js' %}"></script>
-<form enctype="multipart/form-data" id="files_form">
-    <input multiple="" type="file" onchange="images_changed(this);">
-</form>
-<progress></progress>
+<input multiple="" type="file" onchange="images_changed(this);">
 {% endblock %}
