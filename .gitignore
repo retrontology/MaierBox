@@ -108,6 +108,8 @@ venv.bak/
 include/
 Scripts/
 pyvenv.cfg
+bin/
+lib64
 
 # mkdocs documentation 
 /site 
