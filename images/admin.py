@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Tag, Category, Image
+from .models import Tag, Category, WebImage, Watermark
 
 admin.site.register(Tag)
 admin.site.register(Category)
-admin.site.register(Image)
+admin.site.register(WebImage)
+admin.site.register(Watermark)

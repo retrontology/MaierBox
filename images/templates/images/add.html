@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Upload Image</title>
-</head>
-<body>
-    <form action="{% url 'images:upload' %}" method = "post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<script src="{% static 'images/upload.js' %}"></script>
+<div id="drop_zone" class="drop_zone_left" ondrop="imagesDropped(event);" ondragover="imagesDrugOver(event);" ondragenter="imagesDragEnter(event);" ondragleave="imagesDragLeave(event);"></div>
+<input multiple="" type="file" onchange="imagesChanged(event);">
+{% endblock %}
