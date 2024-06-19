@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
+    <head>
+        <link rel="stylesheet" href="{% static 'base.css' %}">
+        {% block title %}
+            <title>Your Mom's Haus 2</title>
+        {% endblock %}
+    </head>
     <body>
         {% block body %}
         {% endblock %}

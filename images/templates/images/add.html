@@ -2,5 +2,6 @@
 {% load static %}
 {% block body %}
 <script src="{% static 'images/upload.js' %}"></script>
-<input multiple="" type="file" onchange="images_changed(this);">
+<div id="drop_zone" class="drop_zone_left" ondrop="imagesDropped(event);" ondragover="imagesDrugOver(event);" ondragenter="imagesDragEnter(event);" ondragleave="imagesDragLeave(event);"></div>
+<input multiple="" type="file" onchange="imagesChanged(event);">
 {% endblock %}

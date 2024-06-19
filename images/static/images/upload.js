@@ -37,8 +37,34 @@ function uploadImage(image) {
     request.send(formData);
 }
 
-function images_changed(images) {
-    for (let i = 0; i < images.files.length; i++) {
-        uploadImage(images.files[i])
+function uploadImages(images) {
+    for (let i = 0; i < images.length; i++) {
+        uploadImage(images[i]);
     }
+}
+
+function imagesChanged(event) {
+    uploadImages(event.target.files);
+}
+
+function imagesDrugOver(event) {
+    event.preventDefault();
+}
+
+function imagesDragEnter(event) {
+    event.preventDefault();
+    event.target.classList.add("drop_zone_entered");
+    event.target.classList.remove("drop_zone_left")
+}
+
+function imagesDragLeave(event) {
+    event.preventDefault();
+    event.target.classList.add("drop_zone_left");
+    event.target.classList.remove("drop_zone_entered");
+}
+
+function imagesDropped(event) {
+    event.preventDefault();
+    uploadImages(event.dataTransfer.files);
+    imagesDragLeave(event);
 }

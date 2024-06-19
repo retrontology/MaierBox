@@ -1,0 +1,17 @@
+#drop_zone {
+    height: 300px;
+    width: 500px;
+    border-color: grey;
+    border-radius: 10px;
+}
+
+.drop_zone_left {
+    background-color: lightgray;
+    border-style: outset;
+    
+}
+
+.drop_zone_entered {
+    background-color: lightblue;
+    border-style: inset;
+}
