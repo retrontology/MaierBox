@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'images.apps.ImagesConfig',
+    'tags.apps.TagsConfig',
+    'categories.apps.CategoriesConfig',
     'albums.apps.AlbumsConfig',
     'django.contrib.admin',
     'django.contrib.auth',

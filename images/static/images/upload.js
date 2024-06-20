@@ -14,7 +14,7 @@ function uploadImage(image) {
     request.open("POST", '/images/upload', true);
     request.onreadystatechange = () => {
         if (request.readyState === 4) {
-            if (request.status === 204)
+            if (request.status === 200)
                 uploadSuccess(request);
             else
                 uploadError(request);

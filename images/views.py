@@ -2,11 +2,11 @@ from django.shortcuts import render, HttpResponse
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.decorators import login_required
 from .models import WebImage, Tag, Category, Watermark, ORIGINAL_SUBSAMPLING, ORIGINAL_QUALITY, SCALED_MAX, THUMBNAIL_MAX, SCALED_SUBSAMPLING, SCALED_QUALITY, THUMBNAIL_SUBSAMPLING, THUMBNAIL_QUALITY
-from .forms import TagForm, CategoryForm
 from PIL import Image
 from io import BytesIO
 from uuid import uuid4
 from .util import gen_thumbnail
+import json
 
 def view(request):
     pass
@@ -109,21 +109,3 @@ def upload(request):
 
 def add(request):
     return render(request, 'images/add.html')
-
-def add_tag(request):
-
-    form = TagForm(request.POST)
-
-    if form.is_valid():
-        form.save()
-        return HttpResponse(status=204)
-    else:
-        return HttpResponse(status=400)
-    
-def add_category(request):
-    form = CategoryForm(request.POST)
-    if form.is_valid():
-        form.save()
-        return HttpResponse(status=204)
-    else:
-        return HttpResponse(status=400)

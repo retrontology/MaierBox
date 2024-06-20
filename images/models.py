@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+from categories.models import Category
+from tags.models import Tag
 from uuid import uuid4
 from os.path import splitext, basename
 from PIL import Image, ImageDraw, ImageFont
 
-TAG_MAX_LENGTH = 24
-CATEGORY_MAX_LENGTH = 24
+
 IMAGE_MAX_LENGTH = 64
 BASE_IMAGE_DIR = "images"
 SCALED_IMAGE_DIR = "images/scaled"
@@ -20,37 +21,6 @@ ORIGINAL_QUALITY=95
 ORIGINAL_SUBSAMPLING=0
 WATERMARK_MARGIN=5
 STROKE_PERCENT=5
-
-
-class Category(models.Model):
-
-    class Meta:
-        verbose_name_plural = "categories"
-
-    name = models.CharField(
-        primary_key=True,
-        null=False,
-        blank=False,
-        editable=True,
-        unique=True,
-        max_length=CATEGORY_MAX_LENGTH,
-    )
-
-    def __str__(self) -> str:
-        return self.name
-
-class Tag(models.Model):
-    name = models.CharField(
-        primary_key=True,
-        null=False,
-        blank=False,
-        editable=True,
-        unique=True,
-        max_length=TAG_MAX_LENGTH,
-    )
-
-    def __str__(self) -> str:
-        return self.name
 
 class Watermark(models.Model):
 
