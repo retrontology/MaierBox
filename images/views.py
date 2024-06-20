@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.contrib.auth.decorators import login_required
 from .models import WebImage, Tag, Category, Watermark, ORIGINAL_SUBSAMPLING, ORIGINAL_QUALITY, SCALED_MAX, THUMBNAIL_MAX, SCALED_SUBSAMPLING, SCALED_QUALITY, THUMBNAIL_SUBSAMPLING, THUMBNAIL_QUALITY
 from .forms import TagForm, CategoryForm
 from PIL import Image
@@ -10,6 +11,7 @@ from .util import gen_thumbnail
 def view(request):
     pass
 
+@login_required
 def upload(request):
 
     if not 'image' in request.FILES:
