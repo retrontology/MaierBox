@@ -48,17 +48,12 @@ def add(request):
     )
 
 
-def remove(request):
+def remove(request, category):
 
     if request.method != "DELETE":
         return HttpResponseNotAllowed(['DELETE'])
-
-    if 'category' not in request.DELETE:
-        return JsonErrorResponse(
-            'The category field must be included in the request'
-        )
     
-    category = request.POST['category'].lower()
+    category = category.lower()
 
     if not validateCategory(category):
         return JsonErrorResponse(

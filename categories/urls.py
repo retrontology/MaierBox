@@ -5,5 +5,5 @@ app_name = "categories"
 urlpatterns = [
     path("", views.index, name="index"),
     path("add", views.add, name="add"),
-    path("remove", views.remove, name="remove"),
+    path("remove/<str:category>", views.remove, name="remove"),
 ]

@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
-CATEGORY_MAX_LENGTH = 24
+from .util import CATEGORY_MAX_LENGTH
 
 class Category(models.Model):
 
