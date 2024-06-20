@@ -28,6 +28,7 @@ class Category(models.Model):
         verbose_name_plural = "categories"
 
     name = models.CharField(
+        primary_key=True,
         null=False,
         blank=False,
         editable=True,
@@ -40,6 +41,7 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(
+        primary_key=True,
         null=False,
         blank=False,
         editable=True,
