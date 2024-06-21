@@ -1,11 +1,10 @@
 from django.http import JsonResponse, HttpResponseNotAllowed
-from .models import Category, CATEGORY_MAX_LENGTH
+from .models import Category
 from maierbox.util import JsonErrorResponse
 from django.core.paginator import Paginator
 from .util import validateCategory
 
 MAX_CATEGORIES = 100
-
 
 def add(request):
 
@@ -21,12 +20,7 @@ def add(request):
 
     if not validateCategory(category):
         return JsonErrorResponse(
-            'The category field contains invalid characters'
-        )
-
-    if len(category) > CATEGORY_MAX_LENGTH:
-        return JsonErrorResponse(
-            f'The category "{category}" exceeds the maximum character length of {CATEGORY_MAX_LENGTH}'
+            f'The category {category} failed validation'
         )
 
     category = Category.objects.filter(category=category).first()
@@ -36,7 +30,7 @@ def add(request):
         )
     
     category = Category(
-        creator=request.user,
+        created_by=request.user,
         category=category
     ).save()
 
@@ -57,21 +51,16 @@ def remove(request, category):
 
     if not validateCategory(category):
         return JsonErrorResponse(
-            'The category field contains invalid characters'
+            f'The category {category} failed validation'
         )
 
-    if len(category) > CATEGORY_MAX_LENGTH:
-        return JsonErrorResponse(
-            f'The category "{category}" exceeds the maximum character length of {CATEGORY_MAX_LENGTH}'
-        )
-
-    category = Category.objects.filter(category=category).first()
-    if not category:
+    category_obj = Category.objects.filter(category=category).first()
+    if not category_obj:
         return JsonErrorResponse(
             f'The category "{category}" does not exist'
         )
-    
-    category.delete()
+
+    category_obj.delete()
 
     return JsonResponse(
         status=200,

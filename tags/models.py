@@ -18,7 +18,7 @@ class Tag(models.Model):
         auto_now_add=True,
         editable=False,
     )
-    creator = models.ForeignKey(
+    created_by = models.ForeignKey(
         to=User,
         blank=False,
         null=False,

@@ -1,18 +1,22 @@
 from django.shortcuts import render, HttpResponse
+from django.http import JsonResponse, HttpResponseNotAllowed
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.contrib.auth.decorators import login_required
-from .models import WebImage, Tag, Category, Watermark, ORIGINAL_SUBSAMPLING, ORIGINAL_QUALITY, SCALED_MAX, THUMBNAIL_MAX, SCALED_SUBSAMPLING, SCALED_QUALITY, THUMBNAIL_SUBSAMPLING, THUMBNAIL_QUALITY
-from PIL import Image
+from watermarks.models import Watermark
+from .models import *
 from io import BytesIO
+from PIL import Image
 from uuid import uuid4
 from .util import gen_thumbnail
-import json
 
 def view(request):
     pass
 
 @login_required
 def upload(request):
+
+    if request.method != "POST":
+        return HttpResponseNotAllowed(['POST'])
 
     if not 'image' in request.FILES:
         HttpResponse(status=400)
@@ -97,15 +101,14 @@ def upload(request):
     else:
         fields['scaled'] = None
     
-    
-
     fields['name'] = uploaded.name
-
     fields['uploader'] = request.user
 
     WebImage(**fields).save()
     
-    return HttpResponse(status=204)
+    return JsonResponse(
+        status=200
+    )
 
 def add(request):
     return render(request, 'images/add.html')

@@ -15,10 +15,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Tag',
+            name='Watermark',
             fields=[
-                ('tag', models.CharField(editable=False, max_length=24, primary_key=True, serialize=False, unique=True)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('text', models.CharField(max_length=16)),
+                ('date_modified', models.DateTimeField(auto_now=True)),
                 ('date_created', models.DateTimeField(auto_now_add=True)),
+                ('size', models.SmallIntegerField()),
+                ('font', models.CharField(max_length=64)),
+                ('transparency', models.SmallIntegerField()),
                 ('created_by', models.ForeignKey(editable=False, on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
         ),

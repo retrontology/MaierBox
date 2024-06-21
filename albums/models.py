@@ -1,5 +1,7 @@
 from django.db import models
 from images.models import WebImage
+from tags.models import Tag
+from categories.models import Category
 from uuid import uuid4
 from django.contrib.auth.models import User
 
@@ -23,6 +25,16 @@ class WebImageAlbum(models.Model):
         blank=True,
         null=True,
         to=WebImage,
+    )
+    tags = models.ManyToManyField(
+        blank=True,
+        to=Tag,
+    )
+    category = models.ForeignKey(
+        to=Category,
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
     )
     date_modified = models.DateTimeField(
         null=False,

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<script src="{% static 'watermark/watermark.js' %}"></script>
+<title>Create Watermark</title>
+{% endblock %}
+{% block body %}
+<div>
+    <form action="{% url 'watermarks:add' %}" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend><h1>Create a watermark</h1></legend>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label for="text">Watermark Text</label>
+                        </td>
+                        <td>
+                            <input type="text" id="text" name="text">
+                        </td>
+                    </tr>
+                    </tr>
+                        <td>
+                            <label for="font">Font</label>
+                        </td>
+                        <td>
+                            <input type="text" id="font" name="font">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="size">Font Size</label>
+                        </td>
+                        <td>
+                            <input type="text" id="size" name="size">
+                        </td>
+                    <tr>
+                    </tr>
+                        <td>
+                            <label for="transparency">Transparency</label>
+                        </td>
+                        <td>
+                            <input type="range" id="transparency" name="transparency" min="0" max="100" value="50">
+                        </td>
+                    <tr>
+                </tbody>
+            </table>
+        </fieldset>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+<div>
+
+</div>
+{% endblock %}
