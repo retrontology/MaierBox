@@ -32,19 +32,9 @@
     border-style: solid;
     margin-top: auto;
     margin-bottom: auto;
-    resize: both;
+    /* resize: both; */
     overflow: auto;
     position: relative;
-}
-
-#watermark_container {
-    height: 100%;
-    width: 100%;
-    text-align: right;
-    position: absolute;
-    display: flex;
-    flex-direction: row-reverse;
-    z-index: -1;
 }
 
 #watermark_details_container {
@@ -52,6 +42,7 @@
     width: 100%;
     position: absolute;
     display: flex;
+    z-index: -1;
 }
 
 #watermark_details {
@@ -61,6 +52,19 @@
     position: relative;
     font-weight: bold;
     font-size: larger;
+    opacity: 50%;
+}
+
+#watermark_container {
+    background-color: lightgrey;
+    height: 100%;
+    width: 100%;
+    text-align: right;
+    position: absolute;
+    display: flex;
+    flex-direction: row-reverse;
+    z-index: -2;
+    watermark_preview_container
 }
 
 #watermark {
@@ -70,4 +74,10 @@
     margin-bottom: 10px;
     margin-right: 10px;
     align-self: flex-end;
+}
+
+#watermark_preview_controls {
+    justify-content: center;
+    display: flex;
+    margin: 5px;
 }

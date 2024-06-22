@@ -30,6 +30,7 @@
                                 {% for font in fonts %}
                                     <option value="{{ font.id }}" data-style="{{ font.style }}" data-family="{{ font.family }}">{{ font.name }}</option>
                                 {% endfor %}
+                                </select>
                             </td>
                         </tr>
                         <tr>
@@ -37,7 +38,7 @@
                                 <label for="watermark_size">Font Size</label>
                             </td>
                             <td>
-                                <input type="number" id="watermark_size" name="size" onchange="update_watermark_preview();" value="10">
+                                <input type="number" id="watermark_size" name="size" onchange="update_watermark_preview();" value="6">
                             </td>
                         <tr>
                         </tr>
@@ -45,7 +46,7 @@
                                 <label for="watermark_transparency">Transparency</label>
                             </td>
                             <td>
-                                <input type="range" id="watermark_transparency" name="transparency" min="0" max="100" value="50" onchange="update_watermark_preview();">
+                                <input type="range" id="watermark_transparency" name="transparency" min="0" max="100" value="90" onchange="update_watermark_preview();">
                             </td>
                         <tr>
                     </tbody>
@@ -54,15 +55,25 @@
             <input type="submit" value="Submit">
         </form>
     </div>
-    <div id="watermark_preview">
-        <div id="watermark_details_container">
-            <div id="watermark_details">
-                <span id="watermark_preview_size">600×400</span>
-                <span id="watermark_preview_ratio">3:2</span>
+    <div id="watermark_preview_container">
+        <div id="watermark_preview">
+            <div id="watermark_details_container">
+                <div id="watermark_details">
+                    <!-- <span id="watermark_preview_size"></span> -->
+                    <span id="watermark_preview_ratio"></span>
+                </div>
+            </div>
+            <div id="watermark_container">
+                <span id="watermark"></span>
             </div>
         </div>
-        <div id="watermark_container">
-            <span id="watermark"></span>
+        <div id="watermark_preview_controls">
+            <select id="watermark_control_ratio" onchange="on_ratio_changed(event);">
+            </select>
+            <select id="watermark_control_orientation" onchange="on_ratio_changed(event);">
+                <option>Landscape</option>
+                <option>Portrait</option>
+            </select>
         </div>
     </div>
 </div>
@@ -70,5 +81,7 @@
     const resizeObserver = new ResizeObserver(on_preview_resize);
     let preview = document.getElementById("watermark_preview");
     resizeObserver.observe(preview);
+    let ratio = document.getElementById("watermark_ratio");
+    populate_ratios(watermark_control_ratio);
 </script>
 {% endblock %}
