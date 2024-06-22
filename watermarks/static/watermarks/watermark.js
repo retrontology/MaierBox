@@ -1,7 +1,7 @@
 const COMMON_RATIOS = {
     '1:1': {
-        'width': 400,
-        'height': 400,
+        'width': 600,
+        'height': 600,
     },
     '3:2': {
         'width': 600,
