@@ -15,3 +15,33 @@
     background-color: lightblue;
     border-style: inset;
 }
+
+#watermark_creation {
+    display: flex;
+}
+
+#watermark_form {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#watermark_preview {
+    height: 400px;
+    width: 600px;
+    border-color: black;
+    border-style: solid;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: right;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+#watermark {
+    -webkit-text-stroke-width: thin;
+    -webkit-text-stroke-color: black;
+    -webkit-text-fill-color: white;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    align-self: flex-end;
+}

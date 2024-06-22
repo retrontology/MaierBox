@@ -62,7 +62,7 @@ class Watermark(models.Model):
         else:
             size = width
         ratio = size / 100
-        size = self.size * ratio
+        size = self.size * ratio / 3
         
         font = ImageFont.truetype(self.font, int(size))
         text = self.text

@@ -107,7 +107,10 @@ def upload(request):
     WebImage(**fields).save()
     
     return JsonResponse(
-        status=200
+        status=200,
+        data={
+            'response': f'Image {id} successfully uploaded'
+        }
     )
 
 def add(request):
