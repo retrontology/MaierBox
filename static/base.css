@@ -64,7 +64,6 @@
     display: flex;
     flex-direction: row-reverse;
     z-index: -2;
-    watermark_preview_container
 }
 
 #watermark {
