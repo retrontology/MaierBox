@@ -36,15 +36,16 @@ class Font(models.Model):
     @classmethod
     def populateFonts(cls):
         fonts = findFonts()
-        print(f'Fonts found: {fonts}')
+        fonts.sort(key=lambda x: f"{x['family']} {x['style']}")
         for font in fonts:
             if not cls.objects.filter(path=font['path']).exists():
-                cls(
+                font_obj = cls(
                     name=font['name'],
                     family=font['family'],
                     style=font['style'],
                     path=font['path'],
                 ).save()
+                
 
 class Watermark(models.Model):
 

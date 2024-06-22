@@ -7,8 +7,6 @@ function update_watermark_preview(e) {
 
     watermark = document.getElementById("watermark");
     watermark.textContent = text;
-    watermark.style.fontFamily = family;
-    watermark.style.fontStyle = style;
-    watermark.style.fontSize = `${size}px`;
+    watermark.style.font = `${style} ${size}px ${family}`
     watermark.style.opacity = (100-transparency)/100;
 }
