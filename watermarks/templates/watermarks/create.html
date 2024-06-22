@@ -15,18 +15,18 @@
                     <tbody>
                         <tr>
                             <td>
-                                <label for="text">Watermark Text</label>
+                                <label for="watermark_text">Watermark Text</label>
                             </td>
                             <td>
-                                <input type="text" id="watermark_text" name="text" onchange="update_watermark_preview(event);">
+                                <input type="text" id="watermark_text" name="text" onchange="update_watermark_preview();">
                             </td>
                         </tr>
                         </tr>
                             <td>
-                                <label for="font">Font</label>
+                                <label for="watermark_font">Font</label>
                             </td>
                             <td>
-                                <select id="watermark_font" name="font" onchange="update_watermark_preview(event);">
+                                <select id="watermark_font" name="font" onchange="update_watermark_preview();">
                                 {% for font in fonts %}
                                     <option value="{{ font.id }}" data-style="{{ font.style }}" data-family="{{ font.family }}">{{ font.name }}</option>
                                 {% endfor %}
@@ -34,18 +34,18 @@
                         </tr>
                         <tr>
                             <td>
-                                <label for="size">Font Size</label>
+                                <label for="watermark_size">Font Size</label>
                             </td>
                             <td>
-                                <input type="number" id="watermark_size" name="size" onchange="update_watermark_preview(event);">
+                                <input type="number" id="watermark_size" name="size" onchange="update_watermark_preview();">
                             </td>
                         <tr>
                         </tr>
                             <td>
-                                <label for="transparency">Transparency</label>
+                                <label for="watermark_transparency">Transparency</label>
                             </td>
                             <td>
-                                <input type="range" id="watermark_transparency" name="transparency" min="0" max="100" value="50" onchange="update_watermark_preview(event);">
+                                <input type="range" id="watermark_transparency" name="transparency" min="0" max="100" value="50" onchange="update_watermark_preview();">
                             </td>
                         <tr>
                     </tbody>
@@ -58,4 +58,9 @@
         <span id="watermark"></span>
     </div>
 </div>
+<script>
+    const resizeObserver = new ResizeObserver(on_preview_resize);
+    let preview = document.getElementById("watermark_preview");
+    resizeObserver.observe(preview);
+</script>
 {% endblock %}
