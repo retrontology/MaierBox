@@ -32,9 +32,35 @@
     border-style: solid;
     margin-top: auto;
     margin-bottom: auto;
+    resize: both;
+    overflow: auto;
+    position: relative;
+}
+
+#watermark_container {
+    height: 100%;
+    width: 100%;
     text-align: right;
+    position: absolute;
     display: flex;
     flex-direction: row-reverse;
+    z-index: -1;
+}
+
+#watermark_details_container {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;
+}
+
+#watermark_details {
+    display: grid;
+    text-align: center;
+    margin: auto;
+    position: relative;
+    font-weight: bold;
+    font-size: larger;
 }
 
 #watermark {

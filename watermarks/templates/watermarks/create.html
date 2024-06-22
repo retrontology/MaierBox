@@ -18,7 +18,7 @@
                                 <label for="watermark_text">Watermark Text</label>
                             </td>
                             <td>
-                                <input type="text" id="watermark_text" name="text" onchange="update_watermark_preview();">
+                                <input type="text" id="watermark_text" name="text" onchange="update_watermark_preview();" value="Watermark">
                             </td>
                         </tr>
                         </tr>
@@ -37,7 +37,7 @@
                                 <label for="watermark_size">Font Size</label>
                             </td>
                             <td>
-                                <input type="number" id="watermark_size" name="size" onchange="update_watermark_preview();">
+                                <input type="number" id="watermark_size" name="size" onchange="update_watermark_preview();" value="10">
                             </td>
                         <tr>
                         </tr>
@@ -55,7 +55,15 @@
         </form>
     </div>
     <div id="watermark_preview">
-        <span id="watermark"></span>
+        <div id="watermark_details_container">
+            <div id="watermark_details">
+                <span id="watermark_preview_size">600×400</span>
+                <span id="watermark_preview_ratio">3:2</span>
+            </div>
+        </div>
+        <div id="watermark_container">
+            <span id="watermark"></span>
+        </div>
     </div>
 </div>
 <script>

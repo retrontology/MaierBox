@@ -1,8 +1,15 @@
+function greatest_common_factor(a, b) {
+    if (!b) {
+        return a;
+    }
+
+    return greatest_common_factor(b, a % b);
+}
+
 function update_watermark_preview() {
-    let preview = document.getElementById("watermark_preview");
-    let preview_style = getComputedStyle(preview);
-    let height = preview.offsetHeight - (parseInt(preview_style.borderTopWidth) + parseInt(preview_style.borderBottomWidth));
-    let width = preview.offsetWidth - (parseInt(preview_style.borderLeftWidth) + parseInt(preview_style.borderRightWidth));
+    let container = document.getElementById("watermark_container");
+    let height = container.offsetHeight
+    let width = container.offsetWidth
     let smallest = height;
     if (width < height)
         smallest = width;
@@ -21,5 +28,13 @@ function update_watermark_preview() {
 }
 
 function on_preview_resize(entries, observer) {
+    let container = document.getElementById("watermark_container");
+    let width = container.offsetWidth;
+    let height = container.offsetHeight;
+    let factor = greatest_common_factor(width, height);
+    let size = document.getElementById("watermark_preview_size");
+    let ratio = document.getElementById("watermark_preview_ratio");
+    size.textContent = `${width}×${height}`;
+    ratio.textContent = `${width/factor}:${height/factor}`;
     update_watermark_preview();
 }
