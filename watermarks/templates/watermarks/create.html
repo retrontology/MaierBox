@@ -28,7 +28,7 @@
                             <td>
                                 <select id="watermark_font" name="font" onchange="update_watermark_preview(event);">
                                 {% for font in fonts %}
-                                    <option value="{{ font.id }}" data-style="{{ font.style }}" data-family='{{ font.name }}'>{{ font.name }}</option>
+                                    <option value="{{ font.id }}" data-style="{{ font.style }}" data-family="{{ font.family }}">{{ font.name }}</option>
                                 {% endfor %}
                             </td>
                         </tr>
