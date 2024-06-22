@@ -1,10 +1,50 @@
 from django.db import models
 from PIL import Image, ImageDraw, ImageFont
 from django.contrib.auth.models import User
+from .util import findFonts
 
 WATERMARK_MARGIN=5
 STROKE_PERCENT=5
 WATERMARK_FIELDS=['text', 'size', 'font', 'transparency']
+
+class Font(models.Model):
+    name = models.CharField(
+        null=False,
+        blank=False,
+        editable=False,
+        max_length=64
+    )
+    family = models.CharField(
+        null=False,
+        blank=False,
+        editable=False,
+        max_length=64
+    )
+    style = models.CharField(
+        null=False,
+        blank=False,
+        editable=False,
+        max_length=16
+    )
+    path = models.CharField(
+        null=False,
+        blank=False,
+        editable=False,
+        max_length=256
+    )
+
+    @classmethod
+    def populateFonts(cls):
+        fonts = findFonts()
+        print(f'Fonts found: {fonts}')
+        for font in fonts:
+            if not cls.objects.filter(path=font['path']).exists():
+                cls(
+                    name=font['name'],
+                    family=font['family'],
+                    style=font['style'],
+                    path=font['path'],
+                ).save()
 
 class Watermark(models.Model):
 
@@ -31,11 +71,12 @@ class Watermark(models.Model):
         null=False,
         editable=True
     )
-    font = models.CharField(
-        null=False,
+    font = models.ForeignKey(
+        to=Font,
         blank=False,
-        editable=True,
-        max_length=64
+        null=False,
+        on_delete=models.PROTECT,
+        editable=False,
     )
     transparency = models.SmallIntegerField (
         null=False,
@@ -64,7 +105,7 @@ class Watermark(models.Model):
         ratio = size / 100
         size = self.size * ratio / 3
         
-        font = ImageFont.truetype(self.font, int(size))
+        font = ImageFont.truetype(self.font.path, int(size))
         text = self.text
 
         margin = WATERMARK_MARGIN * ratio

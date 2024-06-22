@@ -26,7 +26,10 @@
                                 <label for="font">Font</label>
                             </td>
                             <td>
-                                <input type="text" id="watermark_font" name="font" onchange="update_watermark_preview(event);">
+                                <select id="watermark_font" name="font" onchange="update_watermark_preview(event);">
+                                {% for font in fonts %}
+                                    <option value="{{ font.id }}" data-style="{{ font.style }}" data-family='{{ font.name }}'>{{ font.name }}</option>
+                                {% endfor %}
                             </td>
                         </tr>
                         <tr>

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseNotAllowed
 from maierbox.util import JsonErrorResponse
 from .models import *
+from .util import findFonts
+
 
 def add(request):
     
@@ -15,10 +17,11 @@ def add(request):
             )
     
     data = {
-        'created_by': request.user
+        'created_by': request.user,
     }
     for field in WATERMARK_FIELDS:
         data[field] = request.POST[field]
+    data['font'] = Font.objects.filter(id=request.POST['font']).first()
     watermark = Watermark(**data)
     watermark.save()
 
@@ -30,4 +33,9 @@ def add(request):
     )
 
 def create(request):
-    return render(request, "watermarks/create.html")
+    if not Font.objects.first():
+        Font.populateFonts()
+    context = {
+        'fonts': Font.objects.all()
+    }
+    return render(request, "watermarks/create.html", context)
