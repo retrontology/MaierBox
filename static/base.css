@@ -11,6 +11,18 @@ body {
     margin: auto;
     background-color: var(--preset--color--base);
     color: var(--preset--color--contrast);
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+header {
+    font-size: 2.25rem;
+    color: var(--preset--color--primary);
+    font-weight: 400;
+    text-decoration-color: var(--preset--color--primary);
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    text-decoration-thickness: auto;
+    line-height: 1.4;
 }
 
 .buns {
@@ -116,4 +128,13 @@ body {
 
 .webimage_container {
     width:100%;
+}
+
+.webimage_details {
+    column-count: 2;
+    margin: 10px;
+}
+
+.webimage_classifiers {
+    text-align: right;
 }

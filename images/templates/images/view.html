@@ -12,14 +12,13 @@
     </div>
     <div class="webimage_details">
         <div class="webimage_uploaded">
-            <span>Uploaded on {{ image.date_created }} by {{ image.uploader }}</span>
+            <span>Uploaded on {{ image.date_created.date }}</span><br>
+            <span>by {{ image.uploader }}</span>
         </div>
         <div class="webimage_classifiers">
             <div class="webimage_category">
                 {% if image.category %}
-                <span><a href="{% url 'categories/view' image.category %}">{{ image.category }}</a></span>
-                {% else %}
-                <span>This image does not have a category</span>
+                <span>Category: <a href="{% url 'categories/view' image.category %}">{{ image.category }}</a></span>
                 {% endif %}
             </div>
             <div class="webimage_tags">
@@ -29,8 +28,6 @@
                     <a href="{% url 'tags/view' tag %}">{{ tag }}</a>
                 {% endfor %}
                 </span>
-                {% else %}
-                <span>There are no tags for this image</span>
                 {% endif %}
             </div>
         </div>
