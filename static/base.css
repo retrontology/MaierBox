@@ -80,3 +80,9 @@
     display: flex;
     margin: 5px;
 }
+
+footer {
+    display: grid;
+    justify-content: end;
+    justify-items: end;
+}

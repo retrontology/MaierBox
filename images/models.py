@@ -1,9 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from categories.models import Category
 from tags.models import Tag
 from watermarks.models import Watermark
+from io import BytesIO
+from PIL import Image
 from uuid import uuid4
+from .util import gen_thumbnail, gen_scaled, SCALED_MAX
 from os.path import splitext, basename
 
 
@@ -11,14 +15,8 @@ IMAGE_MAX_LENGTH = 64
 BASE_IMAGE_DIR = "images"
 SCALED_IMAGE_DIR = "images/scaled"
 THUMBNAIL_IMAGE_DIR = "images/thumbnail"
-SCALED_MAX = 2560
-THUMBNAIL_MAX = 512
-SCALED_QUALITY=90
-SCALED_SUBSAMPLING=0
-THUMBNAIL_QUALITY=80
-THUMBNAIL_SUBSAMPLING=0
-ORIGINAL_QUALITY=95
-ORIGINAL_SUBSAMPLING=0
+ORIGINAL_SUBSAMPLING = 0
+ORIGINAL_QUALITY = 95
 
 
 class WebImage(models.Model):
@@ -106,6 +104,73 @@ class WebImage(models.Model):
         on_delete=models.PROTECT,
         editable=False,
     )
+            
+
+    @classmethod
+    def from_image(cls, image, uploader:User, category=None, tags=None, watermark=None):
+        id = uuid4()
+        new_name = f'{id}.jpg'
+
+        fields = {
+            'name': image.name,
+            'id': id,
+            'uploader': uploader,
+            'category': category,
+        }
+
+        image_bytes = BytesIO(image.read())
+        image = Image.open(image_bytes)
+
+        thumbnail_data = gen_thumbnail(image)
+        thumbnail = InMemoryUploadedFile(
+            thumbnail_data,
+            'thumbnail',
+            new_name,
+            'JPEG',
+            None,
+            None
+        )
+        fields['thumbnail'] = thumbnail
+
+        if watermark:
+            image = watermark.draw(image)
+        fields['watermark'] = watermark
+
+        jpeg_data = BytesIO()
+        image.save(
+            jpeg_data,
+            'jpeg',
+            subsampling=ORIGINAL_SUBSAMPLING,
+            quality=ORIGINAL_QUALITY
+        )
+        jpeg = InMemoryUploadedFile(
+            jpeg_data,
+            'resized',
+            new_name,
+            'JPEG',
+            None,
+            None
+        )
+        fields['original'] = jpeg
+
+        if any(lambda x: x > SCALED_MAX for x in image.size):
+            scaled_data = gen_scaled(image)
+            scaled = InMemoryUploadedFile(
+                scaled_data,
+                'resized',
+                new_name,
+                'JPEG',
+                None,
+                None
+            )
+            fields['scaled'] = scaled
+        else:
+            fields['scaled'] = None
+
+        image = WebImage(**fields)
+        if tags:
+            image.tags.set(tags)
+        return image
 
     def get_scaled(self):
         return self.scaled if self.scaled else self.original

@@ -1,22 +1,31 @@
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from PIL import Image
-from .models import THUMBNAIL_MAX, THUMBNAIL_SUBSAMPLING, THUMBNAIL_QUALITY
 from io import BytesIO
+from PIL import Image
 
-def gen_thumbnail(image, max=THUMBNAIL_MAX):
-    thumbnail = image.copy()
-    thumbnail.thumbnail(
-        (THUMBNAIL_MAX,THUMBNAIL_MAX),
+SCALED_MAX = 2560
+SCALED_QUALITY=90
+SCALED_SUBSAMPLING=0
+THUMBNAIL_MAX = 512
+THUMBNAIL_QUALITY=80
+THUMBNAIL_SUBSAMPLING=0
+
+
+def gen_image(image, max, subsampling, quality):
+    image = image.copy()
+    image.thumbnail(
+        (max,max),
         Image.LANCZOS
     )
-    thumbnail_data = BytesIO()
-    thumbnail.save(
-        thumbnail_data,
+    image_data = BytesIO()
+    image.save(
+        image_data,
         'jpeg',
-        subsampling=THUMBNAIL_SUBSAMPLING,
-        quality=THUMBNAIL_QUALITY
+        subsampling=subsampling,
+        quality=quality
     )
-    return thumbnail_data
+    return image_data
 
-def gen_scaled(image, max=THUMBNAIL_MAX):
-    pass
+def gen_thumbnail(image):
+    return gen_image(image, max=THUMBNAIL_MAX, subsampling=THUMBNAIL_SUBSAMPLING, quality=THUMBNAIL_QUALITY)
+
+def gen_scaled(image):
+    return gen_image(image, max=SCALED_MAX, subsampling=SCALED_SUBSAMPLING, quality=SCALED_QUALITY)
