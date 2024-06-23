@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<title>View Image</title>
+{% endblock %}
+{% block body %}
+<img src="{{ image.get_scaled }}">
+{% endblock %}

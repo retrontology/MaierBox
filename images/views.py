@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, get_object_or_404
 from maierbox.util import JsonErrorResponse
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.contrib.auth.decorators import login_required
@@ -7,8 +7,10 @@ from .models import *
 from categories.models import Category
 from tags.models import Tag
 
-def view(request):
-    pass
+def view(request, id):
+    image = get_object_or_404(WebImage, id=id)
+    context = {'image': image}
+    return render(request, 'images/view.html', context)
 
 @login_required
 def upload(request):

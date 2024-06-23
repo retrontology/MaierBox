@@ -6,4 +6,5 @@ urlpatterns = [
     path("", views.view, name="index"),
     path("upload", views.upload, name="upload"),
     path("add", views.add, name="add"),
+    path("view/<str:id>", views.view, name="view"),
 ]

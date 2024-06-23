@@ -121,9 +121,8 @@ class WebImage(models.Model):
         image_bytes = BytesIO(image.read())
         image = Image.open(image_bytes)
 
-        thumbnail_data = gen_thumbnail(image)
         thumbnail = InMemoryUploadedFile(
-            thumbnail_data,
+            gen_thumbnail(image),
             'thumbnail',
             new_name,
             'JPEG',
@@ -154,9 +153,8 @@ class WebImage(models.Model):
         fields['original'] = jpeg
 
         if any(lambda x: x > SCALED_MAX for x in image.size):
-            scaled_data = gen_scaled(image)
             scaled = InMemoryUploadedFile(
-                scaled_data,
+                gen_scaled(image),
                 'resized',
                 new_name,
                 'JPEG',
@@ -173,7 +171,7 @@ class WebImage(models.Model):
         return image
 
     def get_scaled(self):
-        return self.scaled if self.scaled else self.original
+        return self.scaled.url if self.scaled else self.original.url
 
     def __str__(self) -> str:
         return basename(self.original.path)
