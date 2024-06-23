@@ -40,6 +40,7 @@ body {
 
 #watermark_creation {
     display: flex;
+    justify-content: center;
 }
 
 #watermark_form {
