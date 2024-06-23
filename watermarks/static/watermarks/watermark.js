@@ -1,33 +1,5 @@
-const COMMON_RATIOS = {
-    '1:1': {
-        'width': 600,
-        'height': 600,
-    },
-    '3:2': {
-        'width': 600,
-        'height': 400,
-    },
-    '4:3': {
-        'width': 600,
-        'height': 450,
-    },
-    '5:4': {
-        'width': 600,
-        'height': 480,
-    },
-    '7:5': {
-        'width': 600,
-        'height': 428,
-    },
-    '10:8': {
-        'width': 600,
-        'height': 480,
-    },
-    '11:8.5': {
-        'width': 600,
-        'height': 463,
-    },
-};
+const COMMON_RATIOS = ['1:1', '3:2', '4:3', '5:4', '7:5', '10:8', '11:8.5'];
+const PREVIEW_WIDTH = 400;
 
 function greatest_common_factor(a, b) {
     if (!b) {
@@ -75,20 +47,23 @@ function on_ratio_changed(e) {
     let ratio = document.getElementById("watermark_control_ratio").value;
     let orientation = document.getElementById("watermark_control_orientation").value;
     let preview = document.getElementById("watermark_preview");
+    let [coeff_w, coeff_h] = ratio.split(':');
+    let width = PREVIEW_WIDTH;
+    let height = width * coeff_h / coeff_w;
     if (orientation === "Landscape") {
-        preview.style.width = `${COMMON_RATIOS[ratio].width}px`;
-        preview.style.height = `${COMMON_RATIOS[ratio].height}px`;
+        preview.style.width = `${width}px`;
+        preview.style.height = `${height}px`;
     }
     else if (orientation === "Portrait") {
-        preview.style.width = `${COMMON_RATIOS[ratio].height}px`;
-        preview.style.height = `${COMMON_RATIOS[ratio].width}px`;
+        preview.style.width = `${height}px`;
+        preview.style.height = `${width}px`;
     }
 }
 
 function populate_ratios(select) {
     for (let ratio in COMMON_RATIOS) {
         let option = document.createElement('option');
-        option.textContent = ratio;
+        option.textContent = COMMON_RATIOS[ratio];
         select.appendChild(option)
     }
     on_ratio_changed(null);
