@@ -86,3 +86,11 @@ footer {
     justify-content: end;
     justify-items: end;
 }
+
+.webimage {
+    max-width:100%;
+}
+
+.webimage_container {
+    max-width:100%;
+}

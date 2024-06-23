@@ -12,7 +12,7 @@ from os.path import splitext, basename
 
 
 IMAGE_MAX_LENGTH = 64
-BASE_IMAGE_DIR = "images"
+BASE_IMAGE_DIR = "images/full"
 SCALED_IMAGE_DIR = "images/scaled"
 THUMBNAIL_IMAGE_DIR = "images/thumbnail"
 ORIGINAL_SUBSAMPLING = 0

@@ -4,5 +4,31 @@
 <title>View Image</title>
 {% endblock %}
 {% block body %}
-<img src="{{ image.get_scaled }}">
+<div class="webimage_container">
+    <img class="webimage" src="{{ image.get_scaled }}">
+    <div class="webimage_uploaded">
+        <span>Uploaded on {{ image.date_created }} by {{ image.uploader }}</span>
+    </div>
+    <div class="webimage_category">
+        {% if image.category %}
+        <span><a href="{% url 'categories/view' image.category %}">{{ image.category }}</a></span>
+        {% else %}
+        <span>This image does not have a category</span>
+        {% endif %}
+    </div>
+    <div class="webimage_tags">
+        {% if image.tags.exist %}
+        <span>
+        {% for tag in image.tags.all %}
+            <a href="{% url 'tags/view' tag %}">{{ tag }}</a>
+        {% endfor %}
+        </span>
+        {% else %}
+        <span>There are no tags for this image</span>
+        {% endif %}
+    </div>
+    <div class="webimage_full">
+        <span><a href="{{ image.original.url }}">View Full Size</a></span>
+    </div>
+</div>
 {% endblock %}
