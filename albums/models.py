@@ -26,6 +26,14 @@ class WebImageAlbum(models.Model):
         null=True,
         to=WebImage,
     )
+    cover = models.ForeignKey(
+        to=WebImage,
+        blank=False,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="cover",
+        related_query_name="cover"
+    )
     date_modified = models.DateTimeField(
         null=False,
         blank=False,
