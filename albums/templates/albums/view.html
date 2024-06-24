@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<title>View Album</title>
+{% endblock %}
+{% block body %}
+<div class="album_root">
+    <div class="album_title">
+        <h2>{{ album.name }}</h3>
+    </div>
+    <div class="album_images_container">
+        {% for image in album.images.all %}
+        <div class="album_image_container">
+            <a href="{% url 'images:view' image.id %}">
+                <img class="album_image" alt="{{ image.id }}" src="{{ image.thumbnail.url }}">
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from .models import WebImageAlbum
 
-# Create your views here.
+def view(request, id):
+    album = get_object_or_404(WebImageAlbum, id=id)
+    context = {'album': album}
+    return render(request, 'albums/view.html', context)

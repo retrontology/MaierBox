@@ -18,14 +18,14 @@
         <div class="webimage_classifiers">
             <div class="webimage_category">
                 {% if image.category %}
-                <span>Category: <a href="{% url 'categories/view' image.category %}">{{ image.category }}</a></span>
+                <span>Category: <a href="{% url 'categories:view' image.category %}">{{ image.category }}</a></span>
                 {% endif %}
             </div>
             <div class="webimage_tags">
                 {% if image.tags.exist %}
                 <span>
                 {% for tag in image.tags.all %}
-                    <a href="{% url 'tags/view' tag %}">{{ tag }}</a>
+                    <a href="{% url 'tags:view' tag %}">{{ tag }}</a>
                 {% endfor %}
                 </span>
                 {% endif %}
