@@ -6,10 +6,10 @@
 {% block body %}
 <div class="album_root">
     <div class="album_title">
-        <h1>{{ album.name }}</h1>
+        <h1>{{ title }}</h1>
     </div>
     <div class="album_images_container">
-        {% for image in album.images.all %}
+        {% for image in images %}
         <div class="album_image_container">
             <a class="album_image_link" href="{% url 'images:view' image.id %}">
                 <img class="album_image" loading="lazy" alt="{{ image.id }}" src="{{ image.thumbnail.url }}">

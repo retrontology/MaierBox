@@ -1,8 +1,10 @@
 from django.http import JsonResponse, HttpResponseNotAllowed
+from django.shortcuts import render, get_object_or_404
 from .models import Category
 from maierbox.util import JsonErrorResponse
 from django.core.paginator import Paginator
 from .util import validateCategory
+from images.models import WebImage
 
 MAX_CATEGORIES = 100
 
@@ -97,3 +99,12 @@ def index(request):
         status=200,
         data=data
     )
+
+def view_images(request, category:str):
+    category = get_object_or_404(Category, category=category)
+    images = category.webimage_set.all()
+    context = {
+        'name': category.category,
+        'images': images
+    }
+    return render(request, 'albums/view.html', context)

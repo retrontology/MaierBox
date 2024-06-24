@@ -21,13 +21,6 @@ class Category(models.Model):
         auto_now_add=True,
         editable=False,
     )
-    created_by = models.ForeignKey(
-        to=User,
-        blank=False,
-        null=False,
-        on_delete=models.PROTECT,
-        editable=False,
-    )
 
     def __str__(self) -> str:
         return self.category

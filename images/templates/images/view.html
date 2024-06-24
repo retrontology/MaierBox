@@ -18,7 +18,7 @@
         <div class="webimage_classifiers">
             <div class="webimage_category">
                 {% if image.category %}
-                <span>Category: <a href="{% url 'categories:view' image.category %}">{{ image.category }}</a></span>
+                <span>Category: <a href="{% url 'categories:view_images' image.category %}">{{ image.category }}</a></span>
                 {% endif %}
             </div>
             <div class="webimage_tags">

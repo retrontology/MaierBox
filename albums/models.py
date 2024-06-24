@@ -23,7 +23,6 @@ class WebImageAlbum(models.Model):
     )
     images = models.ManyToManyField(
         blank=True,
-        null=True,
         to=WebImage,
     )
     cover = models.ForeignKey(
@@ -47,16 +46,3 @@ class WebImageAlbum(models.Model):
         editable=False,
     )
 
-    @classmethod
-    def from_category(cls, category:Category):
-        return WebImageAlbum(
-            name=category.category,
-            images=WebImage.objects.filter(category=category)
-        )
-
-    @classmethod
-    def from_tags(cls, tags: list[Tag]):
-        return WebImageAlbum(
-            name=', '.join(tags),
-            images=WebImage.objects.filter(tags=tags)
-        )
