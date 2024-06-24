@@ -26,16 +26,6 @@ class WebImageAlbum(models.Model):
         null=True,
         to=WebImage,
     )
-    tags = models.ManyToManyField(
-        blank=True,
-        to=Tag,
-    )
-    category = models.ForeignKey(
-        to=Category,
-        blank=False,
-        null=True,
-        on_delete=models.SET_NULL,
-    )
     date_modified = models.DateTimeField(
         null=False,
         blank=False,
@@ -48,21 +38,17 @@ class WebImageAlbum(models.Model):
         auto_now_add=True,
         editable=False,
     )
-    uploader = models.ForeignKey(
-        to=User,
-        blank=False,
-        null=False,
-        on_delete=models.PROTECT,
-        editable=False,
-        related_name="user_uploaded",
-        related_query_name="user_uploaded",
-    )
-    modified_by = models.ForeignKey(
-        to=User,
-        blank=False,
-        null=False,
-        on_delete=models.PROTECT,
-        editable=False,
-        related_name="user_modified",
-        related_query_name="user_modified",
-    )
+
+    @classmethod
+    def from_category(cls, category:Category):
+        return WebImageAlbum(
+            name=category.category,
+            images=WebImage.objects.filter(category=category)
+        )
+
+    @classmethod
+    def from_tags(cls, tags: list[Tag]):
+        return WebImageAlbum(
+            name=', '.join(tags),
+            images=WebImage.objects.filter(tags=tags)
+        )
