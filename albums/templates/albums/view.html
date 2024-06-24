@@ -11,8 +11,8 @@
     <div class="album_images_container">
         {% for image in album.images.all %}
         <div class="album_image_container">
-            <a href="{% url 'images:view' image.id %}">
-                <img class="album_image" alt="{{ image.id }}" src="{{ image.thumbnail.url }}">
+            <a class="album_image_link" href="{% url 'images:view' image.id %}">
+                <img class="album_image" loading="lazy" alt="{{ image.id }}" src="{{ image.thumbnail.url }}">
             </a>
         </div>
         {% endfor %}
