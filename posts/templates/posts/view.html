@@ -16,11 +16,11 @@
     </div>
     {% endif %}
     {% if images %}
-    <div class="post_images_container">
+    <div class="album_images_container">
         {% for image in images %}
-        <div class="post_image_container">
-            <a class="post_image_link" href="{% url 'images:view' image.id %}">
-                <img class="post_image" loading="lazy" alt="{{ image.id }}" src="{{ image.thumbnail.url }}">
+        <div class="album_image_container">
+            <a class="album_image_link" href="{% url 'images:view' image.id %}">
+                <img class="album_image" loading="lazy" alt="{{ image.id }}" src="{{ image.thumbnail.url }}">
             </a>
         </div>
         {% endfor %}
