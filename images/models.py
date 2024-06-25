@@ -90,13 +90,6 @@ class WebImage(models.Model):
         auto_now_add=True,
         editable=False,
     )
-    uploader = models.ForeignKey(
-        to=User,
-        blank=False,
-        null=False,
-        on_delete=models.PROTECT,
-        editable=False,
-    )
     watermark = models.ForeignKey(
         to=Watermark,
         blank=False,
@@ -107,14 +100,13 @@ class WebImage(models.Model):
             
 
     @classmethod
-    def from_image(cls, image, uploader:User, category=None, tags=None, watermark=None):
+    def from_image(cls, image, category=None, tags=None, watermark=None):
         id = uuid4()
         new_name = f'{id}.jpg'
 
         fields = {
             'name': image.name,
             'id': id,
-            'uploader': uploader,
             'category': category,
         }
 

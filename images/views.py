@@ -25,7 +25,6 @@ def upload(request):
 
     fields = {
         'image': request.FILES['image'],
-        'uploader': request.user,
     }
 
     if 'category' in request.POST:
@@ -51,7 +50,7 @@ def upload(request):
     return JsonResponse(
         status=200,
         data={
-            'response': f'Image {image.id} successfully uploaded'
+            'response': image.id
         }
     )
 
