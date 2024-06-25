@@ -4,9 +4,10 @@ from .models import Post
 
 def view(request, id):
     post = get_object_or_404(Post, id=id)
+    paragraphs = post.content.split('\n')
     context = {
         'name': post.name,
-        'content': post.content,
+        'content': paragraphs,
         'images': post.album.images.all()
     }
     return render(request, 'posts/view.html', context)

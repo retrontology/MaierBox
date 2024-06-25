@@ -10,7 +10,9 @@
     </div>
     {% if content %}
     <div class="post_content_container">
-        {{ content }}
+        {% for paragraph in content %}
+        <p>{{ paragraph }}</p>
+        {% endfor %}
     </div>
     {% endif %}
     {% if images %}
