@@ -4,7 +4,7 @@ from .models import WebImageAlbum
 def view(request, id):
     album = get_object_or_404(WebImageAlbum, id=id)
     context = {
-        'title': album.name,
+        'name': album.name,
         'images': album.images.all()
     }
     return render(request, 'albums/view.html', context)
