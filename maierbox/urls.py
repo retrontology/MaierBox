@@ -27,6 +27,7 @@ urlpatterns = [
     path("categories/", include("categories.urls")),
     path("watermarks/", include("watermarks.urls")),
     path("albums/", include("albums.urls")),
+    path("posts/", include("posts.urls")),
     path('admin/', admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
 ]
