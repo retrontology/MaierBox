@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<title>Categories</title>
+{% endblock %}
+{% block body %}
+<div class="categories_images_root">
+    {% for category in categories %}
+    <div class="category_image_container">
+        <a href="{% url 'categories:view_images' category.category %}">
+            <img alt="category['category'].category" src="{{ category.thumbnail.url }}">
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
