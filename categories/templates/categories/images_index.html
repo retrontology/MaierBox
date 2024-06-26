@@ -6,10 +6,13 @@
 {% block body %}
 <div class="categories_images_root">
     {% for category in categories %}
-    <div class="category_image_container">
+    <figure class="category_image_container">
         <a href="{% url 'categories:view_images' category.category %}">
-            <img alt="category['category'].category" src="{{ category.thumbnail.url }}">
+            <img alt="category.category" src="{{ category.thumbnail.url }}">
         </a>
+        <figcaption>
+            <a href="{% url 'categories:view_images' category.category %}">{{ category.category }}</a>
+        </figcaption>
     </div>
     {% endfor %}
 </div>
