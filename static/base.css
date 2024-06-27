@@ -45,7 +45,7 @@ header {
 #watermark_preview {
     height: 400px;
     width: 600px;
-    border-color: black;
+    border-color: var(--preset--color--black);
     border-style: solid;
     margin-top: auto;
     margin-bottom: auto;
@@ -170,22 +170,29 @@ header {
     text-indent: 60px;
 }
 
+.drop_zone_container {
+    width: 65%;
+}
+
 .drop_zone {
+    width: 100%;
     height: 800px;
-    width: 800px;
-    border-color: grey;
+    border-color: var(--preset--color--contrast);
     border-radius: 10px;
-    overflow: scroll;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--preset--color--primary) var(--preset--color--base) ;
+    display: flex;
 }
 
 .drop_zone_left {
-    background-color: lightgray;
+    background-color: var(--preset--color--base);
     border-style: outset;
     
 }
 
 .drop_zone_entered {
-    background-color: lightblue;
+    background-color: var(--preset--color--black);
     border-style: inset;
 }
 
@@ -196,31 +203,52 @@ header {
     grid-template-columns: 31% 31% 31%;
     grid-column-gap: 3%;
     justify-content: space-evenly;
-    justify-items: center;
-    align-content: space-evenly;
-    align-items: center;
+    margin: auto;
 }
 
 .drop_zone_image_container {
     aspect-ratio: 1;
-    display: block;
-    align-content: space-evenly;
-    text-align: center;
+    display: flex;
+    background-color: var(--preset--color--black);
+    margin: 5%;
+    border-color: var(--preset--color--contrast);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    user-select: none;
+    overflow: hidden;
 }
 
 .drop_zone_image {
     max-width: 100%;
     max-height: 100%;
-    box-sizing: border-box;
-    margin: 2%;
+    display: flex;
+    margin: auto;
+    box-sizing: content-box;
 }
 
 .drop_zone_files {
     display: none;
 }
 
+.drop_zone_button_container {
+    width: 100%;
+    margin: 1%;
+    justify-content: space-between;
+}
+
+button {
+    font-family: inherit;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: var(--preset--color--base);
+    color: var(--preset--color--contrast);
+    text-align: center;
+    outline-style: outset;
+}
+
 .drop_zone_image_selected {
-    border-color: #ea008b;
-    border-radius: 3px;
+    border-color: var(--preset--color--tertiary);
+    border-width: 4px;
     border-style: solid;
 }

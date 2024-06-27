@@ -42,6 +42,11 @@ class ImageUploadForm {
         this.files = [];
         this.images = [];
 
+        // Create drop zone container
+        this.drop_zone_container = document.createElement('div');
+        this.drop_zone_container.classList.add('drop_zone_container');
+        this.root.appendChild(this.drop_zone_container);
+
         // Create drop zone
         this.drop_zone = document.createElement('div');
         this.drop_zone.classList.add('drop_zone_left', 'drop_zone');
@@ -49,12 +54,12 @@ class ImageUploadForm {
         this.drop_zone.addEventListener('dragover', (event) => this.imagesDrugOver(event));
         this.drop_zone.addEventListener('dragenter', (event) => this.imagesDragEnter(event));
         this.drop_zone.addEventListener('dragleave', (event) => this.imagesDragLeave(event));
-        this.root.appendChild(this.drop_zone);
+        this.drop_zone_container.appendChild(this.drop_zone);
 
         // Create button container
         this.button_container = document.createElement('div');
         this.button_container.classList.add('drop_zone_button_container');
-        this.root.appendChild(this.button_container);
+        this.drop_zone_container.appendChild(this.button_container);
 
         // Create hidden file input
         this.files_input = document.createElement('input');
@@ -109,13 +114,14 @@ class ImageUploadForm {
             let div = document.createElement('div');
             div.classList.add('drop_zone_image_container');
             div.dataset['index'] = i;
+            div.addEventListener('click', (event) => this.imageClicked(event));
+            div.addEventListener('dragstart', (event) => event.preventDefault());
             let img = document.createElement('img');
             img.classList.add('drop_zone_image');
-            img.addEventListener('click', (event) => this.imageClicked(event));
             div.appendChild(img);
             img.src = createObjectURL(image);
             this.images_container.appendChild(div);
-            this.images.push(img);
+            this.images.push(div);
         }
         this.drop_zone.appendChild(this.images_container);
         this.submit_button.disabled = false;
@@ -126,17 +132,18 @@ class ImageUploadForm {
     }
 
     imageClicked(event) {
-        if (event.target.classList.contains('drop_zone_image_selected')) {
+        let target = (event.target.tagName == 'IMG') ? event.target.parentElement : event.target;
+        if (target.classList.contains('drop_zone_image_selected')) {
             this.selected = null;
-            event.target.classList.remove('drop_zone_image_selected');
+            target.classList.remove('drop_zone_image_selected');
         }
         else {
-            this.selected = event.target.dataset['index'];
+            this.selected = target.dataset['index'];
             for (let i = 0; i < this.images.length; i++) {
                 let image = this.images[i];
                 image.classList.remove('drop_zone_image_selected');
             }
-            event.target.classList.add('drop_zone_image_selected');
+            target.classList.add('drop_zone_image_selected');
         }
     }
     
