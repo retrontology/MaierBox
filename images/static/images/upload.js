@@ -108,14 +108,14 @@ class ImageUploadForm {
             this.files.push(image);
             let div = document.createElement('div');
             div.classList.add('drop_zone_image_container');
-            div.addEventListener('click', (event) => this.imageClicked(event))
             div.dataset['index'] = i;
             let img = document.createElement('img');
             img.classList.add('drop_zone_image');
+            img.addEventListener('click', (event) => this.imageClicked(event));
             div.appendChild(img);
             img.src = createObjectURL(image);
             this.images_container.appendChild(div);
-            this.images.push(div);
+            this.images.push(img);
         }
         this.drop_zone.appendChild(this.images_container);
         this.submit_button.disabled = false;
@@ -126,16 +126,18 @@ class ImageUploadForm {
     }
 
     imageClicked(event) {
-        event.preventDefault();
-        let index = event.target.dataset['index'];
-        this.selected = index;
-        for (let i = 0; i < this.images.length; i++) {
-            let image = this.images[i];
-            image.classList.remove('drop_zone_image_selected');
+        if (event.target.classList.contains('drop_zone_image_selected')) {
+            this.selected = null;
+            event.target.classList.remove('drop_zone_image_selected');
         }
-
-        let target = (event.target.tagName === 'img') ? event.target : event.target.parentElement;
-        target.classList.add('drop_zone_image_selected');
+        else {
+            this.selected = event.target.dataset['index'];
+            for (let i = 0; i < this.images.length; i++) {
+                let image = this.images[i];
+                image.classList.remove('drop_zone_image_selected');
+            }
+            event.target.classList.add('drop_zone_image_selected');
+        }
     }
     
     imagesChanged(event) {
