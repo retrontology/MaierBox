@@ -32,25 +32,6 @@ header {
     margin-bottom: 60px;
 }
 
-.drop_zone {
-    height: 800px;
-    width: 800px;
-    border-color: grey;
-    border-radius: 10px;
-    overflow: scroll;
-}
-
-.drop_zone_left {
-    background-color: lightgray;
-    border-style: outset;
-    
-}
-
-.drop_zone_entered {
-    background-color: lightblue;
-    border-style: inset;
-}
-
 #watermark_creation {
     display: flex;
     justify-content: center;
@@ -189,21 +170,49 @@ header {
     text-indent: 60px;
 }
 
+.drop_zone {
+    height: 800px;
+    width: 800px;
+    border-color: grey;
+    border-radius: 10px;
+    overflow: scroll;
+}
+
+.drop_zone_left {
+    background-color: lightgray;
+    border-style: outset;
+    
+}
+
+.drop_zone_entered {
+    background-color: lightblue;
+    border-style: inset;
+}
+
 .drop_zone_images_container {
     width: 100%;
     max-width: 100%;
-    column-count: 3;
-    column-fill: balance;
+    display: grid;
+    grid-template-columns: 31% 31% 31%;
+    grid-column-gap: 3%;
+    justify-content: space-evenly;
+    justify-items: center;
+    align-content: space-evenly;
+    align-items: center;
 }
 
 .drop_zone_image_container {
-    width: 100%;
+    aspect-ratio: 1;
     display: block;
+    align-content: space-evenly;
+    text-align: center;
 }
 
 .drop_zone_image {
-    width: 100%;
+    max-width: 100%;
     max-height: 100%;
+    box-sizing: border-box;
+    margin: 2%;
 }
 
 .drop_zone_files {
