@@ -33,8 +33,8 @@ header {
 }
 
 #drop_zone {
-    height: 300px;
-    width: 500px;
+    height: 800px;
+    width: 800px;
     border-color: grey;
     border-radius: 10px;
 }
@@ -128,6 +128,8 @@ header {
 
 .webimage_container {
     width:100%;
+    justify-content: center;
+    display: flex;
 }
 
 .webimage_details {
@@ -184,4 +186,22 @@ header {
     margin-top: 40px;
     margin-bottom: 80px;
     text-indent: 60px;
+}
+
+.drop_zone_images_container {
+    width: 100%;
+    height: 100%;
+    column-count: 3;
+}
+
+.drop_zone_image_container {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+}
+
+.drop_zone_image {
+    width: 100%;
+    max-height: 100%;
 }

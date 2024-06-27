@@ -6,5 +6,5 @@
 {% endblock %}
 {% block body %}
 <div id="drop_zone" class="drop_zone_left" ondrop="imagesDropped(event);" ondragover="imagesDrugOver(event);" ondragenter="imagesDragEnter(event);" ondragleave="imagesDragLeave(event);"></div>
-<input multiple="" type="file" onchange="imagesChanged(event);">
+<input id="drop_zone_files" multiple="" type="file" onchange="imagesChanged(event);">
 {% endblock %}
