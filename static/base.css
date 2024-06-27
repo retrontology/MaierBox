@@ -209,3 +209,9 @@ header {
 .drop_zone_files {
     display: none;
 }
+
+.drop_zone_image_selected {
+    border-color: #ea008b;
+    border-radius: 3px;
+    border-style: solid;
+}

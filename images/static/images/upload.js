@@ -88,10 +88,10 @@ class ImageUploadForm {
 
     resetImages() {
         this.files = [];
+        this.images = [];
         if (this.images_container != null)
             this.images_container.remove();
     }
-    
     
     resetForm() {
         this.resetImages();
@@ -99,7 +99,7 @@ class ImageUploadForm {
         this.submit_button.disabled = true;
     }
 
-    populateDropZone(images) {
+    populateImages(images) {
         this.resetImages();
         this.images_container = document.createElement('div');
         this.images_container.classList.add('drop_zone_images_container');
@@ -108,6 +108,8 @@ class ImageUploadForm {
             this.files.push(image);
             let div = document.createElement('div');
             div.classList.add('drop_zone_image_container');
+            div.addEventListener('click', (event) => this.imageClicked(event))
+            div.dataset['index'] = i;
             let img = document.createElement('img');
             img.classList.add('drop_zone_image');
             div.appendChild(img);
@@ -122,10 +124,23 @@ class ImageUploadForm {
     selectImages(event) {
         this.files_input.click();
     }
+
+    imageClicked(event) {
+        event.preventDefault();
+        let index = event.target.dataset['index'];
+        this.selected = index;
+        for (let i = 0; i < this.images.length; i++) {
+            let image = this.images[i];
+            image.classList.remove('drop_zone_image_selected');
+        }
+
+        let target = (event.target.tagName === 'img') ? event.target : event.target.parentElement;
+        target.classList.add('drop_zone_image_selected');
+    }
     
     imagesChanged(event) {
         this.resetImages();
-        this.populateDropZone(event.target.files);
+        this.populateImages(event.target.files);
     }
     
     imagesDrugOver(event) {
@@ -147,7 +162,7 @@ class ImageUploadForm {
     imagesDropped(event) {
         event.preventDefault();
         this.resetForm();
-        this.populateDropZone(event.dataTransfer.files);
+        this.populateImages(event.dataTransfer.files);
         this.imagesDragLeave(event);
     }
 }
