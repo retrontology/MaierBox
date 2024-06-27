@@ -45,7 +45,7 @@ class ImageUploadForm {
         // Create drop zone
         this.drop_zone = document.createElement('div');
         this.drop_zone.classList.add('drop_zone_left', 'drop_zone');
-        this.drop_zone.addEventListener('click', (event) => this.imagesDropped(event));
+        this.drop_zone.addEventListener('drop', (event) => this.imagesDropped(event));
         this.drop_zone.addEventListener('dragover', (event) => this.imagesDrugOver(event));
         this.drop_zone.addEventListener('dragenter', (event) => this.imagesDragEnter(event));
         this.drop_zone.addEventListener('dragleave', (event) => this.imagesDragLeave(event));
