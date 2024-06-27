@@ -112,6 +112,8 @@ class WebImage(models.Model):
 
         image_bytes = BytesIO(image.read())
         image = Image.open(image_bytes)
+        if image.mode != "RGB":
+            image = image.convert("RGB")
 
         thumbnail = InMemoryUploadedFile(
             gen_thumbnail(image),

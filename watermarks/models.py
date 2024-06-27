@@ -94,7 +94,8 @@ class Watermark(models.Model):
 
     def draw(self, image: Image):
 
-        image = image.convert("RGBA")
+        if image.mode != "RGBA":
+            image = image.convert("RGBA")
         watermark = Image.new('RGBA', image.size, (255,255,255,0))
         draw = ImageDraw.Draw(watermark, 'RGBA')
 
