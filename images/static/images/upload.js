@@ -28,6 +28,7 @@ function uploadImages() {
     for (let i = 0; i < files_store.length; i++) {
         uploadImage(files_store[i]);
     }
+    resetUploadForm();
 }
 
 function createObjectURL(object) {
@@ -42,6 +43,7 @@ function populateDropZone(images) {
     files_store = [];
     let drop_zone = document.getElementById('drop_zone');
     let root_div = document.createElement('div');
+    root_div.id = 'drop_zone_images_container';
     root_div.classList.add('drop_zone_images_container');
     for (let i = 0; i < images.length; i++) {
         let image = images[i];
@@ -55,6 +57,7 @@ function populateDropZone(images) {
         root_div.appendChild(div);
     }
     drop_zone.appendChild(root_div);
+    document.getElementById('drop_zone_submit').disabled = false;
 }
 
 function imagesChanged(event) {
@@ -81,6 +84,13 @@ function imagesDropped(event) {
     event.preventDefault();
     populateDropZone(event.dataTransfer.files);
     imagesDragLeave(event);
+}
+
+function resetUploadForm(event) {
+    files_store = [];
+    document.getElementById('drop_zone_images_container').remove();
+    document.getElementById('drop_zone_files').value = null;
+    document.getElementById('drop_zone_submit').disabled = true;
 }
 
 var files_store = [];
