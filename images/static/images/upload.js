@@ -60,7 +60,12 @@ function populateDropZone(images) {
     document.getElementById('drop_zone_submit').disabled = false;
 }
 
+function selectImages(event) {
+    document.getElementById('drop_zone_files').click();
+}
+
 function imagesChanged(event) {
+    resetImages();
     populateDropZone(event.target.files);
 }
 
@@ -82,13 +87,21 @@ function imagesDragLeave(event) {
 
 function imagesDropped(event) {
     event.preventDefault();
+    resetUploadForm();
     populateDropZone(event.dataTransfer.files);
     imagesDragLeave(event);
 }
 
-function resetUploadForm(event) {
+function resetImages() {
     files_store = [];
-    document.getElementById('drop_zone_images_container').remove();
+    img_root = document.getElementById('drop_zone_images_container');
+    if (img_root != null)
+        img_root.remove();
+}
+
+
+function resetUploadForm(event) {
+    resetImages();
     document.getElementById('drop_zone_files').value = null;
     document.getElementById('drop_zone_submit').disabled = true;
 }

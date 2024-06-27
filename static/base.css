@@ -192,16 +192,19 @@ header {
     width: 100%;
     height: 100%;
     column-count: 3;
+    column-fill: balance;
 }
 
 .drop_zone_image_container {
     width: 100%;
-    height: 100%;
     display: block;
-    position: relative;
 }
 
 .drop_zone_image {
     width: 100%;
     max-height: 100%;
+}
+
+#drop_zone_files {
+    display: none;
 }
