@@ -1,5 +1,6 @@
 body {
     --preset--color--black: #010408;
+    --preset--color--red: #e05050;
     --preset--color--base: #181716;
     --preset--color--contrast: #f9e0bf;
     --preset--color--primary: #f6b891;
@@ -207,6 +208,9 @@ button:disabled  {
     height: 700px;
     border-radius: 10px;
     border-style: solid;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--preset--color--contrast) var(--preset--color--base);
 }
 
 .drop_zone_sidebar_container {
@@ -289,10 +293,10 @@ button:disabled  {
     padding: 4px;
     font-size: 12px;
     border-radius: 50%;
-    outline-color: red;
+    outline-color: var(--preset--color--red);
     outline-style: solid;
     outline-width: 2px;
     margin: 6px;
-    color: red;
+    color: var(--preset--color--red);
     text-align: center;
 }

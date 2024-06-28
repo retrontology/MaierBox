@@ -137,11 +137,20 @@ class DropZone {
 
     removeImage(event) {
         let index = event.target.parentElement.dataset['index']
+        if (this.images[index].classList.contains('drop_zone_image_selected')) {
+            this.images[index].classList.remove('drop_zone_image_selected');
+            this.selected = null;
+            if (this.parent.sidebar != null)
+                this.parent.sidebar.remove();
+        }
         this.images[index].remove();
         this.images.splice(index,1);
         this.files.splice(index,1);
-        for (let i = 0; i < this.images.length; i++)
+        for (let i = 0; i < this.images.length; i++) {
             this.images[i].dataset['index'] = i;
+            if (this.images[i].classList.contains('drop_zone_image_selected'))
+                this.selected = i;
+        }
         if (this.images.length == 0)
             this.resetForm();
     }
@@ -151,6 +160,8 @@ class DropZone {
     }
 
     imageClicked(event) {
+        if (event.target.classList.contains('drop_zone_image_delete'))
+            return;
         let target = (event.target.tagName == 'IMG') ? event.target.parentElement : event.target;
         if (this.parent.sidebar != null)
             this.parent.sidebar.remove();
