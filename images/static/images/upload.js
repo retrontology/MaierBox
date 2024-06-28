@@ -33,8 +33,47 @@ function revokeObjectURL(url) {
 }
 
 class CategorySelect {
-    constructor(image_upload_form) {
+    constructor(sidebar) {
 
+        // Init class variables
+        this.parent = sidebar;
+        
+        // Build category select
+        this.container = document.createElement('div');
+        this.container.classList.add('category_select');
+        this.parent.sidebar.appendChild(this.container);
+        this.label = document.createElement('span');
+        this.label.classList.add('category_select_label');
+        this.label.textContent = 'Category';
+        this.container.appendChild(this.label);
+        this.select = document.createElement('select');
+        this.select.classList.add('category_select_select');
+        this.container.appendChild(this.select);
+        this.refresh_button = document.createElement('span');
+        this.refresh_button.classList.add('category_select_refresh');
+        this.refresh_button.textContent = '↻';
+        this.container.appendChild(this.refresh_button);
+        this.add_button = document.createElement('span');
+        this.add_button.classList.add('category_select_add');
+        this.add_button.textContent = '+';
+        this.container.appendChild(this.add_button);
+
+        // Populate categories
+        this.refreshCategories();
+    }
+
+    // Refresh list of existing categories
+    refreshCategories(event) {
+        this.categories = [];
+        
+        for (let i = 0; i < this.categories.length; i++) {
+            let option = document.createElement('option');
+            option.value = this.categories[i];
+        }
+    }
+
+    addCategory(event) {
+        
     }
 }
 
@@ -110,6 +149,9 @@ class DropZone {
     resetImages() {
         this.files = [];
         this.images = [];
+        this.selected = null;
+        if (this.parent.sidebar != null)
+            this.parent.sidebar.remove()
         if (this.images_container != null)
             this.images_container.remove();
     }
@@ -242,18 +284,20 @@ class ImageUploadSidebar {
         this.parent.sidebar = this;
 
         // Build sidebar
-        this.sidebar_container = document.createElement('div');
-        this.sidebar_container.classList.add('drop_zone_sidebar_container');
-        this.parent.root.appendChild(this.sidebar_container);
+        this.container = document.createElement('div');
+        this.container.classList.add('drop_zone_sidebar_container');
+        this.parent.root.appendChild(this.container);
 
         this.sidebar = document.createElement('div');
         this.sidebar.classList.add('drop_zone_sidebar');
-        this.sidebar_container.appendChild(this.sidebar);
+        this.container.appendChild(this.sidebar);
+
+        this.category_select = new CategorySelect(this);
     }
 
     remove() {
         this.parent.sidebar = null;
-        this.sidebar_container.remove();
+        this.container.remove();
     }
 }
 

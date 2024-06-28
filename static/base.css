@@ -193,10 +193,11 @@ button:disabled  {
 
 .drop_zone_root {
     justify-content: space-between;
-    width: 100%;
+    width: 99%;
     display: grid;
     box-sizing: border-box;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 32% 32% 32%;
+    margin: auto;
 }
 
 .drop_zone_container {
@@ -207,7 +208,8 @@ button:disabled  {
 .drop_zone {
     height: 700px;
     border-radius: 10px;
-    border-style: solid;
+    outline-style: solid;
+    outline-width: 4px;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--preset--color--contrast) var(--preset--color--base);
@@ -218,7 +220,8 @@ button:disabled  {
 }
 
 .drop_zone_sidebar {
-    border-style: solid;
+    outline-style: solid;
+    outline-width: 4px;
     border-radius: 10px;
     height: 700px;
 }
@@ -243,16 +246,15 @@ button:disabled  {
     
 }
 
-
 .drop_zone_image_container {
     aspect-ratio: 1;
     display: flex;
     background-color: var(--preset--color--black);
     margin: 5%;
-    border-color: var(--preset--color--contrast);
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 10px;
+    outline-color: var(--preset--color--contrast);
+    outline-style: solid;
+    outline-width: 1px;
+    border-radius: 20px;
     user-select: none;
     overflow: hidden;
     flex-direction: row-reverse;
@@ -279,9 +281,9 @@ button:disabled  {
 }
 
 .drop_zone_image_selected {
-    border-color: var(--preset--color--tertiary);
-    border-width: 4px;
-    border-style: solid;
+    outline-color: var(--preset--color--tertiary);
+    outline-width: 4px;
+    outline-style: solid;
 }
 
 .drop_zone_image_delete {
