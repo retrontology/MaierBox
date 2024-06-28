@@ -32,11 +32,12 @@ function revokeObjectURL(url) {
     return (window.URL) ? window.URL.revokeObjectURL(url) : window.webkitURL.revokeObjectURL(url);
 }
 
-class ImageUploadForm {
-    constructor(root) {
-        // Get root element
-        this.root = document.getElementById(root);
-        this.root.classList.add('drop_zone_root');
+class DropZone {
+    constructor(image_upload_form) {
+
+        // Init class variables
+        this.parent = image_upload_form;
+        this.root = image_upload_form.root;
 
         // Init images
         this.files = [];
@@ -192,4 +193,24 @@ class ImageUploadForm {
         this.populateImages(event.dataTransfer.files);
         this.imagesDragLeave(event);
     }
+}
+
+class ImageUploadSidebar {
+    constructor(image_upload_form, image) {
+    }
+}
+
+class ImageUploadForm {
+    constructor(root) {
+        // Get root element
+        this.root = document.getElementById(root);
+        this.root.classList.add('drop_zone_root');
+
+        // Init DropZone
+        this.drop_zone = new DropZone(this);
+
+        // Init sidebar
+        this.sidebar = null;
+    }
+
 }
