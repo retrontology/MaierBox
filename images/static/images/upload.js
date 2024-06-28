@@ -141,6 +141,8 @@ class ImageUploadForm {
         this.files = this.files.splice(index,1);
         for (let i = 0; i < this.images.length; i++)
             this.images[i].dataset['index'] = i;
+        if (this.images.length == 0)
+            this.resetForm();
     }
     
     selectImages(event) {
