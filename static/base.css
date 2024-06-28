@@ -25,6 +25,26 @@ header {
     line-height: 1.4;
 }
 
+button {
+    font-family: inherit;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: var(--preset--color--base);
+    color: var(--preset--color--contrast);
+    outline-style: outset;
+    text-align:center;
+    vertical-align:middle;
+}
+
+button:focus {
+    background-color: var(--preset--color--black);
+    outline-style: inset;
+}
+
+button:disabled  {
+    color: var(--preset--color--black);
+}
+
 .buns {
     height: 180px;
     background-color: var(--preset--color--black);
@@ -171,41 +191,44 @@ header {
 }
 
 .drop_zone_root {
-    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    display: grid;
+    box-sizing: border-box;
+    grid-template-columns: 33% 33% 33%;
 }
 
 .drop_zone_container {
-    width: 65%;
+    grid-column: span 2;
+    width: 100%;
 }
 
 .drop_zone {
-    width: 100%;
-    height: 725px;
-    border-color: var(--preset--color--contrast);
+    height: 700px;
     border-radius: 10px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--preset--color--primary) var(--preset--color--base);
-    display: flex;
-    box-sizing: border-box;
-    align-content: top;
+    border-style: solid;
+}
+
+.drop_zone_sidebar_container {
+    width: 100%;
+}
+
+.drop_zone_sidebar {
+    border-style: solid;
+    border-radius: 10px;
+    height: 700px;
 }
 
 .drop_zone_left {
     background-color: var(--preset--color--base);
-    border-style: outset;
     
 }
 
 .drop_zone_entered {
     background-color: var(--preset--color--black);
-    border-style: inset;
 }
 
 .drop_zone_images_container {
-    width: 100%;
-    max-width: 100%;
-    min-height: 100%;
     display: grid;
     grid-template-columns: 31% 31% 31%;
     grid-column-gap: 3%;
@@ -213,6 +236,7 @@ header {
     margin: auto;
     position: relative;
     align-content: flex-start;
+    
 }
 
 
@@ -250,26 +274,6 @@ header {
     box-sizing: border-box;
 }
 
-button {
-    font-family: inherit;
-    font-size: 24px;
-    font-weight: bold;
-    background-color: var(--preset--color--base);
-    color: var(--preset--color--contrast);
-    outline-style: outset;
-    text-align:center;
-    vertical-align:middle;
-}
-
-button:focus {
-    background-color: var(--preset--color--black);
-    outline-style: inset;
-}
-
-button:disabled  {
-    color: var(--preset--color--black);
-}
-
 .drop_zone_image_selected {
     border-color: var(--preset--color--tertiary);
     border-width: 4px;
@@ -291,14 +295,4 @@ button:disabled  {
     margin: 6px;
     color: red;
     text-align: center;
-}
-
-.drop_zone_sidebar_container {
-    flex-grow: 1;
-}
-
-.drop_zone_sidebar {
-    outline-style: solid;
-    height: 725px;
-    box-sizing: border-box;
 }
