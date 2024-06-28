@@ -32,6 +32,18 @@ function revokeObjectURL(url) {
     return (window.URL) ? window.URL.revokeObjectURL(url) : window.webkitURL.revokeObjectURL(url);
 }
 
+class CategorySelect {
+    constructor(image_upload_form) {
+
+    }
+}
+
+class TagSelect {
+    constructor(image_upload_form) {
+        
+    }
+}
+
 class DropZone {
     constructor(image_upload_form) {
 
@@ -86,6 +98,7 @@ class DropZone {
         this.button_container.appendChild(this.submit_button);
     }
 
+    // Upload all images in the form
     uploadImages(event) {
         for (let i = 0; i < this.files.length; i++) {
             uploadImage(this.files[i]);
@@ -93,6 +106,7 @@ class DropZone {
         this.resetForm();
     }
 
+    // Reset the images of the form
     resetImages() {
         this.files = [];
         this.images = [];
@@ -100,12 +114,14 @@ class DropZone {
             this.images_container.remove();
     }
     
+    // Reset the entire form
     resetForm() {
         this.resetImages();
         this.files_input.value = null;
         this.submit_button.disabled = true;
     }
 
+    // Populate the images container with selected images
     populateImages(images) {
         this.resetImages();
         this.images_container = document.createElement('div');
@@ -135,6 +151,7 @@ class DropZone {
         this.submit_button.disabled = false;
     }
 
+    // Remove image from form at index
     removeImage(event) {
         let index = event.target.parentElement.dataset['index']
         if (this.images[index].classList.contains('drop_zone_image_selected')) {
@@ -155,10 +172,12 @@ class DropZone {
             this.resetForm();
     }
     
+    // Event callback for clicking the "Select Images" button
     selectImages(event) {
         this.files_input.click();
     }
 
+    // Event callback for clicking on an image
     imageClicked(event) {
         if (event.target.classList.contains('drop_zone_image_delete'))
             return;
@@ -180,27 +199,32 @@ class DropZone {
         }
     }
     
+    // Event callback for when the images are selected by the "Select Images" button
     imagesChanged(event) {
         this.resetImages();
         this.populateImages(event.target.files);
     }
     
+    // Event callback for when files are drug over the drop zone
     imagesDrugOver(event) {
         event.preventDefault();
     }
     
+    // Event callback for when files being drug enter the drop zone
     imagesDragEnter(event) {
         event.preventDefault();
         event.target.classList.add("drop_zone_entered");
         event.target.classList.remove("drop_zone_left")
     }
     
+    // Event callback for when files being drug leave the drop zone
     imagesDragLeave(event) {
         event.preventDefault();
         event.target.classList.add("drop_zone_left");
         event.target.classList.remove("drop_zone_entered");
     }
     
+    // Event callback for when files are dropped on the drop zone
     imagesDropped(event) {
         event.preventDefault();
         this.resetForm();
@@ -210,11 +234,11 @@ class DropZone {
 }
 
 class ImageUploadSidebar {
-    constructor(image_upload_form, image) {
+    constructor(image_upload_form) {
 
         // Init class variables
         this.parent = image_upload_form;
-        this.image = image;
+        this.image = this.parent.drop_zone.images[this.parent.drop_zone.selected];
         this.parent.sidebar = this;
 
         // Build sidebar
