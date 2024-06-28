@@ -152,12 +152,15 @@ class DropZone {
 
     imageClicked(event) {
         let target = (event.target.tagName == 'IMG') ? event.target.parentElement : event.target;
+        if (this.parent.sidebar != null)
+            this.parent.sidebar.remove();
         if (target.classList.contains('drop_zone_image_selected')) {
             this.selected = null;
             target.classList.remove('drop_zone_image_selected');
         }
         else {
             this.selected = target.dataset['index'];
+            this.parent.sidebar = new ImageUploadSidebar(this.parent, target);
             for (let i = 0; i < this.images.length; i++) {
                 let image = this.images[i];
                 image.classList.remove('drop_zone_image_selected');
@@ -197,6 +200,25 @@ class DropZone {
 
 class ImageUploadSidebar {
     constructor(image_upload_form, image) {
+
+        // Init class variables
+        this.parent = image_upload_form;
+        this.image = image;
+        this.parent.sidebar = this;
+
+        // Build sidebar
+        this.sidebar_container = document.createElement('div');
+        this.sidebar_container.classList.add('drop_zone_sidebar_container');
+        this.parent.root.appendChild(this.sidebar_container);
+
+        this.sidebar = document.createElement('div');
+        this.sidebar.classList.add('drop_zone_sidebar');
+        this.sidebar_container.appendChild(this.sidebar);
+    }
+
+    remove() {
+        this.parent.sidebar = null;
+        this.sidebar_container.remove();
     }
 }
 
