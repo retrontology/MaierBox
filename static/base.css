@@ -205,6 +205,7 @@ header {
     grid-column-gap: 3%;
     justify-content: space-evenly;
     margin: auto;
+    position: relative;
 }
 
 .drop_zone_image_container {
@@ -218,6 +219,7 @@ header {
     border-radius: 10px;
     user-select: none;
     overflow: hidden;
+    flex-direction: row-reverse;
 }
 
 .drop_zone_image {
@@ -264,4 +266,18 @@ button:disabled  {
     border-color: var(--preset--color--tertiary);
     border-width: 4px;
     border-style: solid;
+}
+
+.drop_zone_image_delete {
+    z-index: 1;
+    position: absolute;
+    background-color: var(--preset--color--base);
+    padding: 4px;
+    font-size: 12px;
+    border-radius: 50%;
+    outline-color: var(--preset--color--tertiary);
+    outline-style: solid;
+    outline-width: 2px;
+    margin: 6px;
+    color: blue;
 }

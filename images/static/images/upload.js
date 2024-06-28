@@ -112,31 +112,35 @@ class ImageUploadForm {
         for (let i = 0; i < images.length; i++) {
             let image = images[i];
             this.files.push(image);
-            let div = document.createElement('div');
-            div.classList.add('drop_zone_image_container');
-            div.dataset['index'] = i;
-            div.addEventListener('click', (event) => this.imageClicked(event));
-            div.addEventListener('dragstart', (event) => event.preventDefault());
+            let image_container = document.createElement('div');
+            image_container.classList.add('drop_zone_image_container');
+            image_container.dataset['index'] = i;
+            image_container.addEventListener('click', (event) => this.imageClicked(event));
+            image_container.addEventListener('dragstart', (event) => event.preventDefault());
             let img = document.createElement('img');
             img.classList.add('drop_zone_image');
             img.loading = 'lazy';
-            div.appendChild(img);
+            image_container.appendChild(img);
             img.src = createObjectURL(image);
             let delete_button = document.createElement('div');
             delete_button.classList.add('drop_zone_image_delete');
+            delete_button.addEventListener('click', (event) => this.removeImage(event));
             delete_button.textContent = '❌';
-            this.images_container.appendChild(div);
-            this.images_container.appendChild(delete_button);
-            this.images.push(div);
+            image_container.appendChild(delete_button);
+            this.images_container.appendChild(image_container);
+            this.images.push(image_container);
         }
         this.drop_zone.appendChild(this.images_container);
         this.submit_button.disabled = false;
     }
 
-    removeImage(index) {
+    removeImage(event) {
+        let index = event.target.parentElement.dataset['index']
         this.images[index].remove();
-        this.images = this.images.splice(index,1);
+        this.images.splice(index,1);
         this.files = this.files.splice(index,1);
+        for (let i = 0; i < this.images.length; i++)
+            this.images[i].dataset['index'] = i;
     }
     
     selectImages(event) {
