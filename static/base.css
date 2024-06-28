@@ -208,7 +208,9 @@ header {
     justify-content: space-evenly;
     margin: auto;
     position: relative;
+    align-content: flex-start;
 }
+
 
 .drop_zone_image_container {
     aspect-ratio: 1;
