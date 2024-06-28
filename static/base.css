@@ -185,7 +185,7 @@ header {
     border-radius: 10px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--preset--color--primary) var(--preset--color--base) ;
+    scrollbar-color: var(--preset--color--primary) var(--preset--color--base);
     display: flex;
     box-sizing: border-box;
     align-content: top;
@@ -277,23 +277,28 @@ button:disabled  {
 }
 
 .drop_zone_image_delete {
+    width: 14px;
+    height: 14px;
     z-index: 1;
     position: absolute;
     background-color: var(--preset--color--base);
     padding: 4px;
     font-size: 12px;
     border-radius: 50%;
-    outline-color: var(--preset--color--tertiary);
+    outline-color: red;
     outline-style: solid;
     outline-width: 2px;
     margin: 6px;
-    color: blue;
+    color: red;
+    text-align: center;
 }
 
 .drop_zone_sidebar_container {
-    width: auto;
-    height: 725px;
+    flex-grow: 1;
+}
+
+.drop_zone_sidebar {
     outline-style: solid;
-    margin-left: auto;
-    margin-right: auto;
+    height: 725px;
+    box-sizing: border-box;
 }

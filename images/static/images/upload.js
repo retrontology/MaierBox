@@ -234,5 +234,4 @@ class ImageUploadForm {
         // Init sidebar
         this.sidebar = null;
     }
-
 }
