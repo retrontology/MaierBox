@@ -138,7 +138,7 @@ class ImageUploadForm {
         let index = event.target.parentElement.dataset['index']
         this.images[index].remove();
         this.images.splice(index,1);
-        this.files = this.files.splice(index,1);
+        this.files.splice(index,1);
         for (let i = 0; i < this.images.length; i++)
             this.images[i].dataset['index'] = i;
         if (this.images.length == 0)
