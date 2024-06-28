@@ -81,6 +81,7 @@ class ImageUploadForm {
         this.submit_button.classList.add('drop_zone_submit');
         this.submit_button.addEventListener('click', (event) => this.uploadImages(event));
         this.submit_button.textContent = 'Submit';
+        this.submit_button.disabled = true;
         this.button_container.appendChild(this.submit_button);
     }
 
@@ -118,13 +119,24 @@ class ImageUploadForm {
             div.addEventListener('dragstart', (event) => event.preventDefault());
             let img = document.createElement('img');
             img.classList.add('drop_zone_image');
+            img.loading = 'lazy';
             div.appendChild(img);
             img.src = createObjectURL(image);
+            let delete_button = document.createElement('div');
+            delete_button.classList.add('drop_zone_image_delete');
+            delete_button.textContent = '❌';
             this.images_container.appendChild(div);
+            this.images_container.appendChild(delete_button);
             this.images.push(div);
         }
         this.drop_zone.appendChild(this.images_container);
         this.submit_button.disabled = false;
+    }
+
+    removeImage(index) {
+        this.images[index].remove();
+        this.images = this.images.splice(index,1);
+        this.files = this.files.splice(index,1);
     }
     
     selectImages(event) {
