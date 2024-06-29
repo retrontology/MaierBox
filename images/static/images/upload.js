@@ -48,25 +48,26 @@ class CategorySelect {
         this.parent.sidebar.appendChild(this.container);
         this.label = document.createElement('span');
         this.label.classList.add('category_select_label');
-        this.label.textContent = 'Category';
+        this.label.textContent = 'Category:';
         this.container.appendChild(this.label);
         this.select_container = document.createElement('div');
         this.select_container.classList.add('category_select_select_container');
         this.container.appendChild(this.select_container);
-        this.select = document.createElement('select');
+        this.select_list = document.createElement('datalist');
+        this.select_list.classList.add('category_select_datalist');
+        this.select_list.id = 'category_select_datalist';
+        this.select = document.createElement('input');
+        this.select.type = 'text';
+        this.select.setAttribute('list', this.select_list.id);
         this.select.classList.add('category_select_select');
         this.select.addEventListener('change', (event) => this.selectChanged(event));
         this.select_container.appendChild(this.select);
+        this.select_container.appendChild(this.select_list);
         this.refresh_button = document.createElement('button');
         this.refresh_button.classList.add('category_select_refresh_button');
         this.refresh_button.classList.add('category_select_button');
         this.refresh_button.addEventListener('click', (event) => this.refreshCategories(event));
         this.select_container.appendChild(this.refresh_button);
-        this.refresh_button_text = document.createElement('span');
-        this.refresh_button_text.classList.add('category_select_refresh_text');
-        this.refresh_button_text.classList.add('category_select_button_text');
-        this.refresh_button_text.textContent = '↻';
-        this.refresh_button.appendChild(this.refresh_button_text);
         this.add_button = document.createElement('button');
         this.add_button.classList.add('category_select_add_button');
         this.add_button.classList.add('category_select_button');
@@ -76,6 +77,11 @@ class CategorySelect {
         this.add_button_text.classList.add('category_select_button_text');
         this.add_button_text.textContent = '+';
         this.add_button.appendChild(this.add_button_text);
+        this.refresh_button_text = document.createElement('span');
+        this.refresh_button_text.classList.add('category_select_refresh_text');
+        this.refresh_button_text.classList.add('category_select_button_text');
+        this.refresh_button_text.textContent = '↻';
+        this.refresh_button.appendChild(this.refresh_button_text);
 
         // Populate categories
         this.refreshCategories();
@@ -84,9 +90,9 @@ class CategorySelect {
     // Clear categories and option list
     clearCategories(event) {
         this.categories = [];
-        let option_count = this.select.options.length;
+        let option_count = this.select_list.options.length;
         for (let i = 0; i < option_count; i++)
-            this.select.options[0].remove();
+            this.select_list.options[0].remove();
     }
 
     // Refresh list of existing categories
@@ -105,23 +111,33 @@ class CategorySelect {
         this.clearCategories();
         let none_option = document.createElement('option');
         none_option.textContent = 'None';
-        none_option.value = "";
-        this.select.appendChild(none_option);
+        this.select_list.appendChild(none_option);
+        this.select.value = none_option.textContent;
         this.categories.push();
         this.categories = JSON.parse(response)['categories'];
+        let pattern = '^(None';
+        if (this.categories.length > 0) {
+            pattern = pattern + '|'
+            pattern = pattern + this.categories.join('|');
+        }
+        pattern = pattern + ')$';
+        this.select.pattern = pattern;
         for (let i = 0; i < this.categories.length; i++) {
             let option = document.createElement('option');
             option.textContent = this.categories[i];
-            this.select.appendChild(option);
+            this.select_list.appendChild(option);
             if ('category' in this.image.dataset && this.image.dataset['category'] == this.categories[i])
-                this.select.selectedIndex = i+1;
+                this.select.value = this.categories[i];
         }
     }
 
     // Callback for when the category select is changed
     selectChanged(event) {
-        let value = this.select.selectedOptions[0].value;
-        if (value == '')
+        let value = this.select.value;
+        //for (let i = 0; i < this.select_list.options; i++) {
+        //    let option = this.select_list.options[i].value;
+        //}
+        if (value == 'None')
             delete this.image.dataset['category'];
         else
             this.image.dataset['category'] = value;

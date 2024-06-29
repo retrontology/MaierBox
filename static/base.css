@@ -6,13 +6,14 @@ body {
     --preset--color--primary: #f6b891;
     --preset--color--secondary: #3fdfe1;
     --preset--color--tertiary: #ea008b;
+    --preset--font--family: 'IBM Plex Mono', monospace;
     width: 80%;
     max-width: 1200px;
     min-width: 800px;
     margin: auto;
     background-color: var(--preset--color--base);
     color: var(--preset--color--contrast);
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--preset--font--family);
 }
 
 header {
@@ -155,6 +156,7 @@ button:disabled  {
     display: block;
     position: relative;
     columns: 3;
+    column-fill: balance-all;
     column-gap: 0px;
     background-color: var(--preset--color--black);
     margin-bottom: 80px;
@@ -309,14 +311,24 @@ button:disabled  {
     margin: auto;
     display: flex;
     justify-content: center;
-    font-size: 24px;
-    line-height:50x;
+    
 }
 
 .category_select_label {
+    font-size: 24px;
+    line-height: 36px;
+    color: var(--preset--color--primary);
+}
+
+.category_select_select {
+    background-color: var(--preset--color--base);
+    color: var(--preset--color--contrast);
+    font-size: 20px;
+    font-family: var(--preset--font--family);
+    margin-left: 8px;
+    margin-right: 4px;
+    padding-top: 6px;
     
-    display: table-cell;
-    vertical-align: middle;
 }
 
 .category_select_button {
