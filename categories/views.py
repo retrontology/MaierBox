@@ -4,6 +4,14 @@ from .models import Category
 
 MAX_CATEGORIES = 100
 
+def list_categories(request):
+    if request.method != 'GET':
+        return HttpResponseNotAllowed('GET')
+    response = {
+        'categories': [x.category for x in Category.objects.all()]
+    }
+    return JsonResponse(response)
+
 def image_index(request):
     categories = []
     for category in Category.objects.all():

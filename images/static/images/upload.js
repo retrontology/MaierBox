@@ -6,11 +6,13 @@ function uploadError(request){
     console.log(request.responseText);
 }
 
-function uploadImage(image) {
+function uploadImage(image, category=null) {
     const request = new XMLHttpRequest();
     const formData = new FormData();
-    formData.append("image", image);
     formData.append("csrfmiddlewaretoken", getCSRF());
+    formData.append("image", image);
+    if (category != null)
+        formData.append("category", category);
     request.open("POST", '/images/upload', true);
     request.onreadystatechange = () => {
         if (request.readyState === 4) {
@@ -37,6 +39,8 @@ class CategorySelect {
 
         // Init class variables
         this.parent = sidebar;
+        this.image = this.parent.image;
+        this.categories = [];
         
         // Build category select
         this.container = document.createElement('div');
@@ -51,10 +55,12 @@ class CategorySelect {
         this.container.appendChild(this.select_container);
         this.select = document.createElement('select');
         this.select.classList.add('category_select_select');
+        this.select.addEventListener('change', (event) => this.selectChanged(event));
         this.select_container.appendChild(this.select);
         this.refresh_button = document.createElement('button');
         this.refresh_button.classList.add('category_select_refresh_button');
         this.refresh_button.classList.add('category_select_button');
+        this.refresh_button.addEventListener('click', (event) => this.refreshCategories(event));
         this.select_container.appendChild(this.refresh_button);
         this.refresh_button_text = document.createElement('span');
         this.refresh_button_text.classList.add('category_select_refresh_text');
@@ -75,14 +81,50 @@ class CategorySelect {
         this.refreshCategories();
     }
 
+    // Clear categories and option list
+    clearCategories(event) {
+        this.categories = [];
+        let option_count = this.select.options.length;
+        for (let i = 0; i < option_count; i++)
+            this.select.options[0].remove();
+    }
+
     // Refresh list of existing categories
     refreshCategories(event) {
-        this.categories = [];
-        
+        const request = new XMLHttpRequest();
+        request.open("GET", "/categories/list", true);
+        request.onreadystatechange = () => {
+            if (request.readyState === 4 && request.status === 200)
+                this.refreshCallback(request.response);
+        };
+        request.send();
+    }
+
+    // Refresh callback to handle response and populate categories
+    refreshCallback(response) {
+        this.clearCategories();
+        let none_option = document.createElement('option');
+        none_option.textContent = 'None';
+        none_option.value = "";
+        this.select.appendChild(none_option);
+        this.categories.push();
+        this.categories = JSON.parse(response)['categories'];
         for (let i = 0; i < this.categories.length; i++) {
             let option = document.createElement('option');
-            option.value = this.categories[i];
+            option.textContent = this.categories[i];
+            this.select.appendChild(option);
+            if ('category' in this.image.dataset && this.image.dataset['category'] == this.categories[i])
+                this.select.selectedIndex = i+1;
         }
+    }
+
+    // Callback for when the category select is changed
+    selectChanged(event) {
+        let value = this.select.selectedOptions[0].value;
+        if (value == '')
+            delete this.image.dataset['category'];
+        else
+            this.image.dataset['category'] = value;
     }
 
     addCategory(event) {
@@ -153,7 +195,8 @@ class DropZone {
     // Upload all images in the form
     uploadImages(event) {
         for (let i = 0; i < this.files.length; i++) {
-            uploadImage(this.files[i]);
+            let category = this.images[i].dataset['category'];
+            uploadImage(this.files[i], category);
         }
         this.resetForm();
     }
