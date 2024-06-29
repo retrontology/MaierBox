@@ -5,4 +5,5 @@ app_name = "watermarks"
 urlpatterns = [
     path("add", views.add, name="add"),
     path("create", views.create, name="create"),
+    path("list", views.list, name="list"),
 ]

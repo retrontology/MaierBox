@@ -33,6 +33,17 @@ function revokeObjectURL(url) {
     return (window.URL) ? window.URL.revokeObjectURL(url) : window.webkitURL.revokeObjectURL(url);
 }
 
+class WatermarkSelect {
+    constructor(sidebar) {
+
+        // Init class variables
+        this.parent = sidebar;
+        this.image = this.parent.image;
+        this.watermarks = [];
+
+    }
+}
+
 class CategorySelect {
     constructor(sidebar) {
 
@@ -417,6 +428,7 @@ class ImageUploadSidebar {
         this.sidebar.classList.add('drop_zone_sidebar');
         this.container.appendChild(this.sidebar);
 
+        this.watermark_select = new WatermarkSelect(this);
         this.category_select = new CategorySelect(this);
     }
 

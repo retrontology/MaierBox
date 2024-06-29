@@ -39,3 +39,15 @@ def create(request):
         'fonts': Font.objects.all()
     }
     return render(request, "watermarks/create.html", context)
+
+def list(request):
+    if request.method != 'GET':
+        return HttpResponseNotAllowed('GET')
+    response = {
+        'watermarks': {}
+    }
+    for watermark in Watermark.objects.all():
+        response['watermarks'][watermark.id] = {
+            'text': watermark.text,
+        }
+    return JsonResponse(response)
