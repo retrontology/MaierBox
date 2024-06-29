@@ -21,7 +21,6 @@ function uploadImage(image, category=null) {
             else
                 uploadError(request);
         }
-        
     };
     request.send(formData);
 }
@@ -42,17 +41,23 @@ class CategorySelect {
         this.image = this.parent.image;
         this.categories = [];
         
-        // Build category select
+        // Build category select container
         this.container = document.createElement('div');
         this.container.classList.add('category_select');
         this.parent.sidebar.appendChild(this.container);
+
+        // Build category select label
         this.label = document.createElement('span');
         this.label.classList.add('category_select_label');
         this.label.textContent = 'Category:';
         this.container.appendChild(this.label);
+
+        // Build category select input container
         this.select_container = document.createElement('div');
         this.select_container.classList.add('category_select_select_container');
         this.container.appendChild(this.select_container);
+
+        // Build category select input and datalist
         this.select_list = document.createElement('datalist');
         this.select_list.classList.add('category_select_datalist');
         this.select_list.id = 'category_select_datalist';
@@ -63,20 +68,25 @@ class CategorySelect {
         this.select.addEventListener('change', (event) => this.selectChanged(event));
         this.select_container.appendChild(this.select);
         this.select_container.appendChild(this.select_list);
+
+        // Build category select add button
         this.add_button = document.createElement('button');
         this.add_button.classList.add('category_select_add_button');
         this.add_button.classList.add('category_select_button');
+        this.add_button.addEventListener('click', (event) => this.addCategory(event));
         this.select_container.appendChild(this.add_button);
-        this.refresh_button = document.createElement('button');
-        this.refresh_button.classList.add('category_select_refresh_button');
-        this.refresh_button.classList.add('category_select_button');
-        this.refresh_button.addEventListener('click', (event) => this.refreshCategories(event));
-        this.select_container.appendChild(this.refresh_button);
         this.add_button_text = document.createElement('span');
         this.add_button_text.classList.add('category_select_add_text')
         this.add_button_text.classList.add('category_select_button_text');
         this.add_button_text.textContent = '+';
         this.add_button.appendChild(this.add_button_text);
+
+        // Build category select refresh button
+        this.refresh_button = document.createElement('button');
+        this.refresh_button.classList.add('category_select_refresh_button');
+        this.refresh_button.classList.add('category_select_button');
+        this.refresh_button.addEventListener('click', (event) => this.refreshCategories(event));
+        this.select_container.appendChild(this.refresh_button);
         this.refresh_button_text = document.createElement('span');
         this.refresh_button_text.classList.add('category_select_refresh_text');
         this.refresh_button_text.classList.add('category_select_button_text');
@@ -87,10 +97,12 @@ class CategorySelect {
         this.refreshCategories();
     }
 
+    // Red out the select background to show non-valid categories
     showCorrect () {
         this.select.classList.remove('category_select_select_incorrect');
     }
 
+    // Return the select background to normal to show valid categories
     showIncorrect() {
         this.select.classList.add('category_select_select_incorrect');
     }
@@ -117,7 +129,6 @@ class CategorySelect {
     // Refresh callback to handle response and populate categories
     refreshCallback(response) {
         this.clearCategories();
-        this.categories.push();
         this.categories = JSON.parse(response)['categories'];
         for (let i = 0; i < this.categories.length; i++) {
             let option = document.createElement('option');
@@ -130,6 +141,20 @@ class CategorySelect {
         }
     }
 
+    // Validate the text input (whether it equals an option)
+    validateSelect() {
+        let value = this.select.value.toLowerCase();
+        let match = false;
+        for (let i = 0; i < this.select_list.options.length; i++) {
+            let option = this.select_list.options[i].value;
+            if (value == option) {
+                match = true;
+                break;
+            }  
+        }
+        return match;
+    }
+
     // Callback for when the category select is changed
     selectChanged(event) {
         let value = this.select.value.toLowerCase();
@@ -140,25 +165,39 @@ class CategorySelect {
             return;
         }
 
-        let match = false;
-        for (let i = 0; i < this.select_list.options.length; i++) {
-            let option = this.select_list.options[i].value;
-            if (value == option) {
-                match = true;
-                this.showCorrect();
-                break;
-            }  
-        }
-        if (!match) {
+        if (!this.validateSelect()) {
             this.showIncorrect();
             return;
         }
 
+        this.showCorrect();
         this.image.dataset['category'] = value;
     }
 
+    // Add category listed in text input
     addCategory(event) {
-        
+        let category = this.select.value.toLowerCase();
+
+        if (category == '' || this.validateSelect())
+            return;
+
+        const formData = new FormData();
+        formData.append("csrfmiddlewaretoken", getCSRF());
+        formData.append("category", category);
+        const request = new XMLHttpRequest();
+        request.open("POST", "/categories/add", true);
+        request.onreadystatechange = () => {
+            if (request.readyState === 4 && request.status === 200)
+                this.addCallback(request.response);
+        };
+        request.send(formData);
+    }
+
+    // Add category callback
+    addCallback(response) {
+        let category = JSON.parse(response)['category'];
+        this.image.dataset['category'] = category;
+        this.refreshCategories();
     }
 }
 
