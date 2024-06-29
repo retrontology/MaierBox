@@ -63,15 +63,15 @@ class CategorySelect {
         this.select.addEventListener('change', (event) => this.selectChanged(event));
         this.select_container.appendChild(this.select);
         this.select_container.appendChild(this.select_list);
+        this.add_button = document.createElement('button');
+        this.add_button.classList.add('category_select_add_button');
+        this.add_button.classList.add('category_select_button');
+        this.select_container.appendChild(this.add_button);
         this.refresh_button = document.createElement('button');
         this.refresh_button.classList.add('category_select_refresh_button');
         this.refresh_button.classList.add('category_select_button');
         this.refresh_button.addEventListener('click', (event) => this.refreshCategories(event));
         this.select_container.appendChild(this.refresh_button);
-        this.add_button = document.createElement('button');
-        this.add_button.classList.add('category_select_add_button');
-        this.add_button.classList.add('category_select_button');
-        this.select_container.appendChild(this.add_button);
         this.add_button_text = document.createElement('span');
         this.add_button_text.classList.add('category_select_add_text')
         this.add_button_text.classList.add('category_select_button_text');

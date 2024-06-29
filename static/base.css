@@ -308,16 +308,23 @@ button:disabled  {
 }
 
 .category_select {
-    margin: auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto;
+    flex-wrap: nowrap;
     justify-content: center;
-    
 }
 
 .category_select_label {
     font-size: 24px;
     line-height: 36px;
     color: var(--preset--color--primary);
+    margin: auto;
+}
+
+.category_select_select_container {
+    display: flex;
+    width: auto;
+    flex-wrap: nowrap;
 }
 
 .category_select_select {
@@ -325,10 +332,7 @@ button:disabled  {
     color: var(--preset--color--contrast);
     font-size: 20px;
     font-family: var(--preset--font--family);
-    margin-left: 8px;
-    margin-right: 4px;
-    padding-top: 6px;
-    
+    width: 120px
 }
 
 .category_select_select_incorrect {
