@@ -46,17 +46,20 @@ class CategorySelect {
         this.label.classList.add('category_select_label');
         this.label.textContent = 'Category';
         this.container.appendChild(this.label);
+        this.select_container = document.createElement('div');
+        this.select_container.classList.add('category_select_select_container');
+        this.container.appendChild(this.select_container);
         this.select = document.createElement('select');
         this.select.classList.add('category_select_select');
-        this.container.appendChild(this.select);
-        this.refresh_button = document.createElement('span');
+        this.select_container.appendChild(this.select);
+        this.refresh_button = document.createElement('button');
         this.refresh_button.classList.add('category_select_refresh');
         this.refresh_button.textContent = '↻';
-        this.container.appendChild(this.refresh_button);
-        this.add_button = document.createElement('span');
+        this.select_container.appendChild(this.refresh_button);
+        this.add_button = document.createElement('button');
         this.add_button.classList.add('category_select_add');
         this.add_button.textContent = '+';
-        this.container.appendChild(this.add_button);
+        this.select_container.appendChild(this.add_button);
 
         // Populate categories
         this.refreshCategories();
