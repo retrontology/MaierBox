@@ -331,6 +331,10 @@ button:disabled  {
     
 }
 
+.category_select_select_incorrect {
+    background-color: var(--preset--color--red);
+}
+
 .category_select_button {
     height: 24px;
     width: 24px;

@@ -87,6 +87,14 @@ class CategorySelect {
         this.refreshCategories();
     }
 
+    showCorrect () {
+        this.select.classList.remove('category_select_select_incorrect');
+    }
+
+    showIncorrect() {
+        this.select.classList.add('category_select_select_incorrect');
+    }
+
     // Clear categories and option list
     clearCategories(event) {
         this.categories = [];
@@ -109,38 +117,44 @@ class CategorySelect {
     // Refresh callback to handle response and populate categories
     refreshCallback(response) {
         this.clearCategories();
-        let none_option = document.createElement('option');
-        none_option.textContent = 'None';
-        this.select_list.appendChild(none_option);
-        this.select.value = none_option.textContent;
         this.categories.push();
         this.categories = JSON.parse(response)['categories'];
-        let pattern = '^(None';
-        if (this.categories.length > 0) {
-            pattern = pattern + '|'
-            pattern = pattern + this.categories.join('|');
-        }
-        pattern = pattern + ')$';
-        this.select.pattern = pattern;
         for (let i = 0; i < this.categories.length; i++) {
             let option = document.createElement('option');
             option.textContent = this.categories[i];
             this.select_list.appendChild(option);
-            if ('category' in this.image.dataset && this.image.dataset['category'] == this.categories[i])
+            if ('category' in this.image.dataset && this.image.dataset['category'] == this.categories[i]) {
                 this.select.value = this.categories[i];
+                this.showCorrect();
+            }
         }
     }
 
     // Callback for when the category select is changed
     selectChanged(event) {
-        let value = this.select.value;
-        //for (let i = 0; i < this.select_list.options; i++) {
-        //    let option = this.select_list.options[i].value;
-        //}
-        if (value == 'None')
+        let value = this.select.value.toLowerCase();
+
+        if (value == '') {
             delete this.image.dataset['category'];
-        else
-            this.image.dataset['category'] = value;
+            this.showCorrect();
+            return;
+        }
+
+        let match = false;
+        for (let i = 0; i < this.select_list.options.length; i++) {
+            let option = this.select_list.options[i].value;
+            if (value == option) {
+                match = true;
+                this.showCorrect();
+                break;
+            }  
+        }
+        if (!match) {
+            this.showIncorrect();
+            return;
+        }
+
+        this.image.dataset['category'] = value;
     }
 
     addCategory(event) {
