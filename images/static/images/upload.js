@@ -53,13 +53,23 @@ class CategorySelect {
         this.select.classList.add('category_select_select');
         this.select_container.appendChild(this.select);
         this.refresh_button = document.createElement('button');
-        this.refresh_button.classList.add('category_select_refresh');
-        this.refresh_button.textContent = '↻';
+        this.refresh_button.classList.add('category_select_refresh_button');
+        this.refresh_button.classList.add('category_select_button');
         this.select_container.appendChild(this.refresh_button);
+        this.refresh_button_text = document.createElement('span');
+        this.refresh_button_text.classList.add('category_select_refresh_text');
+        this.refresh_button_text.classList.add('category_select_button_text');
+        this.refresh_button_text.textContent = '↻';
+        this.refresh_button.appendChild(this.refresh_button_text);
         this.add_button = document.createElement('button');
-        this.add_button.classList.add('category_select_add');
-        this.add_button.textContent = '+';
+        this.add_button.classList.add('category_select_add_button');
+        this.add_button.classList.add('category_select_button');
         this.select_container.appendChild(this.add_button);
+        this.add_button_text = document.createElement('span');
+        this.add_button_text.classList.add('category_select_add_text')
+        this.add_button_text.classList.add('category_select_button_text');
+        this.add_button_text.textContent = '+';
+        this.add_button.appendChild(this.add_button_text);
 
         // Populate categories
         this.refreshCategories();
