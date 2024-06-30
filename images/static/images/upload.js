@@ -41,6 +41,59 @@ class WatermarkSelect {
         this.image = this.parent.image;
         this.watermarks = [];
 
+        // Build watermark select container
+        this.container = document.createElement('div');
+        this.container.classList.add('sidebar_select');
+        this.container.classList.add('watermark_select');
+        this.parent.sidebar.appendChild(this.container);
+
+        // Build watermark select label
+        this.label = document.createElement('span');
+        this.label.classList.add('sidebar_select_label');
+        this.label.classList.add('watermark_select_label');
+        this.label.textContent = 'Watermark:';
+        this.container.appendChild(this.label);
+
+        // Build watermark select input container
+        this.select_container = document.createElement('div');
+        this.select_container.classList.add('sidebar_select_select_container');
+        this.select_container.classList.add('watermark_select_select_container');
+        this.container.appendChild(this.select_container);
+
+        // Build watermark select input
+        this.select = document.createElement('select');
+        this.select.classList.add('sidebar_select_select');
+        this.select.classList.add('watermark_select_select');
+        this.select.addEventListener('change', (event) => this.selectChanged(event));
+        this.select_container.appendChild(this.select);
+
+        // Build watermark select refresh button
+        this.refresh_button = document.createElement('button');
+        this.refresh_button.classList.add('sidebar_select_refresh_button');
+        this.refresh_button.classList.add('watermark_select_refresh_button');
+        this.refresh_button.classList.add('sidebar_select_button');
+        this.refresh_button.classList.add('watermark_select_button');
+        this.refresh_button.addEventListener('click', (event) => this.refreshWatermarks(event));
+        this.select_container.appendChild(this.refresh_button);
+        this.refresh_button_text = document.createElement('span');
+        this.refresh_button_text.classList.add('sidebar_select_refresh_text');
+        this.refresh_button_text.classList.add('watermark_select_refresh_text');
+        this.refresh_button_text.classList.add('sidebar_select_button_text');
+        this.refresh_button_text.classList.add('watermark_select_button_text');
+        this.refresh_button_text.textContent = '↻';
+        this.refresh_button.appendChild(this.refresh_button_text);
+
+        // Populate categories
+        this.refreshWatermarks();
+
+    }
+
+    refreshWatermarks() {
+
+    }
+
+    selectChanged() {
+        
     }
 }
 
@@ -54,27 +107,32 @@ class CategorySelect {
         
         // Build category select container
         this.container = document.createElement('div');
+        this.container.classList.add('sidebar_select');
         this.container.classList.add('category_select');
         this.parent.sidebar.appendChild(this.container);
 
         // Build category select label
         this.label = document.createElement('span');
+        this.label.classList.add('sidebar_select_label');
         this.label.classList.add('category_select_label');
         this.label.textContent = 'Category:';
         this.container.appendChild(this.label);
 
         // Build category select input container
         this.select_container = document.createElement('div');
+        this.select_container.classList.add('sidebar_select_select_container');
         this.select_container.classList.add('category_select_select_container');
         this.container.appendChild(this.select_container);
 
         // Build category select input and datalist
         this.select_list = document.createElement('datalist');
+        this.select_list.classList.add('sidebar_select_datalist');
         this.select_list.classList.add('category_select_datalist');
         this.select_list.id = 'category_select_datalist';
         this.select = document.createElement('input');
         this.select.type = 'text';
         this.select.setAttribute('list', this.select_list.id);
+        this.select.classList.add('sidebar_select_select');
         this.select.classList.add('category_select_select');
         this.select.addEventListener('change', (event) => this.selectChanged(event));
         this.select_container.appendChild(this.select);
@@ -82,24 +140,32 @@ class CategorySelect {
 
         // Build category select add button
         this.add_button = document.createElement('button');
+        this.add_button.classList.add('sidebar_select_add_button');
         this.add_button.classList.add('category_select_add_button');
+        this.add_button.classList.add('sidebar_select_button');
         this.add_button.classList.add('category_select_button');
         this.add_button.addEventListener('click', (event) => this.addCategory(event));
         this.select_container.appendChild(this.add_button);
         this.add_button_text = document.createElement('span');
-        this.add_button_text.classList.add('category_select_add_text')
+        this.add_button_text.classList.add('category_select_add_text');
+        this.add_button_text.classList.add('sidebar_select_add_text');
         this.add_button_text.classList.add('category_select_button_text');
+        this.add_button_text.classList.add('sidebar_select_button_text');
         this.add_button_text.textContent = '+';
         this.add_button.appendChild(this.add_button_text);
 
         // Build category select refresh button
         this.refresh_button = document.createElement('button');
+        this.refresh_button.classList.add('sidebar_select_refresh_button');
         this.refresh_button.classList.add('category_select_refresh_button');
+        this.refresh_button.classList.add('sidebar_select_button');
         this.refresh_button.classList.add('category_select_button');
         this.refresh_button.addEventListener('click', (event) => this.refreshCategories(event));
         this.select_container.appendChild(this.refresh_button);
         this.refresh_button_text = document.createElement('span');
+        this.refresh_button_text.classList.add('sidebar_select_refresh_text');
         this.refresh_button_text.classList.add('category_select_refresh_text');
+        this.refresh_button_text.classList.add('sidebar_select_button_text');
         this.refresh_button_text.classList.add('category_select_button_text');
         this.refresh_button_text.textContent = '↻';
         this.refresh_button.appendChild(this.refresh_button_text);
