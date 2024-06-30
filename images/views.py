@@ -40,7 +40,7 @@ def upload(request):
         fields['tags'] = None
     
     if 'watermark' in request.POST:
-        fields['watermark'] = Watermark.objects.get(request.POST['watermark'])
+        fields['watermark'] = Watermark.objects.get(id=request.POST['watermark'])
     else:
         fields['watermark'] = None
 

@@ -6,11 +6,13 @@ function uploadError(request){
     console.log(request.responseText);
 }
 
-function uploadImage(image, category=null) {
+function uploadImage(image, watermark=null, category=null) {
     const request = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("csrfmiddlewaretoken", getCSRF());
     formData.append("image", image);
+    if (watermark != null)
+        formData.append("watermark", watermark);
     if (category != null)
         formData.append("category", category);
     request.open("POST", '/images/upload', true);
@@ -88,12 +90,54 @@ class WatermarkSelect {
 
     }
 
-    refreshWatermarks() {
-
+    // Clear watermarks and option list
+    clearWatermarks() {
+        this.watermarks = [];
+        let option_count = this.select.options.length;
+        for (let i = 0; i < option_count; i++)
+            this.select.options[0].remove();
     }
 
-    selectChanged() {
-        
+    // Refresh list of existing watermarks
+    refreshWatermarks(event) {
+        const request = new XMLHttpRequest();
+        request.open("GET", "/watermarks/list", true);
+        request.onreadystatechange = () => {
+            if (request.readyState === 4 && request.status === 200)
+                this.refreshCallback(request.response);
+        };
+        request.send();
+    }
+
+    // Refresh callback to handle response and populate watermarks
+    refreshCallback(response) {
+        this.clearWatermarks();
+        this.watermarks = JSON.parse(response)['watermarks'];
+        let none_option = document.createElement('option');
+        none_option.textContent = 'None';
+        none_option.value = '';
+        this.select.appendChild(none_option);
+        for (let index in this.watermarks) {
+            let option = document.createElement('option');
+            option.textContent = `(${index}) ${this.watermarks[index]['text']}`;
+            option.value = index;
+            this.select.appendChild(option);
+            if ('watermark' in this.image.dataset && this.image.dataset['watermark'] == index) {
+                this.select.value = index;
+            }
+        }
+    }
+
+    // Callback for when the watermark select is changed
+    selectChanged(event) {
+        let value = this.select.value;
+
+        if (value == '') {
+            delete this.image.dataset['watermark'];
+            return;
+        }
+
+        this.image.dataset['watermark'] = value;
     }
 }
 
@@ -342,7 +386,8 @@ class DropZone {
     uploadImages(event) {
         for (let i = 0; i < this.files.length; i++) {
             let category = this.images[i].dataset['category'];
-            uploadImage(this.files[i], category);
+            let watermark = this.images[i].dataset['watermark'];
+            uploadImage(this.files[i], watermark, category);
         }
         this.resetForm();
     }
