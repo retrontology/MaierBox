@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'albums.apps.AlbumsConfig',
     'watermarks.apps.WatermarksConfig',
     'posts.apps.PostsConfig',
+    'comments.apps.CommentsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
