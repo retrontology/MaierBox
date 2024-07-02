@@ -416,11 +416,6 @@ class TagSelect {
         this.addTag(this.select.value);
     }
 
-    // Refreshes the tags datalist
-    refreshTags() {
-        
-    }
-
     // Add tag to the image
     addTag(tag) {
         tag = tag.toLowerCase();
@@ -446,9 +441,26 @@ class TagSelect {
         tag_container.appendChild(tag_text);
         let remove_button = document.createElement('div');
         remove_button.classList.add('tag_select_tag_remove');
+        remove_button.addEventListener('click', (event) => this.removeTag(tag));
         remove_button.textContent = '❌';
         tag_container.appendChild(remove_button);
         this.select.value = '';
+        this.saveTags();
+    }
+
+    // Remove tag from the image
+    removeTag(tag) {
+        let index = this.tags.indexOf(tag);
+        if (index == -1)
+            return;
+
+        this.tags.splice(index, 1);
+        for (let i = 0; i < this.collection.children.length; i++) {
+            let tag_container = this.collection.children[i];
+            if(tag == tag_container.firstChild.textContent)
+                tag_container.remove();
+        }
+
         this.saveTags();
     }
 
