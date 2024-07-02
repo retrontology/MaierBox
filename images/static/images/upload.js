@@ -677,6 +677,7 @@ class ImageUploadSidebar {
         this.parent = image_upload_form;
         this.image = this.parent.drop_zone.images[this.parent.drop_zone.selected];
         this.parent.sidebar = this;
+        this.drop_zone = this.parent.drop_zone
 
         // Build sidebar
         this.container = document.createElement('div');
@@ -690,11 +691,40 @@ class ImageUploadSidebar {
         this.watermark_select = new WatermarkSelect(this);
         this.category_select = new CategorySelect(this);
         this.tag_select = new TagSelect(this);
+
+        this.set_all = document.createElement('button');
+        this.set_all.classList.add('drop_zone_setall');
+        this.set_all.textContent = 'Set All'
+        this.set_all.addEventListener('click', (event) => this.setAll(event))
+        this.sidebar.appendChild(this.set_all);
     }
 
+    // Deletes the sidebar from the DOM
     remove() {
         this.parent.sidebar = null;
         this.container.remove();
+    }
+
+    // Takes the current values of the selection fields and applies them to all images
+    setAll(event) {
+        for (let i in this.drop_zone.images) {
+            let image = this.drop_zone.images[i];
+
+            if (this.image.dataset['watermark'] == null)
+                delete image.dataset['watermark']
+            else
+                image.dataset['watermark'] = this.image.dataset['watermark'];
+
+            if (this.image.dataset['category'] == null)
+                delete image.dataset['category']
+            else
+                image.dataset['category'] = this.image.dataset['category']
+
+            if (this.image.dataset['tags'] == null)
+                delete image.dataset['tags']
+            else
+                image.dataset['tags'] = this.image.dataset['tags']
+        }
     }
 }
 
