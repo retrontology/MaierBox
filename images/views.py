@@ -32,19 +32,21 @@ def upload(request):
     else:
         fields['category'] = None
     
-    if 'tags' in request.POST:
-        fields['tags'] = []
-        for tag in request.POST['tags']:
-            fields['tags'].append(Tag.objects.get(tag=tag))
-    else:
-        fields['tags'] = None
-    
     if 'watermark' in request.POST:
         fields['watermark'] = Watermark.objects.get(id=request.POST['watermark'])
     else:
         fields['watermark'] = None
 
     image = WebImage.from_image(**fields)
+    image.save()
+
+    if 'tags' in request.POST:
+        for tag in request.POST['tags'].split(','):
+            tag, created = Tag.objects.get_or_create(tag=tag)
+            if created:
+                tag.save()
+            image.tags.add(tag)
+
     image.save()
     
     return JsonResponse(

@@ -6,7 +6,7 @@ function uploadError(request){
     console.log(request.responseText);
 }
 
-function uploadImage(image, watermark=null, category=null) {
+function uploadImage(image, watermark=null, category=null, tags=null) {
     const request = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("csrfmiddlewaretoken", getCSRF());
@@ -15,6 +15,8 @@ function uploadImage(image, watermark=null, category=null) {
         formData.append("watermark", watermark);
     if (category != null)
         formData.append("category", category);
+    if (tags != null)
+        formData.append("tags", tags);
     request.open("POST", '/images/upload', true);
     request.onreadystatechange = () => {
         if (request.readyState === 4) {
@@ -380,7 +382,7 @@ class TagSelect {
         this.add_button.classList.add('tag_select_add_button');
         this.add_button.classList.add('sidebar_select_button');
         this.add_button.classList.add('tag_select_button');
-        this.add_button.addEventListener('click', (event) => this.addTag(event));
+        this.add_button.addEventListener('click', (event) => this.addClicked(event));
         this.select_container.appendChild(this.add_button);
         this.add_button_text = document.createElement('span');
         this.add_button_text.classList.add('tag_select_add_text');
@@ -396,7 +398,7 @@ class TagSelect {
         this.container.appendChild(this.collection);
 
         // Populate tags
-        this.refreshTags();
+        this.loadTags();
 
     }
 
@@ -406,17 +408,22 @@ class TagSelect {
             return;
 
         event.preventDefault();
-        this.addTag(event);
+        this.addTag(this.select.value);
+    }
+
+    // Callback for when the add button is pressed
+    addClicked(event) {
+        this.addTag(this.select.value);
     }
 
     // Refreshes the tags datalist
     refreshTags() {
-
+        
     }
 
     // Add tag to the image
-    addTag(event) {
-        let tag = this.select.value.toLowerCase();
+    addTag(tag) {
+        tag = tag.toLowerCase();
 
         if (tag == '')
             return;
@@ -442,6 +449,29 @@ class TagSelect {
         remove_button.textContent = '❌';
         tag_container.appendChild(remove_button);
         this.select.value = '';
+        this.saveTags();
+    }
+
+    // Serialize tags into csv for the image dataset
+    saveTags(event) {
+        let tags = this.tags.join(',');
+        this.image.dataset['tags'] = tags;
+    }
+
+    // Deserialize tags from csv in image dataset
+    loadTags(event) {
+        let tags = this.image.dataset['tags'];
+        if (tags != null) {
+            tags = tags.split(',');
+            for (let i in tags)
+                this.addTag(tags[i]);
+        }
+        
+    }
+
+    // Clear all the tags
+    clearTags(event) {
+
     }
 }
 
@@ -504,7 +534,8 @@ class DropZone {
         for (let i = 0; i < this.files.length; i++) {
             let category = this.images[i].dataset['category'];
             let watermark = this.images[i].dataset['watermark'];
-            uploadImage(this.files[i], watermark, category);
+            let tags = this.images[i].dataset['tags'];
+            uploadImage(this.files[i], watermark, category, tags);
         }
         this.resetForm();
     }
