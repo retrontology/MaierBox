@@ -71,7 +71,6 @@ button:disabled  {
     border-style: solid;
     margin-top: auto;
     margin-bottom: auto;
-    /* resize: both; */
     overflow: auto;
     position: relative;
 }
@@ -222,12 +221,16 @@ button:disabled  {
 }
 
 .drop_zone_sidebar {
+    display: flex;
     outline-style: solid;
     outline-width: 4px;
     border-radius: 10px;
     height: 660px;
     padding-top: 20px;
     padding-bottom: 20px;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .drop_zone_left {
@@ -308,7 +311,7 @@ button:disabled  {
 }
 
 .sidebar_select {
-    display: grid;
+    display: flex;
     grid-template-columns: auto auto;
     flex-wrap: nowrap;
     justify-content: center;
@@ -325,6 +328,7 @@ button:disabled  {
     display: flex;
     width: auto;
     flex-wrap: nowrap;
+    margin: 8px;
 }
 
 .sidebar_select_select {
@@ -403,4 +407,8 @@ button:disabled  {
     width: 20px;
     height: 20px;
     text-align: center;
+}
+
+.sidebar_setall {
+    margin: 8px
 }

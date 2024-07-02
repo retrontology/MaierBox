@@ -692,11 +692,14 @@ class ImageUploadSidebar {
         this.category_select = new CategorySelect(this);
         this.tag_select = new TagSelect(this);
 
+        this.set_all_container = document.createElement('div');
+        this.set_all_container.classList.add('drop_zone_setall_container');
+        this.sidebar.appendChild(this.set_all_container);
         this.set_all = document.createElement('button');
-        this.set_all.classList.add('drop_zone_setall');
-        this.set_all.textContent = 'Set All'
-        this.set_all.addEventListener('click', (event) => this.setAll(event))
-        this.sidebar.appendChild(this.set_all);
+        this.set_all.classList.add('sidebar_setall');
+        this.set_all.textContent = 'Set All';
+        this.set_all.addEventListener('click', (event) => this.setAll(event));
+        this.set_all_container.appendChild(this.set_all);
     }
 
     // Deletes the sidebar from the DOM
