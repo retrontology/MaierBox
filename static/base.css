@@ -361,3 +361,46 @@ button:disabled  {
     transform-origin: center;
     transform: rotate(0.15turn);
 }
+
+.tag_select {
+    display: inline;
+}
+
+.tag_select_label {
+    margin: 0px;
+}
+
+.tag_select_select_container {
+    justify-content:center;
+}
+
+.tag_select_collection {
+    display: flex;
+    margin-left: 16px;
+    margin-right: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tag_select_tag_container {
+    display: flex;
+    flex-wrap: nowrap;
+    outline-style: solid;
+    outline-width: 2px;
+    margin: 4px;
+}
+
+.tag_select_tag_text {
+    display: flex;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 4px;
+    align-items: center;
+}
+
+.tag_select_tag_remove {
+    user-select: none;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+}

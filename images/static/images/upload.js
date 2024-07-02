@@ -35,6 +35,14 @@ function revokeObjectURL(url) {
     return (window.URL) ? window.URL.revokeObjectURL(url) : window.webkitURL.revokeObjectURL(url);
 }
 
+function validateTag(tag) {
+    return true;
+}
+
+function validateCategory(tag) {
+    return true;
+}
+
 class WatermarkSelect {
     constructor(sidebar) {
 
@@ -265,6 +273,8 @@ class CategorySelect {
     // Validate the text input (whether it equals an option)
     validateSelect() {
         let value = this.select.value.toLowerCase();
+        if (!validateCategory(value))
+            return false
         let match = false;
         for (let i = 0; i < this.select_list.options.length; i++) {
             let option = this.select_list.options[i].value;
@@ -406,7 +416,32 @@ class TagSelect {
 
     // Add tag to the image
     addTag(event) {
+        let tag = this.select.value.toLowerCase();
 
+        if (tag == '')
+            return;
+
+        if (tag in this.tags) {
+            this.select.value = '';
+            return;
+        }
+
+        if (!validateTag(tag))
+            return;
+            
+        this.tags.push(tag);
+        let tag_container = document.createElement('div');
+        tag_container.classList.add('tag_select_tag_container');
+        this.collection.appendChild(tag_container);
+        let tag_text = document.createElement('div');
+        tag_text.classList.add('tag_select_tag_text');
+        tag_text.textContent = tag;
+        tag_container.appendChild(tag_text);
+        let remove_button = document.createElement('div');
+        remove_button.classList.add('tag_select_tag_remove');
+        remove_button.textContent = '❌';
+        tag_container.appendChild(remove_button);
+        this.select.value = '';
     }
 }
 
