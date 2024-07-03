@@ -45,73 +45,86 @@ function validateCategory(tag) {
     return true;
 }
 
-class WatermarkSelect {
-    constructor(sidebar) {
+class InputSelect {
+    constructor(parent, image, type='text', label='', refresh=false, add=false) {
 
         // Init class variables
-        this.parent = sidebar;
-        this.image = this.parent.image;
-        this.watermarks = [];
+        this.parent = parent;
+        this.image = image;
+        this.type = type;
+        this.items = [];
+        this.prefix = label.toLowerCase();
+        if (this.prefix != '' )
+            this.label_text = this.prefix.charAt(0).toUpperCase() + this.prefix.slice(1);
+        else
+            this.label_text = '';
+        
 
-        // Build watermark select container
+        // Build select container
         this.container = document.createElement('div');
         this.container.classList.add('sidebar_select');
-        this.container.classList.add('watermark_select');
+        if (this.prefix != '')
+            this.container.classList.add(`${this.prefix}_select`);
         this.parent.sidebar.appendChild(this.container);
 
-        // Build watermark select label
-        this.label = document.createElement('span');
+        // Build select label
+        this.label = document.createElement('div');
         this.label.classList.add('sidebar_select_label');
-        this.label.classList.add('watermark_select_label');
-        this.label.textContent = 'Watermark:';
+        if (this.prefix != '')
+            this.label.classList.add(`${this.prefix}_select_label`);
+        if (this.label_text != '')
+            this.label.textContent = `${this.label_text}:`;
         this.container.appendChild(this.label);
 
-        // Build watermark select input container
+        // Build select input container
         this.select_container = document.createElement('div');
         this.select_container.classList.add('sidebar_select_select_container');
-        this.select_container.classList.add('watermark_select_select_container');
+        if (this.prefix != '')
+            this.select_container.classList.add(`${this.prefix}_select_select_container`);
         this.container.appendChild(this.select_container);
 
-        // Build watermark select input
-        this.select = document.createElement('select');
+        // Build select input
+        if (this.type == 'select')
+            this.select = document.createElement('select');
+        else if (this.type == 'text') {
+            this.select = document.createElement('input');
+            this.select.type = 'text';
+        }
         this.select.classList.add('sidebar_select_select');
-        this.select.classList.add('watermark_select_select');
-        this.select.addEventListener('change', (event) => this.selectChanged(event));
+        if (this.prefix != '')
+            this.select.classList.add(`${this.prefix}_select_select`);
+        this.select.addEventListener('change', (event) => this.onChanged(event));
         this.select_container.appendChild(this.select);
 
         // Build watermark select refresh button
-        this.refresh_button = document.createElement('button');
-        this.refresh_button.classList.add('sidebar_select_refresh_button');
-        this.refresh_button.classList.add('watermark_select_refresh_button');
-        this.refresh_button.classList.add('sidebar_select_button');
-        this.refresh_button.classList.add('watermark_select_button');
-        this.refresh_button.addEventListener('click', (event) => this.refreshWatermarks(event));
-        this.select_container.appendChild(this.refresh_button);
-        this.refresh_button_text = document.createElement('span');
-        this.refresh_button_text.classList.add('sidebar_select_refresh_text');
-        this.refresh_button_text.classList.add('watermark_select_refresh_text');
-        this.refresh_button_text.classList.add('sidebar_select_button_text');
-        this.refresh_button_text.classList.add('watermark_select_button_text');
-        this.refresh_button_text.textContent = '↻';
-        this.refresh_button.appendChild(this.refresh_button_text);
-
-        // Populate categories
-        this.refreshWatermarks();
+        if (refresh != false && refresh != null) {
+            this.refresh_endpoint = refresh;
+            this.refresh_button = document.createElement('button');
+            this.refresh_button.classList.add('sidebar_select_refresh_button');
+            this.refresh_button.classList.add('sidebar_select_button');
+            if (this.prefix != '') {
+                this.refresh_button.classList.add(`${this.prefix}_select_refresh_button`);
+                this.refresh_button.classList.add(`${this.prefix}_select_button`);
+            }
+            this.refresh_button.addEventListener('click', (event) => this.refresh(event));
+            this.select_container.appendChild(this.refresh_button);
+            this.refresh_button_text = document.createElement('div');
+            this.refresh_button_text.classList.add('sidebar_select_refresh_text');
+            this.refresh_button_text.classList.add('sidebar_select_button_text');
+            if (this.prefix != '') {
+                this.refresh_button_text.classList.add('watermark_select_refresh_text');
+                this.refresh_button_text.classList.add('watermark_select_button_text');
+            }
+            this.refresh_button_text.textContent = '↻';
+            this.refresh_button.appendChild(this.refresh_button_text);
+        }
 
     }
 
-    // Clear watermarks and option list
-    clearWatermarks() {
-        this.watermarks = [];
-        let option_count = this.select.options.length;
-        for (let i = 0; i < option_count; i++)
-            this.select.options[0].remove();
-    }
-
-    // Refresh list of existing watermarks
-    refreshWatermarks(event) {
+    // Refresh list of existing items
+    refresh(event) {
         const request = new XMLHttpRequest();
-        request.open("GET", "/watermarks/list", true);
+        request.open("GET", this.refresh_endpoint, true);
         request.onreadystatechange = () => {
             if (request.readyState === 4 && request.status === 200)
                 this.refreshCallback(request.response);
@@ -119,17 +132,39 @@ class WatermarkSelect {
         request.send();
     }
 
+    // Clear items, option list, and dataset
+    clear() {
+        this.items = [];
+        let option_count = this.select.options.length;
+        for (let i = 0; i < option_count; i++)
+            this.select.options[0].remove();
+    }
+
+    // Empty callback for when the select is changed. To be overwritten by subclasses
+    onChanged(event) {}
+
+    // Empty refresh callback to be overwritten by subclasses
+    refreshCallback(response) {}
+
+}
+
+class WatermarkSelect extends InputSelect {
+    constructor(sidebar) {
+        super(sidebar, sidebar.image, 'select', 'watermark', '/watermarks/list', false);
+        this.refresh();
+    }
+
     // Refresh callback to handle response and populate watermarks
     refreshCallback(response) {
-        this.clearWatermarks();
-        this.watermarks = JSON.parse(response)['watermarks'];
+        this.clear();
+        this.items = JSON.parse(response)['watermarks'];
         let none_option = document.createElement('option');
         none_option.textContent = 'None';
         none_option.value = '';
         this.select.appendChild(none_option);
-        for (let index in this.watermarks) {
+        for (let index in this.items) {
             let option = document.createElement('option');
-            option.textContent = `(${index}) ${this.watermarks[index]['text']}`;
+            option.textContent = `(${index}) ${this.items[index]['text']}`;
             option.value = index;
             this.select.appendChild(option);
             if ('watermark' in this.image.dataset && this.image.dataset['watermark'] == index) {
@@ -139,7 +174,7 @@ class WatermarkSelect {
     }
 
     // Callback for when the watermark select is changed
-    selectChanged(event) {
+    onChanged(event) {
         let value = this.select.value;
 
         if (value == '') {
