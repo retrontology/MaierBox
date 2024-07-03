@@ -136,12 +136,21 @@ button:disabled  {
 }
 
 .webimage_details {
-    column-count: 2;
+    display: flex;
     margin: 10px;
+    justify-content: space-between;
 }
 
 .webimage_classifiers {
-    text-align: right;
+    display: block;
+    max-width: 25%;
+}
+
+.webimage_tags {
+    display: flex;
+    align-content: flex-start;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
 }
 
 .album_title {

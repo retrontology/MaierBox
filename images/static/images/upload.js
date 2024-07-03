@@ -423,7 +423,7 @@ class TagSelect {
         if (tag == '')
             return;
 
-        if (tag in this.tags) {
+        if (this.tags.indexOf(tag) != -1) {
             this.select.value = '';
             return;
         }

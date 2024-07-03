@@ -21,12 +21,12 @@
                 {% endif %}
             </div>
             <div class="webimage_tags">
-                {% if image.tags.exist %}
-                <span>
+                {% if image.tags.exists %}
+                <span class="webimage_tags_label">Tags:</span>
                 {% for tag in image.tags.all %}
-                    <a href="{% url 'tags:view' tag %}">{{ tag }}</a>
+                    <a class="webimage_tags_tag" href="{% url 'tags:view_images' tag.tag %}">{{ tag }}</a>
                 {% endfor %}
-                </span>
+                
                 {% endif %}
             </div>
         </div>
