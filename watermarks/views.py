@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseNotAllowed
 from maierbox.util import JsonErrorResponse
 from .models import *
-from .util import findFonts
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def add(request):
     
     if request.method != "POST":
@@ -32,6 +33,7 @@ def add(request):
         }
     )
 
+@login_required
 def create(request):
     if not Font.objects.first():
         Font.populateFonts()
@@ -40,6 +42,7 @@ def create(request):
     }
     return render(request, "watermarks/create.html", context)
 
+@login_required
 def list(request):
     if request.method != 'GET':
         return HttpResponseNotAllowed('GET')

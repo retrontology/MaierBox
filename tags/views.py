@@ -5,83 +5,11 @@ from .models import Tag
 from .util import validateTag
 from django.shortcuts import render, get_object_or_404
 from images.models import WebImage
-
+from django.contrib.auth.decorators import login_required
 
 MAX_TAGS = 100
 
-def add(request):
-
-    if request.method != "POST":
-        return HttpResponseNotAllowed(['POST'])
-
-    if 'tags' not in request.POST:
-        return JsonErrorResponse(
-            'The tags field must be included in the request'
-        )
-    
-    tags = [x.lower() for x in request.POST['tags']]
-
-    failed = []
-    for tag in tags:
-        if not validateTag(tag):
-            failed.append(tag)
-    if len(failed) > 0:
-        return JsonErrorResponse(
-            f'The following tags failed validation: {", ".join(failed)}'
-        )
-
-    exists = []
-    for tag in tags:
-        if Tag.objects.filter(tag=tag).exists():
-            exists.append(tag)
-    if len(exists) > 0:
-        return JsonErrorResponse(
-            f'The following tags already exist: {", ".join(failed)}'
-        )
-
-    for tag in tags:
-        Tag(
-            created_by=request.user,
-            tag=tag,
-        ).save()
-
-    return JsonResponse(
-        status=200,
-        data={
-            'response': f'The following tags have been added successfully: {", ".join(tags)}'
-        }
-    )
-
-
-def remove(request, tag):
-
-    if request.method != "DELETE":
-        return HttpResponseNotAllowed(['DELETE'])
-    
-    tag = tag.lower()
-
-
-    if not validateTag(tag):
-        return JsonErrorResponse(
-            f'The tag {tag} failed validation'
-        )
-        
-
-    tag_obj = Tag.objects.filter(tag=tag).first()
-    if not tag_obj:
-        return JsonErrorResponse(
-            f'The tag {tag} does not exist'
-        )
-
-    tag_obj.delete()
-    
-    return JsonResponse(
-        status=200,
-        data={
-            'response': f'The tag "{tag}" has been removed successfully'
-        }
-    )
-    
+@login_required
 def index(request):
 
     if request.method != "GET":

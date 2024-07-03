@@ -56,5 +56,6 @@ def upload(request):
         }
     )
 
+@login_required
 def add(request):
     return render(request, 'images/add.html')

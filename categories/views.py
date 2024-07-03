@@ -2,8 +2,9 @@ from django.http import JsonResponse, HttpResponseNotAllowed
 from maierbox.util import JsonErrorResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Category
+from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def list_categories(request):
     if request.method != 'GET':
         return HttpResponseNotAllowed('GET')
@@ -12,6 +13,7 @@ def list_categories(request):
     }
     return JsonResponse(response)
 
+@login_required
 def add_category(request):
     if request.method != 'POST':
         return HttpResponseNotAllowed('POST')
