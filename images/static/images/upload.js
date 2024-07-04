@@ -58,7 +58,6 @@ class InputSelect {
             this.label_text = this.prefix.charAt(0).toUpperCase() + this.prefix.slice(1);
         else
             this.label_text = '';
-        
 
         // Build select container
         this.container = document.createElement('div');
@@ -196,9 +195,9 @@ class InputSelect {
     // Clear items, option list, and dataset
     clear() {
         this.items = [];
-        let option_count = this.select_list.length;
+        let option_count = this.select_list.options.length;
         for (let i = 0; i < option_count; i++)
-            this.select_list[0].remove();
+            this.select_list.options[0].remove();
     }
 
 }
@@ -331,7 +330,6 @@ class TagSelect {
         this.container.classList.add('sidebar_select');
         this.container.classList.add('tag_select');
         this.parent.sidebar.appendChild(this.container);
-
 
         // Build tag select input container
         this.select_container = document.createElement('div');
