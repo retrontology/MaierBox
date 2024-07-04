@@ -1,22 +1,22 @@
-from django.http import JsonResponse, HttpResponseNotAllowed
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpRequest
 from maierbox.util import JsonErrorResponse
 from django.core.paginator import Paginator
 from .models import Tag
 from .util import validateTag
 from django.shortcuts import render, get_object_or_404
-from images.models import WebImage
 from django.contrib.auth.decorators import login_required
 
-MAX_TAGS = 100
+MAX_TAGS = 10
 
 @login_required
-def index(request):
+def list(request: HttpRequest):
 
     if request.method != "GET":
         return HttpResponseNotAllowed(['GET'])
     
-    page = request.GET["page"]
-    if not page:
+    if 'page' in request.GET:
+        page = request.GET['page']
+    else:
         page = 1
     
     paginator = Paginator(
@@ -27,7 +27,7 @@ def index(request):
     page = paginator.page(page)
 
     data = {
-        'tags': page.object_list
+        'items': [x.__str__() for x in page.object_list.all()]
     }
 
     if page.has_next():
@@ -38,7 +38,7 @@ def index(request):
         data=data
     )
 
-def view_images(request, tag:str):
+def view_images(request: HttpRequest, tag: str):
     tag = get_object_or_404(Tag, tag=tag)
     images = tag.webimage_set.all()
     context = {

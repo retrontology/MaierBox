@@ -1,20 +1,44 @@
-from django.http import JsonResponse, HttpResponseNotAllowed
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpRequest
 from maierbox.util import JsonErrorResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Category
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+
+MAX_CATEGORIES=100
 
 @login_required
-def list_categories(request):
-    if request.method != 'GET':
-        return HttpResponseNotAllowed('GET')
-    response = {
-        'categories': [x.category for x in Category.objects.all()]
+def list(request: HttpRequest):
+
+    if request.method != "GET":
+        return HttpResponseNotAllowed(['GET'])
+    
+    if 'page' in request.GET:
+        page = request.GET['page']
+    else:
+        page = 1
+    
+    paginator = Paginator(
+        Category.objects.order_by("category"),
+        per_page=MAX_CATEGORIES,
+    )
+
+    page = paginator.page(page)
+
+    data = {
+        'items': [x.__str__() for x in page.object_list.all()]
     }
-    return JsonResponse(response)
+
+    if page.has_next():
+        data['next'] = page.next_page_number()
+
+    return JsonResponse(
+        status=200,
+        data=data
+    )
 
 @login_required
-def add_category(request):
+def add_category(request: HttpRequest):
     if request.method != 'POST':
         return HttpResponseNotAllowed('POST')
 
@@ -34,7 +58,7 @@ def add_category(request):
     }
     return JsonResponse(response)
 
-def image_index(request):
+def image_index(request: HttpRequest):
     categories = []
     for category in Category.objects.all():
         if category.webimage_set.count() > 0:
@@ -48,7 +72,7 @@ def image_index(request):
     }
     return render(request, 'categories/images_index.html', context)
 
-def view_images(request, category:str):
+def view_images(request: HttpRequest, category:str):
     category = get_object_or_404(Category, category=category)
     images = category.webimage_set.all()
     context = {

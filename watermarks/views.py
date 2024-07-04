@@ -1,12 +1,49 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponseNotAllowed
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpRequest
+from django.core.paginator import Paginator
 from maierbox.util import JsonErrorResponse
-from .models import *
+from .models import Watermark, Font, WATERMARK_FIELDS
 from django.contrib.auth.decorators import login_required
 
+MAX_WATERMARKS=100
 
 @login_required
-def add(request):
+def list(request: HttpRequest):
+
+    if request.method != "GET":
+        return HttpResponseNotAllowed(['GET'])
+    
+    if 'page' in request.GET:
+        page = request.GET['page']
+    else:
+        page = 1
+    
+    paginator = Paginator(
+        Watermark.objects.order_by("id"),
+        per_page=MAX_WATERMARKS,
+    )
+
+    page = paginator.page(page)
+
+    data = {
+        'items': {}
+    }
+
+    for watermark in page.object_list.all():
+        data['items'][watermark.id] = {
+            'text': watermark.text,
+        }
+
+    if page.has_next():
+        data['next'] = page.next_page_number()
+
+    return JsonResponse(
+        status=200,
+        data=data
+    )
+
+@login_required
+def add(request: HttpRequest):
     
     if request.method != "POST":
         return HttpResponseNotAllowed(['POST'])
@@ -34,23 +71,10 @@ def add(request):
     )
 
 @login_required
-def create(request):
+def create(request: HttpRequest):
     if not Font.objects.first():
         Font.populateFonts()
     context = {
         'fonts': Font.objects.all()
     }
     return render(request, "watermarks/create.html", context)
-
-@login_required
-def list(request):
-    if request.method != 'GET':
-        return HttpResponseNotAllowed('GET')
-    response = {
-        'watermarks': {}
-    }
-    for watermark in Watermark.objects.all():
-        response['watermarks'][watermark.id] = {
-            'text': watermark.text,
-        }
-    return JsonResponse(response)

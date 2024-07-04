@@ -37,10 +37,6 @@ function revokeObjectURL(url) {
     return (window.URL) ? window.URL.revokeObjectURL(url) : window.webkitURL.revokeObjectURL(url);
 }
 
-function validateTag(tag) {
-    return true;
-}
-
 function validateCategory(tag) {
     return true;
 }
@@ -107,6 +103,7 @@ class InputSelect {
 
         // Build select add button
         if (add != false && add != null) {
+            this.add_endpoint = add;
             this.add_button = document.createElement('button');
             this.add_button.classList.add('sidebar_select_add_button');
             this.add_button.classList.add('sidebar_select_button');
@@ -153,6 +150,18 @@ class InputSelect {
 
     }
 
+    // Callback for when a key is pressed in the text field
+    keyPressed(event) {
+        if (event.key != "Enter")
+            return;
+
+        event.preventDefault();
+        this.enterPressed(event);
+    }
+
+    // Empty callback for when the Enter key is pressed in the text box
+    enterPressed(event) {}
+
     // Empty callback for when the select is changed. To be overwritten by subclasses
     onChanged(event) {}
 
@@ -168,13 +177,45 @@ class InputSelect {
     }
 
     // Empty refresh callback to be overwritten by subclasses
-    refreshCallback(response) {}
+    refreshCallback(response) {
+        this.clear();
+        this.items = JSON.parse(response)['items'];
+        for (let i = 0; i < this.items.length; i++) {
+            let option = document.createElement('option');
+            option.textContent = this.items[i];
+            this.select_list.appendChild(option);
+            if ('category' in this.image.dataset && this.image.dataset['category'] == this.items[i]) {
+                this.select.value = this.items[i];
+                this.showCorrect();
+            }
+        }
+    }
 
-    // Empty add item function meant to be overwritten
-    add(event) {}
+    // Add function for adding item via API
+    add(event) {
+        let value = this.select.value.toLowerCase();
+
+        if (value == '' || !this.validateSelect())
+            return;
+
+        const formData = new FormData();
+        formData.append("csrfmiddlewaretoken", getCSRF());
+        formData.append(this.prefix, value);
+        const request = new XMLHttpRequest();
+        request.open("POST", this.add_endpoint, true);
+        request.onreadystatechange = () => {
+            if (request.readyState === 4 && request.status === 200)
+                this.addCallback(request.response);
+        };
+        request.send(formData);
+    }
 
     // Empty add callback to be overwritten by subclasses
-    addCallback(response) {}
+    addCallback(response) {
+        let category = JSON.parse(response)[this.prefix];
+        this.image.dataset[this.prefix] = category;
+        this.refresh();
+    }
 
     // Validate the text input (whether it equals an option)
     validateSelect() {
@@ -256,21 +297,6 @@ class CategorySelect extends InputSelect {
         this.select.classList.add('category_select_select_incorrect');
     }
 
-    // Refresh callback to handle response and populate categories
-    refreshCallback(response) {
-        this.clear();
-        this.items = JSON.parse(response)['categories'];
-        for (let i = 0; i < this.items.length; i++) {
-            let option = document.createElement('option');
-            option.textContent = this.items[i];
-            this.select_list.appendChild(option);
-            if ('category' in this.image.dataset && this.image.dataset['category'] == this.items[i]) {
-                this.select.value = this.items[i];
-                this.showCorrect();
-            }
-        }
-    }
-
     // Callback for when the category select is changed
     onChanged(event) {
         let value = this.select.value.toLowerCase();
@@ -290,30 +316,9 @@ class CategorySelect extends InputSelect {
         this.image.dataset['category'] = value;
     }
 
-    // Add category listed in text input
-    add(event) {
-        let category = this.select.value.toLowerCase();
-
-        if (category == '' || this.validateSelect())
-            return;
-
-        const formData = new FormData();
-        formData.append("csrfmiddlewaretoken", getCSRF());
-        formData.append("category", category);
-        const request = new XMLHttpRequest();
-        request.open("POST", "/categories/add", true);
-        request.onreadystatechange = () => {
-            if (request.readyState === 4 && request.status === 200)
-                this.addCallback(request.response);
-        };
-        request.send(formData);
-    }
-
     // Add category callback
     addCallback(response) {
-        let category = JSON.parse(response)['category'];
-        this.image.dataset['category'] = category;
-        this.refresh();
+        
     }
 }
 
@@ -410,7 +415,7 @@ class TagSelect {
             return;
         }
 
-        if (!validateTag(tag))
+        if (!this.validateTag(tag))
             return;
             
         this.tags.push(tag);
@@ -466,6 +471,10 @@ class TagSelect {
     // Clear all the tags
     clearTags(event) {
 
+    }
+
+    static validateTag(tag) {
+        return true;
     }
 }
 
