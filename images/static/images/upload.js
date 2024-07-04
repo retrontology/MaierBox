@@ -84,11 +84,21 @@ class InputSelect {
         this.container.appendChild(this.select_container);
 
         // Build select input
-        if (this.type == 'select')
+        if (this.type == 'select') {
             this.select = document.createElement('select');
+            this.select_list = this.select;
+        }
         else if (this.type == 'text') {
             this.select = document.createElement('input');
             this.select.type = 'text';
+            this.select_list = document.createElement('datalist');
+            this.select_list.classList.add('sidebar_select_datalist');
+            if (this.prefix != '') {
+                this.select_list.classList.add(`${this.prefix}_select_datalist`);
+            }
+            this.select_list.id = `${this.prefix}_tag_select_datalist`;
+            this.select.setAttribute('list', this.select_list.id);
+            this.select_container.appendChild(this.select_list);
         }
         this.select.classList.add('sidebar_select_select');
         if (this.prefix != '')
@@ -170,9 +180,9 @@ class InputSelect {
     // Clear items, option list, and dataset
     clear() {
         this.items = [];
-        let option_count = this.select.options.length;
+        let option_count = this.select_list.length;
         for (let i = 0; i < option_count; i++)
-            this.select.options[0].remove();
+            this.select.select_list[0].remove();
     }
 
 }
@@ -215,7 +225,7 @@ class WatermarkSelect extends InputSelect {
     }
 }
 
-class CategorySelect {
+class CategorySelect extends InputSelect {
     constructor(sidebar) {
         super(sidebar, sidebar.image, 'select', 'category', '/categories/list', '/categories/add');
         this.refresh();
@@ -231,27 +241,16 @@ class CategorySelect {
         this.select.classList.add('category_select_select_incorrect');
     }
 
-    // Refresh list of existing categories
-    refresh(event) {
-        const request = new XMLHttpRequest();
-        request.open("GET", "/categories/list", true);
-        request.onreadystatechange = () => {
-            if (request.readyState === 4 && request.status === 200)
-                this.refreshCallback(request.response);
-        };
-        request.send();
-    }
-
     // Refresh callback to handle response and populate categories
     refreshCallback(response) {
-        this.clearCategories();
-        this.categories = JSON.parse(response)['categories'];
-        for (let i = 0; i < this.categories.length; i++) {
+        this.clear();
+        this.items = JSON.parse(response)['categories'];
+        for (let i = 0; i < this.items.length; i++) {
             let option = document.createElement('option');
-            option.textContent = this.categories[i];
+            option.textContent = this.items[i];
             this.select_list.appendChild(option);
-            if ('category' in this.image.dataset && this.image.dataset['category'] == this.categories[i]) {
-                this.select.value = this.categories[i];
+            if ('category' in this.image.dataset && this.image.dataset['category'] == this.items[i]) {
+                this.select.value = this.items[i];
                 this.showCorrect();
             }
         }
@@ -277,7 +276,7 @@ class CategorySelect {
     }
 
     // Add category listed in text input
-    addCategory(event) {
+    add(event) {
         let category = this.select.value.toLowerCase();
 
         if (category == '' || this.validateSelect())
