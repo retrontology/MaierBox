@@ -348,7 +348,7 @@ button:disabled  {
     width: 120px
 }
 
-.sidebar_select_select_incorrect {
+.category_select_select_incorrect {
     background-color: var(--preset--color--red);
 }
 

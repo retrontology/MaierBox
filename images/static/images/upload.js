@@ -106,7 +106,7 @@ class InputSelect {
         this.select.addEventListener('change', (event) => this.onChanged(event));
         this.select_container.appendChild(this.select);
 
-        // Build category select add button
+        // Build select add button
         if (add != false && add != null) {
             this.add_button = document.createElement('button');
             this.add_button.classList.add('sidebar_select_add_button');
@@ -129,7 +129,7 @@ class InputSelect {
             this.add_button.appendChild(this.add_button_text);
         }
 
-        // Build watermark select refresh button
+        // Build select refresh button
         if (refresh != false && refresh != null) {
             this.refresh_endpoint = refresh;
             this.refresh_button = document.createElement('button');
@@ -177,12 +177,28 @@ class InputSelect {
     // Empty add callback to be overwritten by subclasses
     addCallback(response) {}
 
+    // Validate the text input (whether it equals an option)
+    validateSelect() {
+        let value = this.select.value.toLowerCase();
+        if (!validateCategory(value))
+            return false
+        let match = false;
+        for (let i = 0; i < this.select_list.options.length; i++) {
+            let option = this.select_list.options[i].value;
+            if (value == option) {
+                match = true;
+                break;
+            }  
+        }
+        return match;
+    }
+
     // Clear items, option list, and dataset
     clear() {
         this.items = [];
         let option_count = this.select_list.length;
         for (let i = 0; i < option_count; i++)
-            this.select.select_list[0].remove();
+            this.select_list[0].remove();
     }
 
 }
@@ -227,7 +243,7 @@ class WatermarkSelect extends InputSelect {
 
 class CategorySelect extends InputSelect {
     constructor(sidebar) {
-        super(sidebar, sidebar.image, 'select', 'category', '/categories/list', '/categories/add');
+        super(sidebar, sidebar.image, 'text', 'category', '/categories/list', '/categories/add');
         this.refresh();
     }
 
