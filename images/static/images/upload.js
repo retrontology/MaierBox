@@ -67,6 +67,13 @@ class InputSelect {
             this.container.classList.add(`${this.prefix}_select`);
         this.parent.sidebar.appendChild(this.container);
 
+        // Build select input container
+        this.select_container = document.createElement('div');
+        this.select_container.classList.add('sidebar_select_select_container');
+        if (this.prefix != '')
+            this.select_container.classList.add(`${this.prefix}_select_select_container`);
+        this.container.appendChild(this.select_container);
+
         // Build select label
         this.label = document.createElement('div');
         this.label.classList.add('sidebar_select_label');
@@ -74,14 +81,7 @@ class InputSelect {
             this.label.classList.add(`${this.prefix}_select_label`);
         if (this.label_text != '')
             this.label.textContent = `${this.label_text}:`;
-        this.container.appendChild(this.label);
-
-        // Build select input container
-        this.select_container = document.createElement('div');
-        this.select_container.classList.add('sidebar_select_select_container');
-        if (this.prefix != '')
-            this.select_container.classList.add(`${this.prefix}_select_select_container`);
-        this.container.appendChild(this.select_container);
+        this.select_container.appendChild(this.label);
 
         // Build select input
         if (this.type == 'select') {
