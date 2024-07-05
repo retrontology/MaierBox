@@ -6,7 +6,7 @@ function uploadError(request){
     console.log(request.responseText);
 }
 
-function uploadImage(image, watermark=null, category=null, tags=null) {
+function uploadWebImage(image, watermark=null, category=null, tags=null) {
     const request = new XMLHttpRequest();
     const formData = new FormData();
     formData.append("csrfmiddlewaretoken", getCSRF());
@@ -434,6 +434,12 @@ class TagSelect extends InputSelect {
     }
 }
 
+class pendingImage {
+    constructor(parent, file) {
+        
+    }
+}
+
 class DropZone {
     constructor(image_upload_form) {
 
@@ -482,10 +488,23 @@ class DropZone {
         // Create the submit button
         this.submit_button = document.createElement('button');
         this.submit_button.classList.add('drop_zone_submit');
-        this.submit_button.addEventListener('click', (event) => this.uploadImages(event));
+        this.submit_button.addEventListener('click', (event) => this.submitClicked(event));
         this.submit_button.textContent = 'Submit';
         this.submit_button.disabled = true;
         this.button_container.appendChild(this.submit_button);
+    };
+
+    submitClicked(event) {
+        this.uploadImages(event)
+    }
+
+    uploadImage(index) {
+        let image = this.images[i];
+        let file = this.files[i];
+        let category = this.images[i].dataset['category'];
+        let watermark = this.images[i].dataset['watermark'];
+        let tags = this.images[i].dataset['tags'];
+        uploadWebImage(this.files[i], watermark, category, tags);
     }
 
     // Upload all images in the form
@@ -494,7 +513,7 @@ class DropZone {
             let category = this.images[i].dataset['category'];
             let watermark = this.images[i].dataset['watermark'];
             let tags = this.images[i].dataset['tags'];
-            uploadImage(this.files[i], watermark, category, tags);
+            this.uploadImage(this.files[i], watermark, category, tags);
         }
         this.resetForm();
     }
@@ -701,5 +720,16 @@ class ImageUploadForm {
 
         // Init sidebar
         this.sidebar = null;
+    }
+}
+
+class PostUploadForm extends ImageUploadForm {
+    constructor(root) {
+        super(root);
+        this.drop_zone.submitClicked = this.submitClicked;
+    }
+
+    submitClicked(event) {
+
     }
 }
