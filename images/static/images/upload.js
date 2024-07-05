@@ -434,9 +434,70 @@ class TagSelect extends InputSelect {
     }
 }
 
-class pendingImage {
-    constructor(parent, file) {
-        
+class PendingImage {
+    constructor(parent, image, index) {
+        this.parent = parent;
+        this.image = image;
+        this.index = index;
+        this.selected = false;
+        this.url = createObjectURL(this.image);
+
+        this.container = document.createElement('div');
+        this.container.classList.add('pending_image_container');
+        this.container.addEventListener('click', (event) => this.imageClicked(event));
+        this.container.addEventListener('dragstart', (event) => this.imageDragStart(event));
+        this.img = document.createElement('img');
+        this.img.classList.add('pending_image_image');
+        this.img.loading = 'lazy';
+        this.img.src = this.url;
+        this.container.appendChild(this.img);
+        this.remove_button = document.createElement('div');
+        this.remove_button.classList.add('pending_image_delete');
+        this.remove_button.addEventListener('click', (event) => this.removeClicked(event));
+        this.remove_button.textContent = '❌';
+        this.container.appendChild(this.remove_button);
+        this.parent.appendChild(this.container);
+    }
+
+    select(event) {
+        if (!this.selected) {
+            this.container.classList.add('pending_image_selected');
+            this.selected = true;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    deselect(event) {
+        if (this.selected) {
+            this.container.classList.remove('pending_image_selected');
+            this.selected = false;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    imageClicked(event) {}
+
+    imageDragStart(event) {
+        event.preventDefault();
+    }
+
+    removeClicked(event) {
+        this.remove();
+    }
+
+    remove() {
+        this.container.remove();
+        delete this.url;
+        delete this.image;
+        delete this.container;
+    }
+
+    upload(event) {
+
     }
 }
 
@@ -542,49 +603,17 @@ class DropZone {
         this.images_container = document.createElement('div');
         this.images_container.classList.add('drop_zone_images_container');
         for (let i = 0; i < images.length; i++) {
-            let image = images[i];
-            this.files.push(image);
-            let image_container = document.createElement('div');
-            image_container.classList.add('drop_zone_image_container');
-            image_container.dataset['index'] = i;
-            image_container.addEventListener('click', (event) => this.imageClicked(event));
-            image_container.addEventListener('dragstart', (event) => event.preventDefault());
-            let img = document.createElement('img');
-            img.classList.add('drop_zone_image');
-            img.loading = 'lazy';
-            image_container.appendChild(img);
-            img.src = createObjectURL(image);
-            let delete_button = document.createElement('div');
-            delete_button.classList.add('drop_zone_image_delete');
-            delete_button.addEventListener('click', (event) => this.removeImage(event));
-            delete_button.textContent = '❌';
-            image_container.appendChild(delete_button);
-            this.images_container.appendChild(image_container);
-            this.images.push(image_container);
+            let image = new PendingImage(this.images_container, images[i], i);
+            image.index = i;
+            this.images.push(image);
         }
         this.drop_zone.appendChild(this.images_container);
         this.submit_button.disabled = false;
     }
 
     // Remove image from form at index
-    removeImage(event) {
-        let index = event.target.parentElement.dataset['index']
-        if (this.images[index].classList.contains('drop_zone_image_selected')) {
-            this.images[index].classList.remove('drop_zone_image_selected');
-            this.selected = null;
-            if (this.parent.sidebar != null)
-                this.parent.sidebar.remove();
-        }
-        this.images[index].remove();
-        this.images.splice(index,1);
-        this.files.splice(index,1);
-        for (let i = 0; i < this.images.length; i++) {
-            this.images[i].dataset['index'] = i;
-            if (this.images[i].classList.contains('drop_zone_image_selected'))
-                this.selected = i;
-        }
-        if (this.images.length == 0)
-            this.resetForm();
+    removeImage(index) {
+        
     }
     
     // Event callback for clicking the "Select Images" button

@@ -262,7 +262,7 @@ button:disabled  {
     
 }
 
-.drop_zone_image_container {
+.pending_image_container {
     aspect-ratio: 1;
     display: flex;
     background-color: var(--preset--color--black);
@@ -276,7 +276,7 @@ button:disabled  {
     flex-direction: row-reverse;
 }
 
-.drop_zone_image {
+.pending_image_image {
     max-width: 100%;
     max-height: 100%;
     display: flex;
@@ -302,7 +302,7 @@ button:disabled  {
     outline-style: solid;
 }
 
-.drop_zone_image_delete {
+.pending_image_delete {
     width: 14px;
     height: 14px;
     z-index: 1;
