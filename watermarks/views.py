@@ -26,13 +26,13 @@ def list(request: HttpRequest):
     page = paginator.page(page)
 
     data = {
-        'items': {}
+        'items': [
+            {
+                'id': watermark.id,
+                'text': watermark.text,
+            } for watermark in page.object_list.all()
+        ]
     }
-
-    for watermark in page.object_list.all():
-        data['items'][watermark.id] = {
-            'text': watermark.text,
-        }
 
     if page.has_next():
         data['next'] = page.next_page_number()

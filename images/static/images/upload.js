@@ -58,24 +58,20 @@ class InputSelect {
         // Build select container
         this.container = document.createElement('div');
         this.container.classList.add('sidebar_select');
-        if (this.prefix != '')
-            this.container.classList.add(`${this.prefix}_select`);
+        this.container.classList.add(`${this.prefix}_select`);
         this.parent.sidebar.appendChild(this.container);
 
         // Build select input container
         this.select_container = document.createElement('div');
         this.select_container.classList.add('sidebar_select_select_container');
-        if (this.prefix != '')
-            this.select_container.classList.add(`${this.prefix}_select_select_container`);
+        this.select_container.classList.add(`${this.prefix}_select_select_container`);
         this.container.appendChild(this.select_container);
 
         // Build select label
         this.label = document.createElement('div');
         this.label.classList.add('sidebar_select_label');
-        if (this.prefix != '')
-            this.label.classList.add(`${this.prefix}_select_label`);
-        if (this.label_text != '')
-            this.label.textContent = `${this.label_text}:`;
+        this.label.classList.add(`${this.prefix}_select_label`);
+        this.label.textContent = `${this.label_text}:`;
         this.select_container.appendChild(this.label);
 
         // Build select input
@@ -88,16 +84,13 @@ class InputSelect {
             this.select.type = 'text';
             this.select_list = document.createElement('datalist');
             this.select_list.classList.add('sidebar_select_datalist');
-            if (this.prefix != '') {
-                this.select_list.classList.add(`${this.prefix}_select_datalist`);
-            }
+            this.select_list.classList.add(`${this.prefix}_select_datalist`);
             this.select_list.id = `${this.prefix}_tag_select_datalist`;
             this.select.setAttribute('list', this.select_list.id);
             this.select_container.appendChild(this.select_list);
         }
         this.select.classList.add('sidebar_select_select');
-        if (this.prefix != '')
-            this.select.classList.add(`${this.prefix}_select_select`);
+        this.select.classList.add(`${this.prefix}_select_select`);
         this.select.addEventListener('change', (event) => this.onChanged(event));
         this.select_container.appendChild(this.select);
 
@@ -107,10 +100,7 @@ class InputSelect {
             this.add_button = document.createElement('button');
             this.add_button.classList.add('sidebar_select_add_button');
             this.add_button.classList.add('sidebar_select_button');
-            if (this.prefix != '') {
-                this.add_button.classList.add(`${this.prefix}_select_button`);
-                this.add_button.classList.add(`${this.prefix}_select_add_button`);
-            }
+            this.add_button.classList.add(`${this.prefix}_select_button`);
             this.add_button.addEventListener('click', (event) => this.add(event));
             this.select_container.appendChild(this.add_button);
             this.add_button_text = document.createElement('span');
@@ -150,6 +140,16 @@ class InputSelect {
 
     }
 
+    // Save data to dataset of image
+    loadData() {
+        this.select.value = this.image.dataset[this.prefix];
+    }
+
+    // Load data from dataset of image
+    saveData() {
+        this.image.dataset[this.prefix] = this.select.value;
+    }
+
     // Callback for when a key is pressed in the text field
     keyPressed(event) {
         if (event.key != "Enter")
@@ -167,29 +167,40 @@ class InputSelect {
 
     // Refresh list of existing items
     refresh(event) {
+        this.clear();
+        this.getItems(1);
+    }
+
+    // Function for adding option to select list from returned item
+    addOption(item) {
+        let option = document.createElement('option');
+        option.textContent = item;
+        this.select_list.appendChild(option);
+    }
+
+    // Get page of items
+    getItems(page) {
         const request = new XMLHttpRequest();
-        request.open("GET", this.refresh_endpoint, true);
+        request.open('GET', this.refresh_endpoint, true);
         request.onreadystatechange = () => {
-            if (request.readyState === 4 && request.status === 200)
-                this.refreshCallback(request.response);
+            if (request.readyState === 4 && request.status === 200) {
+                let items = JSON.parse(request.response)['items'];
+                this.items.push(...items);
+                for (let i = 0; i < items.length; i++)
+                    this.addOption(items[i]);
+                if ('next' in request.response)
+                    this.getItems(request.response['next']);
+                else {
+                    this.loadData();
+                    this.refreshCallback();
+                }
+            }
         };
         request.send();
     }
 
     // Empty refresh callback to be overwritten by subclasses
-    refreshCallback(response) {
-        this.clear();
-        this.items = JSON.parse(response)['items'];
-        for (let i = 0; i < this.items.length; i++) {
-            let option = document.createElement('option');
-            option.textContent = this.items[i];
-            this.select_list.appendChild(option);
-            if ('category' in this.image.dataset && this.image.dataset['category'] == this.items[i]) {
-                this.select.value = this.items[i];
-                this.showCorrect();
-            }
-        }
-    }
+    refreshCallback(response) {}
 
     // Add function for adding item via API
     add(event) {
@@ -212,8 +223,8 @@ class InputSelect {
 
     // Empty add callback to be overwritten by subclasses
     addCallback(response) {
-        let category = JSON.parse(response)[this.prefix];
-        this.image.dataset[this.prefix] = category;
+        let item = JSON.parse(response)['item'];
+        this.image.dataset[this.prefix] = item;
         this.refresh();
     }
 
@@ -259,13 +270,19 @@ class WatermarkSelect extends InputSelect {
         this.select.appendChild(none_option);
         for (let index in this.items) {
             let option = document.createElement('option');
-            option.textContent = `(${index}) ${this.items[index]['text']}`;
+            option.textContent = 
             option.value = index;
             this.select.appendChild(option);
             if ('watermark' in this.image.dataset && this.image.dataset['watermark'] == index) {
                 this.select.value = index;
             }
         }
+    }
+
+    addOption(item) {
+        let option = document.createElement('option');
+        option.textContent = `(${index}) ${this.items[index]['text']}`;
+        this.select_list.appendChild(option);
     }
 
     // Callback for when the watermark select is changed
