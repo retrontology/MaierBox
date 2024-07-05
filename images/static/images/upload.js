@@ -83,6 +83,7 @@ class InputSelect {
             this.select_list.classList.add(`${this.prefix}_select_datalist`);
             this.select_list.id = `${this.prefix}_tag_select_datalist`;
             this.select.setAttribute('list', this.select_list.id);
+            this.select.addEventListener('keypress', (event) => this.keyPressed(event))
             this.select_container.appendChild(this.select_list);
         }
         this.select.classList.add('sidebar_select_select');
@@ -346,7 +347,7 @@ class TagSelect extends InputSelect {
 
     // Callback for when a key is pressed in the text field
     enterPressed(event) {
-        this.addTag(this.select.value);
+        this.add(event);
     }
 
     // Callback for when the add button is pressed
@@ -404,8 +405,12 @@ class TagSelect extends InputSelect {
 
     // Serialize tags into csv for the image dataset
     saveData(event) {
-        let tags = this.tags.join(',');
-        this.image.dataset['tags'] = tags;
+        if (this.tags.length > 0) {
+            let tags = this.tags.join(',');
+            this.image.dataset['tags'] = tags;
+        }
+        else
+            delete this.image.dataset['tags'];
     }
 
     // Deserialize tags from csv in image dataset
