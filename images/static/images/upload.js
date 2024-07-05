@@ -136,13 +136,18 @@ class InputSelect {
             }
             this.refresh_button_text.textContent = '↻';
             this.refresh_button.appendChild(this.refresh_button_text);
+            this.refresh();
         }
 
     }
 
     // Save data to dataset of image
     loadData() {
-        this.select.value = this.image.dataset[this.prefix];
+        let data = this.image.dataset[this.prefix];
+        if (data == null)
+            this.select.value = '';
+        else
+            this.select.value = data;
     }
 
     // Load data from dataset of image
@@ -168,6 +173,9 @@ class InputSelect {
     // Refresh list of existing items
     refresh(event) {
         this.clear();
+        let option = document.createElement('option');
+        option.textContent = '';
+        this.select_list.appendChild(option);
         this.getItems(1);
     }
 
@@ -206,7 +214,7 @@ class InputSelect {
     add(event) {
         let value = this.select.value.toLowerCase();
 
-        if (value == '' || !this.validateSelect())
+        if (value == '' || this.validateSelect())
             return;
 
         const formData = new FormData();
@@ -215,24 +223,22 @@ class InputSelect {
         const request = new XMLHttpRequest();
         request.open("POST", this.add_endpoint, true);
         request.onreadystatechange = () => {
-            if (request.readyState === 4 && request.status === 200)
+            if (request.readyState === 4 && request.status === 200) {
+                this.saveData();
+                this.refresh();
                 this.addCallback(request.response);
+            }
+                
         };
         request.send(formData);
     }
 
     // Empty add callback to be overwritten by subclasses
-    addCallback(response) {
-        let item = JSON.parse(response)['item'];
-        this.image.dataset[this.prefix] = item;
-        this.refresh();
-    }
+    addCallback(response) {}
 
     // Validate the text input (whether it equals an option)
     validateSelect() {
         let value = this.select.value.toLowerCase();
-        if (!validateCategory(value))
-            return false
         let match = false;
         for (let i = 0; i < this.select_list.options.length; i++) {
             let option = this.select_list.options[i].value;
@@ -256,9 +262,7 @@ class InputSelect {
 
 class WatermarkSelect extends InputSelect {
     constructor(sidebar) {
-        super(sidebar, sidebar.image, 'select', 'watermark', '/watermarks/list', false);
-        this.refresh();
-    }
+        super(sidebar, sidebar.image, 'select', 'watermark', '/watermarks/list', false);    }
 
     addOption(item) {
         let option = document.createElement('option');
@@ -282,7 +286,11 @@ class WatermarkSelect extends InputSelect {
 class CategorySelect extends InputSelect {
     constructor(sidebar) {
         super(sidebar, sidebar.image, 'text', 'category', '/categories/list', '/categories/add');
-        this.refresh();
+        
+    }
+
+    addCallback(response) {
+        this.showCorrect();
     }
 
     // Red out the select background to show non-valid categories
@@ -313,7 +321,7 @@ class CategorySelect extends InputSelect {
         this.showCorrect();
         this.image.dataset['category'] = value;
     }
-    
+
 }
 
 class TagSelect {
