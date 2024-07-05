@@ -42,7 +42,7 @@ function validateCategory(tag) {
 }
 
 class InputSelect {
-    constructor(parent, image, type='text', label='', refresh=false, add=false) {
+    constructor(parent, image, type='text', label='', add=false, refresh=false) {
 
         // Init class variables
         this.parent = parent;
@@ -188,8 +188,11 @@ class InputSelect {
 
     // Get page of items
     getItems(page) {
+        let endpoint = this.refresh_endpoint;
+        if (page > 1)
+            endpoint = `${endpoint}?page=${page}`
         const request = new XMLHttpRequest();
-        request.open('GET', this.refresh_endpoint, true);
+        request.open('GET', endpoint, true);
         request.onreadystatechange = () => {
             if (request.readyState === 4 && request.status === 200) {
                 let response = JSON.parse(request.response);
@@ -261,12 +264,13 @@ class InputSelect {
 }
 
 class WatermarkSelect extends InputSelect {
-    constructor(sidebar) {
-        super(sidebar, sidebar.image, 'select', 'watermark', '/watermarks/list', false);    }
+    constructor(parent, image) {
+        super(parent, image, 'select', 'watermark', false, '/watermarks/list');    }
 
     addOption(item) {
         let option = document.createElement('option');
         option.textContent = `(${item['id']}) ${item['text']}`;
+        option.value = item['id'];
         this.select_list.appendChild(option);
     }
 
@@ -284,9 +288,8 @@ class WatermarkSelect extends InputSelect {
 }
 
 class CategorySelect extends InputSelect {
-    constructor(sidebar) {
-        super(sidebar, sidebar.image, 'text', 'category', '/categories/list', '/categories/add');
-        
+    constructor(parent, image) {
+        super(parent, image, 'text', 'category', '/categories/add', '/categories/list');
     }
 
     addCallback(response) {
@@ -324,62 +327,9 @@ class CategorySelect extends InputSelect {
 
 }
 
-class TagSelect {
-    constructor(sidebar) {
-
-        // Init class variables
-        this.parent = sidebar;
-        this.image = this.parent.image;
-        this.tags = [];
-        
-        // Build tag select container
-        this.container = document.createElement('div');
-        this.container.classList.add('sidebar_select');
-        this.container.classList.add('tag_select');
-        this.parent.sidebar.appendChild(this.container);
-
-        // Build tag select input container
-        this.select_container = document.createElement('div');
-        this.select_container.classList.add('sidebar_select_select_container');
-        this.select_container.classList.add('tag_select_select_container');
-        this.container.appendChild(this.select_container);
-
-        // Build tag select label
-        this.label = document.createElement('span');
-        this.label.classList.add('sidebar_select_label');
-        this.label.classList.add('tag_select_label');
-        this.label.textContent = 'Tags:';
-        this.select_container.appendChild(this.label);
-
-        // Build tag select input and datalist
-        this.select_list = document.createElement('datalist');
-        this.select_list.classList.add('sidebar_select_datalist');
-        this.select_list.classList.add('tag_select_datalist');
-        this.select_list.id = 'tag_select_datalist';
-        this.select = document.createElement('input');
-        this.select.type = 'text';
-        this.select.setAttribute('list', this.select_list.id);
-        this.select.classList.add('sidebar_select_select');
-        this.select.classList.add('tag_select_select');
-        this.select.addEventListener('keypress', (event) => this.keyPressed(event));
-        this.select_container.appendChild(this.select);
-        this.select_container.appendChild(this.select_list);
-
-        // Build tag select add button
-        this.add_button = document.createElement('button');
-        this.add_button.classList.add('sidebar_select_add_button');
-        this.add_button.classList.add('tag_select_add_button');
-        this.add_button.classList.add('sidebar_select_button');
-        this.add_button.classList.add('tag_select_button');
-        this.add_button.addEventListener('click', (event) => this.addClicked(event));
-        this.select_container.appendChild(this.add_button);
-        this.add_button_text = document.createElement('span');
-        this.add_button_text.classList.add('tag_select_add_text');
-        this.add_button_text.classList.add('sidebar_select_add_text');
-        this.add_button_text.classList.add('tag_select_button_text');
-        this.add_button_text.classList.add('sidebar_select_button_text');
-        this.add_button_text.textContent = '+';
-        this.add_button.appendChild(this.add_button_text);
+class TagSelect extends InputSelect {
+    constructor(parent, image) {
+        super(parent, image, 'text', 'tag', true, '/tags/list');
 
         // Build tag collection
         this.collection = document.createElement('div');
@@ -387,7 +337,7 @@ class TagSelect {
         this.container.appendChild(this.collection);
 
         // Populate tags
-        this.loadTags();
+        this.loadData();
 
     }
 
@@ -693,9 +643,9 @@ class ImageUploadSidebar {
         this.sidebar.classList.add('drop_zone_sidebar');
         this.container.appendChild(this.sidebar);
 
-        this.watermark_select = new WatermarkSelect(this);
-        this.category_select = new CategorySelect(this);
-        this.tag_select = new TagSelect(this);
+        this.watermark_select = new WatermarkSelect(this, this.image);
+        this.category_select = new CategorySelect(this, this.image);
+        this.tag_select = new TagSelect(this, this.image);
 
         this.set_all_container = document.createElement('div');
         this.set_all_container.classList.add('drop_zone_setall_container');
