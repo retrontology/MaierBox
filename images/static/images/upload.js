@@ -184,12 +184,12 @@ class InputSelect {
         request.open('GET', this.refresh_endpoint, true);
         request.onreadystatechange = () => {
             if (request.readyState === 4 && request.status === 200) {
-                let items = JSON.parse(request.response)['items'];
-                this.items.push(...items);
-                for (let i = 0; i < items.length; i++)
-                    this.addOption(items[i]);
-                if ('next' in request.response)
-                    this.getItems(request.response['next']);
+                let response = JSON.parse(request.response);
+                this.items.push(...response['items']);
+                for (let i = 0; i < response['items'].length; i++)
+                    this.addOption(response['items'][i]);
+                if ('next' in response)
+                    this.getItems(response['next']);
                 else {
                     this.loadData();
                     this.refreshCallback();
@@ -260,28 +260,9 @@ class WatermarkSelect extends InputSelect {
         this.refresh();
     }
 
-    // Refresh callback to handle response and populate watermarks
-    refreshCallback(response) {
-        this.clear();
-        this.items = JSON.parse(response)['watermarks'];
-        let none_option = document.createElement('option');
-        none_option.textContent = 'None';
-        none_option.value = '';
-        this.select.appendChild(none_option);
-        for (let index in this.items) {
-            let option = document.createElement('option');
-            option.textContent = 
-            option.value = index;
-            this.select.appendChild(option);
-            if ('watermark' in this.image.dataset && this.image.dataset['watermark'] == index) {
-                this.select.value = index;
-            }
-        }
-    }
-
     addOption(item) {
         let option = document.createElement('option');
-        option.textContent = `(${index}) ${this.items[index]['text']}`;
+        option.textContent = `(${item['id']}) ${item['text']}`;
         this.select_list.appendChild(option);
     }
 
@@ -332,11 +313,7 @@ class CategorySelect extends InputSelect {
         this.showCorrect();
         this.image.dataset['category'] = value;
     }
-
-    // Add category callback
-    addCallback(response) {
-        
-    }
+    
 }
 
 class TagSelect {
