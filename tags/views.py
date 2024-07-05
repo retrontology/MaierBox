@@ -6,7 +6,7 @@ from .util import validateTag
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
-MAX_TAGS = 10
+MAX_TAGS = 100
 
 @login_required
 def list(request: HttpRequest):

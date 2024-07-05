@@ -37,10 +37,6 @@ function revokeObjectURL(url) {
     return (window.URL) ? window.URL.revokeObjectURL(url) : window.webkitURL.revokeObjectURL(url);
 }
 
-function validateCategory(tag) {
-    return true;
-}
-
 class InputSelect {
     constructor(parent, image, type='text', label='', add=false, refresh=false) {
 
@@ -325,11 +321,18 @@ class CategorySelect extends InputSelect {
         this.image.dataset['category'] = value;
     }
 
+    static validateCategory(category) {
+        return true;
+    }
+
 }
 
 class TagSelect extends InputSelect {
     constructor(parent, image) {
+
+        // Initialize class variables
         super(parent, image, 'text', 'tag', true, '/tags/list');
+        this.tags = [];
 
         // Build tag collection
         this.collection = document.createElement('div');
@@ -342,16 +345,12 @@ class TagSelect extends InputSelect {
     }
 
     // Callback for when a key is pressed in the text field
-    keyPressed(event) {
-        if (event.key != "Enter")
-            return;
-
-        event.preventDefault();
+    enterPressed(event) {
         this.addTag(this.select.value);
     }
 
     // Callback for when the add button is pressed
-    addClicked(event) {
+    add(event) {
         this.addTag(this.select.value);
     }
 
@@ -367,7 +366,7 @@ class TagSelect extends InputSelect {
             return;
         }
 
-        if (!this.validateTag(tag))
+        if (!TagSelect.validateTag(tag))
             return;
             
         this.tags.push(tag);
@@ -384,7 +383,7 @@ class TagSelect extends InputSelect {
         remove_button.textContent = '❌';
         tag_container.appendChild(remove_button);
         this.select.value = '';
-        this.saveTags();
+        this.saveData();
     }
 
     // Remove tag from the image
@@ -400,17 +399,17 @@ class TagSelect extends InputSelect {
                 tag_container.remove();
         }
 
-        this.saveTags();
+        this.saveData();
     }
 
     // Serialize tags into csv for the image dataset
-    saveTags(event) {
+    saveData(event) {
         let tags = this.tags.join(',');
         this.image.dataset['tags'] = tags;
     }
 
     // Deserialize tags from csv in image dataset
-    loadTags(event) {
+    loadData(event) {
         let tags = this.image.dataset['tags'];
         if (tags != null) {
             tags = tags.split(',');
