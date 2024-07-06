@@ -324,8 +324,7 @@ button:disabled  {
     border-radius: 20px;
     user-select: none;
     display: flex;
-    width:28%;
-    height: 90%;
+    width: 28%;
     z-index: 2;
     background-color: var(--preset--color--secondary);
     position: absolute;
@@ -335,7 +334,7 @@ button:disabled  {
 }
 
 .pending_image_status_icon {
-    font-size: 56px;
+    font-size: 96px;
     color: var(--preset--color--tertiary);
 }
 
