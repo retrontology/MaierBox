@@ -164,6 +164,7 @@ class InputSelect {
 
     // Update option list to reflect current items
     populateOptions() {
+        this.clearOptions();
         let option = document.createElement('option');
         option.textContent = '';
         this.select_list.appendChild(option);
@@ -410,7 +411,8 @@ class TagSelect extends InputSelect {
             return;
 
         this.tags.splice(index, 1);
-        for (let i = 0; i < this.collection.children.length; i++) {
+        let child_count = this.collection.children.length;
+        for (let i = 0; i < child_count; i++) {
             let tag_container = this.collection.children[i];
             if(tag == tag_container.firstChild.textContent)
                 tag_container.remove();
@@ -426,6 +428,7 @@ class TagSelect extends InputSelect {
 
     // Deserialize tags from csv in image
     loadData(event) {
+        this.clearTags();
         if (this.image.tags == null)
             this.tags = [];
         else
@@ -436,7 +439,9 @@ class TagSelect extends InputSelect {
 
     // Clear all the tags
     clearTags(event) {
-
+        let child_count = this.collection.children.length;
+        for (let i = 0; i < child_count; i++)
+            this.collection.children[0].remove();
     }
 
     static validateTag(tag) {
