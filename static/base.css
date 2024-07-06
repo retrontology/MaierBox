@@ -319,6 +319,41 @@ button:disabled  {
     text-align: center;
 }
 
+.pending_image_status_container {
+    aspect-ratio: 1;
+    border-radius: 20px;
+    user-select: none;
+    display: flex;
+    width:28%;
+    height: 90%;
+    z-index: 2;
+    background-color: var(--preset--color--secondary);
+    position: absolute;
+    opacity: 50%;
+    justify-content: center;
+    align-items:center;
+}
+
+.pending_image_status_icon {
+    font-size: 56px;
+    color: var(--preset--color--tertiary);
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to { 
+    -webkit-transform: rotate(360deg);
+  }
+}
+.pending_image_uploading_icon {
+    -webkit-animation-name: rotate; 
+    -webkit-animation-duration: 1s; 
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+}
+
 .sidebar_select {
     display: flex;
     grid-template-columns: auto auto;

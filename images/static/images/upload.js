@@ -477,6 +477,7 @@ class PendingImage {
                 formData.append("category", this.category);
             if (this.tags != null && this.tags.length > 0)
                 formData.append("tags", this.tags);
+            this.showUploading();
             const response = await fetch('/images/upload', {
                 method: 'POST',
                 body: formData
@@ -484,10 +485,78 @@ class PendingImage {
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
-            const json = await response.json();
-            console.log(json);
+            this.showUploaded();
         } catch (error) {
-            console.error(error.message);
+            this.showFailed();
+        }
+    }
+
+    showUploading() {
+        this.removeUploaded();
+        this.removeFailed();
+        this.uploading_container = document.createElement('div');
+        this.uploading_container.classList.add('pending_image_status_container');
+        this.uploading_container.classList.add('pending_image_uploading_container');
+        this.container.appendChild(this.uploading_container);
+        this.uploading_icon = document.createElement('div');
+        this.uploading_icon.classList.add('pending_image_status_icon');
+        this.uploading_icon.classList.add('pending_image_uploading_icon');
+        this.uploading_icon.textContent = '◠';
+        this.uploading_container.appendChild(this.uploading_icon);
+    }
+
+    removeUploading() {
+        if (this.uploading_container != null) {
+            this.uploading_icon.remove();
+            delete this.uploading_icon;
+            this.uploading_container.remove();
+            delete this.uploading_container;
+        }
+    }
+
+    showUploaded() {
+        this.removeUploading();
+        this.removeFailed();
+        this.uploaded_container = document.createElement('div');
+        this.uploaded_container.classList.add('pending_image_status_container');
+        this.uploaded_container.classList.add('pending_image_uploaded_container');
+        this.container.appendChild(this.uploaded_container);
+        this.uploaded_icon = document.createElement('div');
+        this.uploaded_icon.classList.add('pending_image_status_icon');
+        this.uploaded_icon.classList.add('pending_image_uploaded_icon');
+        this.uploaded_icon.textContent = '✔';
+        this.uploaded_container.appendChild(this.uploaded_icon);
+    }
+
+    removeUploaded() {
+        if (this.uploaded_container != null) {
+            this.uploaded_icon.remove();
+            delete this.uploaded_icon;
+            this.uploaded_container.remove();
+            delete this.uploaded_container;
+        }
+    }
+
+    showFailed() {
+        this.removeUploading();
+        this.removeUploaded();
+        this.failed_container = document.createElement('div');
+        this.failed_container.classList.add('pending_image_status_container');
+        this.failed_container.classList.add('pending_image_failed_container');
+        this.container.appendChild(this.failed_container);
+        this.failed_icon = document.createElement('div');
+        this.failed_icon.classList.add('pending_image_status_icon');
+        this.failed_icon.classList.add('pending_image_failed_icon');
+        this.failed_icon.textContent = '❌';
+        this.failed_container.appendChild(this.failed_icon);
+    }
+
+    removeFailed() {
+        if (this.failed_container != null) {
+            this.failed_icon.remove();
+            delete this.failed_icon;
+            this.failed_container.remove();
+            delete this.failed_container;
         }
     }
 }
@@ -550,9 +619,9 @@ class DropZone {
     }
 
     // Upload all images in the form
-    uploadImages(event) {
+    async uploadImages(event) {
         for (let i = 0; i < this.images.length; i++)
-            this.images[i].upload();
+            await this.images[i].upload();
         this.resetForm();
     }
 
