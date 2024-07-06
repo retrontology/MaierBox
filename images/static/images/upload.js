@@ -265,7 +265,7 @@ class InputSelect {
 class WatermarkSelect extends InputSelect {
     constructor(parent, image) {
         super(parent, image, 'select', 'watermark', false, '/watermarks/list');
-        this.items = watermarks;
+        this.items = watermark_list;
         if (this.items.length == 0)
             this.refresh();
         else
@@ -295,7 +295,7 @@ class WatermarkSelect extends InputSelect {
 class CategorySelect extends InputSelect {
     constructor(parent, image) {
         super(parent, image, 'text', 'category', '/categories/add', '/categories/list');
-        this.items = categories;
+        this.items = category_list;
         if (this.items.length == 0)
             this.refresh();
         else
@@ -346,7 +346,7 @@ class TagSelect extends InputSelect {
 
         // Initialize class variables
         super(parent, image, 'text', 'tag', true, '/tags/list');
-        this.items = tags;
+        this.items = tag_list;
 
         // Build tag collection
         this.collection = document.createElement('div');
@@ -368,12 +368,7 @@ class TagSelect extends InputSelect {
 
     // Callback for when the add button is pressed
     add(event) {
-        this.addTag(this.select.value);
-    }
-
-    // Add tag to the image
-    addTag(tag) {
-        tag = tag.toLowerCase();
+        let tag = this.select.value.toLowerCase();
 
         if (tag == '')
             return;
@@ -387,6 +382,13 @@ class TagSelect extends InputSelect {
             return;
             
         this.tags.push(tag);
+        this.addTagElement(tag);
+        this.select.value = '';
+        this.saveData();
+    }
+
+    // Add tag element to DOM
+    addTagElement(tag) {
         let tag_container = document.createElement('div');
         tag_container.classList.add('tag_select_tag_container');
         this.collection.appendChild(tag_container);
@@ -399,8 +401,6 @@ class TagSelect extends InputSelect {
         remove_button.addEventListener('click', (event) => this.removeTag(tag));
         remove_button.textContent = '❌';
         tag_container.appendChild(remove_button);
-        this.select.value = '';
-        this.saveData();
     }
 
     // Remove tag from the image
@@ -421,23 +421,17 @@ class TagSelect extends InputSelect {
 
     // Serialize tags into csv for the image
     saveData(event) {
-        if (this.tags.length > 0) {
-            let tags = this.tags.join(',');
-            this.image.tags = tags;
-        }
-        else
-            delete this.image.tags;
+        this.image.tags = this.tags;
     }
 
     // Deserialize tags from csv in image
     loadData(event) {
-        let tags = this.image.tags;
-        if (tags != null) {
-            tags = tags.split(',');
-            for (let i in tags)
-                this.addTag(tags[i]);
-        }
-        
+        if (this.image.tags == null)
+            this.tags = [];
+        else
+            this.tags = this.image.tags;
+        for (let i in this.tags)
+            this.addTagElement(this.tags[i]);
     }
 
     // Clear all the tags
@@ -747,6 +741,6 @@ class PostUploadForm extends ImageUploadForm {
     }
 }
 
-watermarks = [];
-categories = [];
-tags = [];
+watermark_list = [];
+category_list = [];
+tag_list = [];
