@@ -1,42 +1,3 @@
-function uploadSuccess(request){
-    console.log(request.responseText);
-}
-
-function uploadError(request){
-    console.log(request.responseText);
-}
-
-function uploadWebImage(image, watermark=null, category=null, tags=null) {
-    const request = new XMLHttpRequest();
-    const formData = new FormData();
-    formData.append("csrfmiddlewaretoken", getCSRF());
-    formData.append("image", image);
-    if (watermark != null)
-        formData.append("watermark", watermark);
-    if (category != null)
-        formData.append("category", category);
-    if (tags != null)
-        formData.append("tags", tags);
-    request.open("POST", '/images/upload', true);
-    request.onreadystatechange = () => {
-        if (request.readyState === 4) {
-            if (request.status === 200)
-                uploadSuccess(request);
-            else
-                uploadError(request);
-        }
-    };
-    request.send(formData);
-}
-
-function createObjectURL(object) {
-    return (window.URL) ? window.URL.createObjectURL(object) : window.webkitURL.createObjectURL(object);
-}
-
-function revokeObjectURL(url) {
-    return (window.URL) ? window.URL.revokeObjectURL(url) : window.webkitURL.revokeObjectURL(url);
-}
-
 class InputSelect {
     constructor(parent, image, type='text', label='', add=false, refresh=false) {
 
@@ -511,12 +472,12 @@ class PendingImage {
             const formData = new FormData();
             formData.append("csrfmiddlewaretoken", getCSRF());
             formData.append("image", this.image);
-            if (this.image.watermark != null)
-                formData.append("watermark", this.image.watermark);
-            if (this.image.category != null)
-                formData.append("category", this.image.category);
-            if (this.image.tags != null)
-                formData.append("tags", this.image.tags);
+            if (this.watermark != null)
+                formData.append("watermark", this.watermark);
+            if (this.category != null)
+                formData.append("category", this.category);
+            if (this.tags != null && this.tags.length > 0)
+                formData.append("tags", this.tags);
             const response = await fetch('/images/upload', {
                 method: 'POST',
                 body: formData
@@ -529,7 +490,6 @@ class PendingImage {
         } catch (error) {
             console.error(error.message);
         }
-        //uploadWebImage(this.image, this.watermark, this.category, this.tags);
     }
 }
 
