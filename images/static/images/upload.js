@@ -711,7 +711,7 @@ class ImageUploadSidebar {
             if (this.image.tags == null)
                 delete image.tags
             else
-                image.tags = this.image.tags
+                image.tags = JSON.parse(JSON.stringify(this.image.tags));
         }
     }
 }
