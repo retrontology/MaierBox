@@ -46,10 +46,7 @@ class InputSelect {
         this.type = type;
         this.items = [];
         this.prefix = label.toLowerCase();
-        if (this.prefix != '' )
-            this.label_text = this.prefix.charAt(0).toUpperCase() + this.prefix.slice(1);
-        else
-            this.label_text = '';
+        this.label_text = this.prefix.charAt(0).toUpperCase() + this.prefix.slice(1);
 
         // Build select container
         this.container = document.createElement('div');
@@ -104,10 +101,8 @@ class InputSelect {
             
             this.add_button_text.classList.add('sidebar_select_add_text');
             this.add_button_text.classList.add('sidebar_select_button_text');
-            if (this.prefix != '') {
-                this.add_button_text.classList.add(`${this.prefix}_select_button_text`);
-                this.add_button_text.classList.add(`${this.prefix}_select_add_text`);
-            }
+            this.add_button_text.classList.add(`${this.prefix}_select_button_text`);
+            this.add_button_text.classList.add(`${this.prefix}_select_add_text`);
             this.add_button_text.textContent = '+';
             this.add_button.appendChild(this.add_button_text);
         }
@@ -118,38 +113,32 @@ class InputSelect {
             this.refresh_button = document.createElement('button');
             this.refresh_button.classList.add('sidebar_select_refresh_button');
             this.refresh_button.classList.add('sidebar_select_button');
-            if (this.prefix != '') {
-                this.refresh_button.classList.add(`${this.prefix}_select_refresh_button`);
-                this.refresh_button.classList.add(`${this.prefix}_select_button`);
-            }
+            this.refresh_button.classList.add(`${this.prefix}_select_refresh_button`);
+            this.refresh_button.classList.add(`${this.prefix}_select_button`);
             this.refresh_button.addEventListener('click', (event) => this.refresh(event));
             this.select_container.appendChild(this.refresh_button);
             this.refresh_button_text = document.createElement('div');
             this.refresh_button_text.classList.add('sidebar_select_refresh_text');
             this.refresh_button_text.classList.add('sidebar_select_button_text');
-            if (this.prefix != '') {
-                this.refresh_button_text.classList.add(`${this.prefix}_select_refresh_text`);
-                this.refresh_button_text.classList.add(`${this.prefix}_select_button_text`);
-            }
+            this.refresh_button_text.classList.add(`${this.prefix}_select_refresh_text`);
+            this.refresh_button_text.classList.add(`${this.prefix}_select_button_text`);
             this.refresh_button_text.textContent = '↻';
             this.refresh_button.appendChild(this.refresh_button_text);
-            this.refresh();
         }
-
     }
 
-    // Save data to dataset of image
+    // Save data to image
     loadData() {
-        let data = this.image.dataset[this.prefix];
+        let data = this.image[this.prefix];
         if (data == null)
             this.select.value = '';
         else
             this.select.value = data;
     }
 
-    // Load data from dataset of image
+    // Load data from image
     saveData() {
-        this.image.dataset[this.prefix] = this.select.value;
+        this.image[this.prefix] = this.select.value;
     }
 
     // Callback for when a key is pressed in the text field
@@ -170,10 +159,17 @@ class InputSelect {
     // Refresh list of existing items
     refresh(event) {
         this.clear();
+        this.getItems(1);
+    }
+
+    // Update option list to reflect current items
+    populateOptions() {
         let option = document.createElement('option');
         option.textContent = '';
         this.select_list.appendChild(option);
-        this.getItems(1);
+        for (let i = 0; i < this.items.length; i++)
+            this.addOption(this.items[i]);
+        this.loadData();
     }
 
     // Function for adding option to select list from returned item
@@ -194,12 +190,10 @@ class InputSelect {
             if (request.readyState === 4 && request.status === 200) {
                 let response = JSON.parse(request.response);
                 this.items.push(...response['items']);
-                for (let i = 0; i < response['items'].length; i++)
-                    this.addOption(response['items'][i]);
                 if ('next' in response)
                     this.getItems(response['next']);
                 else {
-                    this.loadData();
+                    this.populateOptions();
                     this.refreshCallback();
                 }
             }
@@ -250,9 +244,17 @@ class InputSelect {
         return match;
     }
 
-    // Clear items, option list, and dataset
+    // Clear items, option list
     clear() {
-        this.items = [];
+        this.clearItems();
+        this.clearOptions();
+    }
+
+    clearItems() {
+        this.items.length = 0;
+    }
+
+    clearOptions() {
         let option_count = this.select_list.options.length;
         for (let i = 0; i < option_count; i++)
             this.select_list.options[0].remove();
@@ -262,7 +264,13 @@ class InputSelect {
 
 class WatermarkSelect extends InputSelect {
     constructor(parent, image) {
-        super(parent, image, 'select', 'watermark', false, '/watermarks/list');    }
+        super(parent, image, 'select', 'watermark', false, '/watermarks/list');
+        this.items = watermarks;
+        if (this.items.length == 0)
+            this.refresh();
+        else
+            this.populateOptions();
+    }
 
     addOption(item) {
         let option = document.createElement('option');
@@ -276,17 +284,22 @@ class WatermarkSelect extends InputSelect {
         let value = this.select.value;
 
         if (value == '') {
-            delete this.image.dataset['watermark'];
+            delete this.image.watermark;
             return;
         }
 
-        this.image.dataset['watermark'] = value;
+        this.image.watermark = value;
     }
 }
 
 class CategorySelect extends InputSelect {
     constructor(parent, image) {
         super(parent, image, 'text', 'category', '/categories/add', '/categories/list');
+        this.items = categories;
+        if (this.items.length == 0)
+            this.refresh();
+        else
+            this.populateOptions();
     }
 
     addCallback(response) {
@@ -308,7 +321,7 @@ class CategorySelect extends InputSelect {
         let value = this.select.value.toLowerCase();
 
         if (value == '') {
-            delete this.image.dataset['category'];
+            delete this.image.category;
             this.showCorrect();
             return;
         }
@@ -319,7 +332,7 @@ class CategorySelect extends InputSelect {
         }
 
         this.showCorrect();
-        this.image.dataset['category'] = value;
+        this.image.category = value;
     }
 
     static validateCategory(category) {
@@ -333,16 +346,19 @@ class TagSelect extends InputSelect {
 
         // Initialize class variables
         super(parent, image, 'text', 'tag', true, '/tags/list');
-        this.tags = [];
+        this.items = tags;
 
         // Build tag collection
         this.collection = document.createElement('div');
         this.collection.classList.add('tag_select_collection');
         this.container.appendChild(this.collection);
 
-        // Populate tags
-        this.loadData();
-
+        // Build tags
+        this.tags = [];
+        if (this.items.length == 0)
+            this.refresh();
+        else
+            this.populateOptions();
     }
 
     // Callback for when a key is pressed in the text field
@@ -403,19 +419,19 @@ class TagSelect extends InputSelect {
         this.saveData();
     }
 
-    // Serialize tags into csv for the image dataset
+    // Serialize tags into csv for the image
     saveData(event) {
         if (this.tags.length > 0) {
             let tags = this.tags.join(',');
-            this.image.dataset['tags'] = tags;
+            this.image.tags = tags;
         }
         else
-            delete this.image.dataset['tags'];
+            delete this.image.tags;
     }
 
-    // Deserialize tags from csv in image dataset
+    // Deserialize tags from csv in image
     loadData(event) {
-        let tags = this.image.dataset['tags'];
+        let tags = this.image.tags;
         if (tags != null) {
             tags = tags.split(',');
             for (let i in tags)
@@ -435,10 +451,9 @@ class TagSelect extends InputSelect {
 }
 
 class PendingImage {
-    constructor(parent, image, index) {
+    constructor(parent, image) {
         this.parent = parent;
         this.image = image;
-        this.index = index;
         this.selected = false;
         this.url = createObjectURL(this.image);
 
@@ -460,26 +475,25 @@ class PendingImage {
     }
 
     select(event) {
-        if (!this.selected) {
-            this.container.classList.add('pending_image_selected');
-            this.selected = true;
-            return true;
-        }
-        else
-            return false;
+        this.container.classList.add('pending_image_selected');
+        this.selected = true;
     }
 
     deselect(event) {
-        if (this.selected) {
-            this.container.classList.remove('pending_image_selected');
-            this.selected = false;
-            return true;
-        }
-        else
-            return false;
+        this.container.classList.remove('pending_image_selected');
+        this.selected = false;
     }
 
-    imageClicked(event) {}
+    toggleSelect(event) {
+        if (this.selected)
+            this.deselect(event);
+        else
+            this.select(event);
+    }
+
+    imageClicked(event) {
+        this.toggleSelect(event);
+    }
 
     imageDragStart(event) {
         event.preventDefault();
@@ -491,9 +505,6 @@ class PendingImage {
 
     remove() {
         this.container.remove();
-        delete this.url;
-        delete this.image;
-        delete this.container;
     }
 
     upload(event) {
@@ -509,7 +520,6 @@ class DropZone {
         this.root = image_upload_form.root;
 
         // Init images
-        this.files = [];
         this.images = [];
 
         // Create drop zone container
@@ -559,31 +569,15 @@ class DropZone {
         this.uploadImages(event)
     }
 
-    uploadImage(index) {
-        let image = this.images[i];
-        let file = this.files[i];
-        let category = this.images[i].dataset['category'];
-        let watermark = this.images[i].dataset['watermark'];
-        let tags = this.images[i].dataset['tags'];
-        uploadWebImage(this.files[i], watermark, category, tags);
-    }
-
     // Upload all images in the form
     uploadImages(event) {
-        for (let i = 0; i < this.files.length; i++) {
-            let category = this.images[i].dataset['category'];
-            let watermark = this.images[i].dataset['watermark'];
-            let tags = this.images[i].dataset['tags'];
-            this.uploadImage(this.files[i], watermark, category, tags);
-        }
+        // TODO
         this.resetForm();
     }
 
     // Reset the images of the form
     resetImages() {
-        this.files = [];
         this.images = [];
-        this.selected = null;
         if (this.parent.sidebar != null)
             this.parent.sidebar.remove()
         if (this.images_container != null)
@@ -603,44 +597,35 @@ class DropZone {
         this.images_container = document.createElement('div');
         this.images_container.classList.add('drop_zone_images_container');
         for (let i = 0; i < images.length; i++) {
-            let image = new PendingImage(this.images_container, images[i], i);
-            image.index = i;
+            let image = new PendingImage(this.images_container, images[i]);
+            image.removeClicked = (event) => {
+                image.remove();
+                this.images.splice(i, 1);
+            };
+            image.imageClicked = (event) => {
+                if (this.parent.sidebar != null)
+                    this.parent.sidebar.remove();
+                if (image.selected) {
+                    image.deselect(event);
+                }
+                else {
+                    image.select();
+                    this.parent.sidebar = new ImageUploadSidebar(this.parent, image);
+                    for (let j = 0; j < this.images.length; j++) {
+                        if (j != i) 
+                            this.images[j].deselect();
+                    }
+                }
+            }
             this.images.push(image);
         }
         this.drop_zone.appendChild(this.images_container);
         this.submit_button.disabled = false;
     }
 
-    // Remove image from form at index
-    removeImage(index) {
-        
-    }
-    
     // Event callback for clicking the "Select Images" button
     selectImages(event) {
         this.files_input.click();
-    }
-
-    // Event callback for clicking on an image
-    imageClicked(event) {
-        if (event.target.classList.contains('drop_zone_image_delete'))
-            return;
-        let target = (event.target.tagName == 'IMG') ? event.target.parentElement : event.target;
-        if (this.parent.sidebar != null)
-            this.parent.sidebar.remove();
-        if (target.classList.contains('drop_zone_image_selected')) {
-            this.selected = null;
-            target.classList.remove('drop_zone_image_selected');
-        }
-        else {
-            this.selected = target.dataset['index'];
-            this.parent.sidebar = new ImageUploadSidebar(this.parent, target);
-            for (let i = 0; i < this.images.length; i++) {
-                let image = this.images[i];
-                image.classList.remove('drop_zone_image_selected');
-            }
-            target.classList.add('drop_zone_image_selected');
-        }
     }
     
     // Event callback for when the images are selected by the "Select Images" button
@@ -678,12 +663,11 @@ class DropZone {
 }
 
 class ImageUploadSidebar {
-    constructor(image_upload_form) {
+    constructor(parent, image) {
 
         // Init class variables
         this.parent = image_upload_form;
-        this.image = this.parent.drop_zone.images[this.parent.drop_zone.selected];
-        this.parent.sidebar = this;
+        this.image = image;
         this.drop_zone = this.parent.drop_zone
 
         // Build sidebar
@@ -720,20 +704,20 @@ class ImageUploadSidebar {
         for (let i in this.drop_zone.images) {
             let image = this.drop_zone.images[i];
 
-            if (this.image.dataset['watermark'] == null)
-                delete image.dataset['watermark']
+            if (this.image.watermark == null)
+                delete image.watermark
             else
-                image.dataset['watermark'] = this.image.dataset['watermark'];
+                image.watermark = this.image.watermark;
 
-            if (this.image.dataset['category'] == null)
-                delete image.dataset['category']
+            if (this.image.category == null)
+                delete image.category
             else
-                image.dataset['category'] = this.image.dataset['category']
+                image.category = this.image.category
 
-            if (this.image.dataset['tags'] == null)
-                delete image.dataset['tags']
+            if (this.image.tags == null)
+                delete image.tags
             else
-                image.dataset['tags'] = this.image.dataset['tags']
+                image.tags = this.image.tags
         }
     }
 }
@@ -762,3 +746,7 @@ class PostUploadForm extends ImageUploadForm {
 
     }
 }
+
+watermarks = [];
+categories = [];
+tags = [];

@@ -296,7 +296,7 @@ button:disabled  {
     box-sizing: border-box;
 }
 
-.drop_zone_image_selected {
+.pending_image_selected {
     outline-color: var(--preset--color--tertiary);
     outline-width: 4px;
     outline-style: solid;
