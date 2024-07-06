@@ -142,32 +142,31 @@ class InputSelect {
     }
 
     // Get page of items
-    getItems(page) {
+    async getItems(page) {
         let endpoint = this.refresh_endpoint;
         if (page > 1)
             endpoint = `${endpoint}?page=${page}`
-        const request = new XMLHttpRequest();
-        request.open('GET', endpoint, true);
-        request.onreadystatechange = () => {
-            if (request.readyState === 4 && request.status === 200) {
-                let response = JSON.parse(request.response);
-                this.items.push(...response['items']);
-                if ('next' in response)
-                    this.getItems(response['next']);
-                else {
-                    this.populateOptions();
-                    this.refreshCallback();
-                }
-            }
-        };
-        request.send();
+        const response = await fetch(endpoint, {
+            method: 'GET',
+        });            
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        let data = await response.json();
+        this.items.push(...data['items']);
+        if ('next' in data)
+            this.getItems(data['next']);
+        else {
+            this.populateOptions();
+            this.refreshCallback();
+        }
     }
 
     // Empty refresh callback to be overwritten by subclasses
     refreshCallback(response) {}
 
     // Add function for adding item via API
-    add(event) {
+    async add(event) {
         let value = this.select.value.toLowerCase();
 
         if (value == '' || this.validateSelect())
@@ -176,17 +175,17 @@ class InputSelect {
         const formData = new FormData();
         formData.append("csrfmiddlewaretoken", getCSRF());
         formData.append(this.prefix, value);
-        const request = new XMLHttpRequest();
-        request.open("POST", this.add_endpoint, true);
-        request.onreadystatechange = () => {
-            if (request.readyState === 4 && request.status === 200) {
-                this.saveData();
-                this.refresh();
-                this.addCallback(request.response);
-            }
-                
-        };
-        request.send(formData);
+
+        const response = await fetch(this.add_endpoint, {
+            method: 'POST',
+            body: formData
+        });            
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        this.saveData();
+        this.refresh();
+        this.addCallback(response);
     }
 
     // Empty add callback to be overwritten by subclasses
