@@ -507,7 +507,7 @@ class PendingImage {
     }
 
     upload(event) {
-
+        uploadWebImage(this.image, this.watermark, this.category, this.tags);
     }
 }
 
@@ -570,7 +570,8 @@ class DropZone {
 
     // Upload all images in the form
     uploadImages(event) {
-        // TODO
+        for (let i = 0; i < this.images.length; i++)
+            this.images[i].upload();
         this.resetForm();
     }
 
