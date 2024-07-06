@@ -506,8 +506,30 @@ class PendingImage {
         this.container.remove();
     }
 
-    upload(event) {
-        uploadWebImage(this.image, this.watermark, this.category, this.tags);
+    async upload(event) {
+        try {
+            const formData = new FormData();
+            formData.append("csrfmiddlewaretoken", getCSRF());
+            formData.append("image", this.image);
+            if (this.image.watermark != null)
+                formData.append("watermark", this.image.watermark);
+            if (this.image.category != null)
+                formData.append("category", this.image.category);
+            if (this.image.tags != null)
+                formData.append("tags", this.image.tags);
+            const response = await fetch('/images/upload', {
+                method: 'POST',
+                body: formData
+            });            
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const json = await response.json();
+            console.log(json);
+        } catch (error) {
+            console.error(error.message);
+        }
+        //uploadWebImage(this.image, this.watermark, this.category, this.tags);
     }
 }
 
