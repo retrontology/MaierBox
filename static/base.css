@@ -21,15 +21,16 @@ body {
     font-family: var(--preset--font--family);
 }
 
-header {
+header a {
     font-size: 2.25rem;
-    color: var(--preset--color--contrast);
-    font-weight: 400;
+    color: var(--preset--color--prmary);
+    font-weight: normal;
     text-decoration-color: var(--preset--color--contrast);
     text-decoration-line: none;
     text-decoration-style: solid;
     text-decoration-thickness: auto;
     line-height: 1.4;
+    padding: 32px;
 }
 
 button {
@@ -54,7 +55,9 @@ button:disabled  {
 }
 
 .buns {
-    height: 180px;
+    display: flex;
+    align-content: center;
+
     background-color: var(--preset--color--black);
     margin-top: 60px;
     margin-bottom: 60px;
