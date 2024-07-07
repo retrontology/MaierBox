@@ -1,7 +1,19 @@
 class PostUploadForm {
     constructor(root) {
 
+        // Set class variables
         this.container = root;
+
+        // Build post title
+        this.title_container = document.createElement('div');
+        this.title_container.classList.add('pending_post_title_container');
+        this.container.appendChild(this.title_container);
+        this.title_content = document.createElement('input');
+        this.title_content.type = 'text';
+        this.title_content.classList.add('pending_post_title_content');
+        this.title_container.appendChild(this.title_content);
+
+        // Build post content
         this.post_container = document.createElement('div');
         this.post_container.classList.add('pending_post_container');
         this.container.appendChild(this.post_container);
@@ -21,16 +33,18 @@ class PostUploadForm {
     
         });
         
+        // Build image upload
         let image_upload = document.createElement('div');
         image_upload.id = 'image_upload_form';
         image_upload.classList.add('image_upload_form');
         this.container.appendChild(image_upload);
         this.image_upload_form = new ImageUploadForm(image_upload);
         this.image_upload_form.drop_zone.submitClicked = this.submitClicked;
+        this.image_upload_form.drop_zone.submit_button.disabled = false;
 
     }
 
-    submitClicked(event) {
-
+    async submitClicked(event) {
+        //let images = await this.image_upload_form.drop_zone.uploadImages();
     };
 }

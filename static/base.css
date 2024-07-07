@@ -7,6 +7,11 @@ body {
     --preset--color--secondary: #3fdfe1;
     --preset--color--tertiary: #ea008b;
     --preset--font--family: 'IBM Plex Mono', monospace;
+    --preset--font-size--small: clamp(0.875rem, 0.875rem + ((1vw - 0.2rem) * 0.227), 1rem);
+    --preset--font-size--medium: clamp(1rem, 1rem + ((1vw - 0.2rem) * 0.227), 1.125rem);
+    --preset--font-size--large: clamp(1.75rem, 1.75rem + ((1vw - 0.2rem) * 0.227), 1.875rem);
+    --preset--font-size--x-large: 2.25rem;
+    --preset--font-size--xx-large: clamp(4rem, 4rem + ((1vw - 0.2rem) * 10.909), 10rem);
     width: 80%;
     max-width: 1200px;
     min-width: 800px;
