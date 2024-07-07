@@ -8,8 +8,8 @@ class PostUploadForm {
         this.title_container = document.createElement('div');
         this.title_container.classList.add('pending_post_title_container');
         this.container.appendChild(this.title_container);
-        this.title_content = document.createElement('input');
-        this.title_content.type = 'text';
+        this.title_content = document.createElement('div');
+        this.title_content.setAttribute('contenteditable', '');
         this.title_content.classList.add('pending_post_title_content');
         this.title_container.appendChild(this.title_content);
 
@@ -44,7 +44,14 @@ class PostUploadForm {
 
     }
 
+    
+
     async submitClicked(event) {
-        //let images = await this.image_upload_form.drop_zone.uploadImages();
+        
+        let title = this.title_content.textContent;
+        let content = this.post_editor.value();
+        let images = await this.image_upload_form.drop_zone.uploadImages();
+
+        
     };
 }

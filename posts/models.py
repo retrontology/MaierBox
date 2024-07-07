@@ -4,7 +4,7 @@ from tags.models import Tag
 from albums.models import WebImageAlbum
 from uuid import uuid4
 
-POST_MAX_LENGTH=64
+TITLE_MAX_LENGTH=64
 
 class Post(models.Model):
 
@@ -15,11 +15,11 @@ class Post(models.Model):
         default=uuid4,
         editable=False
     )
-    name = models.CharField(
+    title = models.CharField(
         null=False,
         blank=False,
         editable=False,
-        max_length=POST_MAX_LENGTH
+        max_length=TITLE_MAX_LENGTH
     )
     content = models.TextField(
         null=False,
