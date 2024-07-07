@@ -414,6 +414,7 @@ class PendingImage {
         this.parent = parent;
         this.image = image;
         this.selected = false;
+        this.uploaded = false;
         this.url = createObjectURL(this.image);
 
         this.container = document.createElement('div');
@@ -485,7 +486,10 @@ class PendingImage {
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
+            this.uploaded = true;
+            this.id = response.json()['response'];
             this.showUploaded();
+            return this.id;
         } catch (error) {
             this.showFailed();
         }
@@ -620,8 +624,10 @@ class DropZone {
 
     // Upload all images in the form
     async uploadImages(event) {
+        let image_ids = [];
         for (let i = 0; i < this.images.length; i++)
-            await this.images[i].upload();
+            image_ids.push(await this.images[i].upload());
+        return image_ids;
     }
 
     // Reset the images of the form
