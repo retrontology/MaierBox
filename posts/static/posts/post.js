@@ -9,7 +9,17 @@ class PostUploadForm {
         this.post_content.type = 'textarea';
         this.post_content.classList.add('pending_post_content');
         this.post_container.appendChild(this.post_content);
-        this.post_editor = new SimpleMDE({ element: this.post_content });
+        this.post_editor = new SimpleMDE({
+            element: this.post_content,
+            toolbar: [
+                'bold', 'italic', 'strikethrough', '|',
+                'heading-1', 'heading-2', 'heading-3', '|',
+                'code', 'quote', 'unordered-list', 'ordered-list', 'clean-block', '|',
+                'link', 'image', 'table', 'horizontal-rule', '|',
+                'preview'
+            ]
+    
+        });
         
         let image_upload = document.createElement('div');
         image_upload.id = 'image_upload_form';
