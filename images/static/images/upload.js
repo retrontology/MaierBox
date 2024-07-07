@@ -715,7 +715,7 @@ class ImageUploadSidebar {
     constructor(parent, image) {
 
         // Init class variables
-        this.parent = image_upload_form;
+        this.parent = parent;
         this.image = image;
         this.drop_zone = this.parent.drop_zone
 
