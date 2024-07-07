@@ -622,7 +622,6 @@ class DropZone {
     async uploadImages(event) {
         for (let i = 0; i < this.images.length; i++)
             await this.images[i].upload();
-        this.resetForm();
     }
 
     // Reset the images of the form
@@ -775,7 +774,7 @@ class ImageUploadSidebar {
 class ImageUploadForm {
     constructor(root) {
         // Get root element
-        this.root = document.getElementById(root);
+        this.root = root;
         this.root.classList.add('drop_zone_root');
 
         // Init DropZone
@@ -783,17 +782,6 @@ class ImageUploadForm {
 
         // Init sidebar
         this.sidebar = null;
-    }
-}
-
-class PostUploadForm extends ImageUploadForm {
-    constructor(root) {
-        super(root);
-        this.drop_zone.submitClicked = this.submitClicked;
-    }
-
-    submitClicked(event) {
-
     }
 }
 

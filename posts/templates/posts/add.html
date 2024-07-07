@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<script src="{% static 'images/upload.js' %}"></script>
+<script src="{% static 'posts/post.js' %}"></script>
+<title>Create Post</title>
+{% endblock %}
+{% block body %}
+<div id="post_form" class="post_form"></div>
+<script>
+    post_form = new PostUploadForm(document.getElementById('post_form'));
+</script>
+{% endblock %}

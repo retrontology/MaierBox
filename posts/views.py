@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Post
 
 def view(request, id):
@@ -8,6 +9,10 @@ def view(request, id):
     context = {
         'name': post.name,
         'content': paragraphs,
-        'images': post.album.images.all()
+        'images': post.webimages.all()
     }
     return render(request, 'posts/view.html', context)
+
+@login_required
+def add(request):
+    return render(request, 'posts/add.html')

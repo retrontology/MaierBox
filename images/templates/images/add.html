@@ -7,6 +7,6 @@
 {% block body %}
 <div id="image_upload_form" class="image_upload_form"></div>
 <script>
-    image_upload_form = new ImageUploadForm('image_upload_form');
+    image_upload_form = new ImageUploadForm(document.getElementById('image_upload_form'));
 </script>
 {% endblock %}
