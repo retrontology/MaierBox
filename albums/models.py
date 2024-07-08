@@ -5,7 +5,7 @@ from categories.models import Category
 from uuid import uuid4
 from django.contrib.auth.models import User
 
-ALBUM_MAX_LENGTH = 64
+MAX_TITLE_LENGTH = 64
 
 class WebImageAlbum(models.Model):
     id = models.UUIDField(
@@ -15,11 +15,11 @@ class WebImageAlbum(models.Model):
         default=uuid4,
         editable=False
     )
-    name = models.CharField(
+    title = models.CharField(
         null=False,
         blank=False,
         editable=False,
-        max_length=ALBUM_MAX_LENGTH
+        max_length=MAX_TITLE_LENGTH
     )
     images = models.ManyToManyField(
         blank=True,

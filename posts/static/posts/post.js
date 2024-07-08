@@ -30,7 +30,6 @@ class PostUploadForm {
                 'link', 'image', 'table', 'horizontal-rule', '|',
                 'preview'
             ]
-    
         });
         
         // Build image upload
@@ -39,6 +38,7 @@ class PostUploadForm {
         image_upload.classList.add('image_upload_form');
         this.container.appendChild(image_upload);
         this.image_upload_form = new ImageUploadForm(image_upload);
+        this.image_upload_form.parent = this;
         this.image_upload_form.drop_zone.submitClicked = this.submitClicked;
         this.image_upload_form.drop_zone.submit_button.disabled = false;
 
@@ -47,11 +47,25 @@ class PostUploadForm {
     
 
     async submitClicked(event) {
-        
-        let title = this.title_content.textContent;
-        let content = this.post_editor.value();
-        let images = await this.image_upload_form.drop_zone.uploadImages();
+        let title = this.parent.parent.title_content.textContent;
+        let content = this.parent.parent.post_editor.value();
+        let images = await this.uploadImages();
 
-        
+        const formData = new FormData();
+        formData.append("csrfmiddlewaretoken", getCSRF());
+        formData.append('title', title);
+        formData.append('content', content);
+        if (images.length > 0)
+            formData.append('images', images);
+
+        const response = await fetch('/posts/create', {
+            method: 'POST',
+            body: formData
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        let json = await response.json();
+        location.href = `/posts/view/${json['post']}`;
     };
 }

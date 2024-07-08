@@ -179,7 +179,7 @@ class InputSelect {
         const response = await fetch(this.add_endpoint, {
             method: 'POST',
             body: formData
-        });            
+        });
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
@@ -482,12 +482,13 @@ class PendingImage {
             const response = await fetch('/images/upload', {
                 method: 'POST',
                 body: formData
-            });            
+            });
             if (!response.ok) {
                 throw new Error(`Response status: ${response.status}`);
             }
+            let json = await response.json();
             this.uploaded = true;
-            this.id = response.json()['response'];
+            this.id = json['response'];
             this.showUploaded();
             return this.id;
         } catch (error) {
