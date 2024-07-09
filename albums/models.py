@@ -46,6 +46,11 @@ class WebImageAlbum(models.Model):
         auto_now_add=True,
         editable=False,
     )
+    unlisted = models.BooleanField(
+        null=False,
+        blank=False,
+        default=False
+    )
 
     def hasImages(self):
         return self.images.count() > 0

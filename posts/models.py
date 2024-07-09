@@ -55,6 +55,21 @@ class Post(models.Model):
         auto_now_add=True,
         editable=False,
     )
+    date_published = models.DateTimeField(
+        null=True,
+        blank=False,
+        editable=False,
+    )
+    published = models.BooleanField(
+        null=False,
+        blank=False,
+        default=False
+    )
+    unlisted = models.BooleanField(
+        null=False,
+        blank=False,
+        default=False
+    )
 
     def preview(self):
         length = len(self.content)

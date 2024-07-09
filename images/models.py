@@ -97,6 +97,11 @@ class WebImage(models.Model):
         on_delete=models.PROTECT,
         editable=False,
     )
+    unlisted = models.BooleanField(
+        null=False,
+        blank=False,
+        default=False
+    )
             
 
     @classmethod
