@@ -67,3 +67,6 @@ class Post(models.Model):
             preview = preview + '...'
         return preview
 
+    def hasImages(self):
+        return self.album and self.album.hasImages()
+    

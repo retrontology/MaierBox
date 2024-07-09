@@ -8,7 +8,7 @@ from images.models import WebImage
 from albums.models import WebImageAlbum
 from markdown2 import markdown
 
-MAX_POSTS = 10
+MAX_POSTS = 2
 
 def index(request: HttpRequest):
     

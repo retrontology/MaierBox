@@ -23,6 +23,15 @@
                     {{ post.preview }}
                 </div>
             </div>
+            {% if post.hasImages %}
+                <div class="posts_index_post_images_container">
+                    {% for image in post.album.preview %}
+                        <div class="posts_index_post_image_container">
+                            <img class="posts_index_post_image" src="{{ image.thumbnail.url }}" alt="{{ image.id }}">
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </a>
     </div>
     {% endfor %}
