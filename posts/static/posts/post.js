@@ -47,6 +47,7 @@ class PostUploadForm {
     
 
     async submitClicked(event) {
+        this.submit_button.disabled = true;
         let title = this.parent.parent.title_content.textContent;
         let content = this.parent.parent.post_editor.value();
         let images = await this.uploadImages();

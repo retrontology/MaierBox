@@ -620,6 +620,7 @@ class DropZone {
     };
 
     submitClicked(event) {
+        this.submit_button.disabled = true;
         this.uploadImages(event)
     }
 
