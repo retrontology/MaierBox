@@ -1,13 +1,37 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpRequest
+from django.core.paginator import Paginator
 from maierbox.util import JsonErrorResponse
 from .models import Post
 from images.models import WebImage
 from albums.models import WebImageAlbum
 from markdown2 import markdown
 
-def view(request, id):
+MAX_POSTS = 10
+
+def index(request: HttpRequest):
+    
+    if request.method != "GET":
+        return HttpResponseNotAllowed(['GET'])
+    
+    if 'page' in request.GET:
+        page = request.GET['page']
+    else:
+        page = 1
+
+    paginator = Paginator(
+        Post.objects.order_by("date_created"),
+        per_page=MAX_POSTS,
+    )
+
+    page = paginator.page(page)
+    page.object_list
+
+    context = {'page': page}
+    return render(request, 'posts/index.html', context)
+
+def view(request: HttpRequest, id):
     post = get_object_or_404(Post, id=id)
     content = markdown(post.content, extras=["tables"])
     context = {
@@ -19,7 +43,7 @@ def view(request, id):
     return render(request, 'posts/view.html', context)
 
 @login_required
-def add(request):
+def add(request: HttpRequest):
     return render(request, 'posts/add.html')
 
 @login_required

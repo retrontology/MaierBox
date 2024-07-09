@@ -5,6 +5,7 @@ from albums.models import WebImageAlbum
 from uuid import uuid4
 
 TITLE_MAX_LENGTH=64
+PREVIEW_LENGTH=256
 
 class Post(models.Model):
 
@@ -54,3 +55,15 @@ class Post(models.Model):
         auto_now_add=True,
         editable=False,
     )
+
+    def preview(self):
+        length = len(self.content)
+        cutoff = False
+        if length > PREVIEW_LENGTH:
+            length = PREVIEW_LENGTH
+            cutoff = True
+        preview = self.content[:length]
+        if cutoff:
+            preview = preview + '...'
+        return preview
+
