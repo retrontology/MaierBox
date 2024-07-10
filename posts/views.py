@@ -8,7 +8,7 @@ from images.models import WebImage
 from albums.models import WebImageAlbum
 from markdown2 import markdown
 
-MAX_POSTS = 2
+MAX_POSTS = 6
 
 def index(request: HttpRequest):
     
@@ -26,7 +26,7 @@ def index(request: HttpRequest):
         max = MAX_POSTS
 
     paginator = Paginator(
-        Post.objects.order_by("date_created"),
+        Post.objects.order_by("-date_created"),
         per_page=max,
     )
 
