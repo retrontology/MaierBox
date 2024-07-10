@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block head %}
-<title>Create Post</title>
+<title>Posts</title>
 {% endblock %}
 {% block body %}
 <div class="posts_index_container">
@@ -35,5 +35,7 @@
         </a>
     </div>
     {% endfor %}
+    {% include "posts/paginator.html" %}
 </div>
+
 {% endblock %}

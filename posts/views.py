@@ -19,14 +19,18 @@ def index(request: HttpRequest):
         page = request.GET['page']
     else:
         page = 1
+    
+    if 'max' in request.GET:
+        max = request.GET['max']
+    else:
+        max = MAX_POSTS
 
     paginator = Paginator(
         Post.objects.order_by("date_created"),
-        per_page=MAX_POSTS,
+        per_page=max,
     )
 
     page = paginator.page(page)
-    page.object_list
 
     context = {'page': page}
     return render(request, 'posts/index.html', context)
