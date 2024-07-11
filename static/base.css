@@ -21,6 +21,15 @@ body {
     font-family: var(--preset--font--family);
 }
 
+a {
+    color: var(--preset--color--primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--preset--color--secondary);
+}
+
 header a {
     font-size: 2.25rem;
     color: var(--preset--color--prmary);
@@ -152,9 +161,15 @@ button:disabled  {
     color: var(--preset--color--primary);
 }
 
+.footer_attribution {
+    color: var(--preset--color--primary);
+    font-size: var(--preset--font-size--small);
+}
+
 .footer_icons {
     display: flex;
     margin: 0px;
+    padding: 0px;
 }
 
 .footer_icon_item {
@@ -167,13 +182,24 @@ button:disabled  {
     margin-left: 24px;
 }
 
+.footer_icon_item :hover {
+    background-color: var(--preset--color--secondary);
+}
+
 .footer_icon_link {
-    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    width: 100%;
+    justify-items: center;
+    justify-content: center;
+    align-content: center;
+    overflow: hidden;
 }
 
 .footer_icon {
     width: 16px;
 }
+
 
 .webimage {
     max-width:100%;
