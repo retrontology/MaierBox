@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Category
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Count
 
 MAX_CATEGORIES=100
 
@@ -59,14 +60,8 @@ def add_category(request: HttpRequest):
     return JsonResponse(response)
 
 def image_index(request: HttpRequest):
-    categories = []
-    for category in Category.objects.all():
-        if category.webimage_set.count() > 0:
-            minidict = {
-                'category': category,
-                'thumbnail': category.webimage_set.first().thumbnail,
-            }
-            categories.append(minidict)
+    categories = Category.objects.annotate(num_images=Count("webimage"))
+    categories = categories.filter(num_images__gt=0).order_by('-num_images')
     context = {
         'categories': categories
     }

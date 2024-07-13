@@ -22,5 +22,8 @@ class Category(models.Model):
         editable=False,
     )
 
+    def thumbnail(self):
+        return self.webimage_set.first().thumbnail
+
     def __str__(self) -> str:
         return self.category

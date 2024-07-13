@@ -652,6 +652,7 @@ button:disabled  {
     outline-color: var(--preset--color--black);
     outline-width: 4px;
     outline-style: solid;
+    margin: 5%;
 }
 
 .category_image_container a {
