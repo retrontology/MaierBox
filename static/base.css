@@ -633,3 +633,30 @@ button:disabled  {
     width: 100%;
     height: 100%;
 }
+
+.categories_images_root {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.category_image_container {
+    aspect-ratio: 1;
+    width: 30%;
+    overflow: hidden;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.category_image_container a {
+    
+}
+
+.category_image_container a img {
+    
+}
+
+.category_image_container figcaption {
+    position: absolute;
+}
