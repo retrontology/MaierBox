@@ -641,22 +641,47 @@ button:disabled  {
 }
 
 .category_image_container {
+    position: relative;
+    display: flex;
     aspect-ratio: 1;
     width: 30%;
     overflow: hidden;
-    display: flex;
-    align-content: center;
+    align-items: flex-end;
     flex-wrap: wrap;
+    justify-content: center;
+    outline-color: var(--preset--color--black);
+    outline-width: 4px;
+    outline-style: solid;
 }
 
 .category_image_container a {
-    
+    width: 100%;
+    height: 100%;
 }
 
 .category_image_container a img {
-    
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .category_image_container figcaption {
     position: absolute;
+    z-index: 1;
+    
+    margin: 5%;
+}
+
+.category_image_container figcaption a {
+    font-size: var(--preset--font-size--large);
+    color: var(--preset--color--contrast);
+    text-shadow:
+        1px 1px var(--preset--color--black),
+        -1px 1px var(--preset--color--black),
+        -1px -1px var(--preset--color--black),
+        1px -1px var(--preset--color--black);
+}
+
+.category_image_container figcaption :hover {
+    color: var(--preset--color--secondary);
 }
