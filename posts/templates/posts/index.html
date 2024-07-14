@@ -5,6 +5,9 @@
 {% endblock %}
 {% block body %}
 <div class="posts_index_container">
+    <div class="posts_index_title_container">
+        <h2 class="posts_index_title">Posts</span>
+    </div>
     {% for post in page.object_list %}
     <div class="posts_index_post_container">
         <a href="{% url 'posts:view' post.id %}">
@@ -34,6 +37,9 @@
             {% endif %}
         </a>
     </div>
+    {% if not forloop.last %}
+    <hr>
+    {% endif %}
     {% endfor %}
     {% include "posts/paginator.html" %}
 </div>
