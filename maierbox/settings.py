@@ -61,7 +61,7 @@ ROOT_URLCONF = 'maierbox.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['maierbox/templates'],
+        'DIRS': [BASE_DIR / 'maierbox/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
