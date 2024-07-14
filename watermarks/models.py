@@ -24,7 +24,7 @@ class Font(models.Model):
         null=False,
         blank=False,
         editable=False,
-        max_length=16
+        max_length=64
     )
     path = models.CharField(
         null=False,
