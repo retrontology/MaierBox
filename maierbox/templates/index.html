@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+<div class="homepage_container">
+    <div class="homepage_title_container">
+        <h1 class="homepage_title">Personal website of Cullen Knight</h1>
+    </div>
+    <div class="homepage_subtitle_container">
+        <h3 class="homepage_subtitle">I’m Cullen Knight, a professional DevOps Engineer and amateur photographer in Austin, Texas.</h3>
+    </div>
+    <div class="homepage_buttons_container">
+        <div class="homepage_button_container">
+            <a href="{% url 'posts:index' %}" class="homepage_button">Posts</a>
+        </div>
+        <div class="homepage_button_container">
+            <a href="{% url 'categories:image_index' %}" class="homepage_button">Photography</a>
+        </div>
+        <div class="homepage_button_container">
+            <a href="https://github.com/retrontology" class="homepage_button">Github</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -19,9 +19,11 @@ from django.urls import include, path
 from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 
 
 urlpatterns = [
+    path("", views.index, name="index"),
     path("images/", include("images.urls")),
     path("tags/", include("tags.urls")),
     path("categories/", include("categories.urls")),

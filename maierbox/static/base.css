@@ -11,23 +11,19 @@ body {
     --preset--font-size--medium: clamp(1rem, 1rem + ((1vw - 0.2rem) * 0.227), 1.125rem);
     --preset--font-size--large: clamp(1.75rem, 1.75rem + ((1vw - 0.2rem) * 0.227), 1.875rem);
     --preset--font-size--x-large: 2.25rem;
-    --preset--font-size--xx-large: clamp(4rem, 4rem + ((1vw - 0.2rem) * 10.909), 10rem);
+    --preset--font-size--xx-large: clamp(2.032rem, 2.032rem + ((1vw - 0.2rem) * 2.896), 3.625rem);
     width: 80%;
     max-width: 1200px;
     min-width: 800px;
     margin: auto;
     background-color: var(--preset--color--base);
-    color: var(--preset--color--primary);
+    color: var(--preset--color--contrast);
     font-family: var(--preset--font--family);
 }
 
 a {
-    color: var(--preset--color--primary);
+    color: var(--preset--color--contrast);
     text-decoration: none;
-}
-
-a:hover {
-    color: var(--preset--color--secondary);
 }
 
 header a {
@@ -66,10 +62,71 @@ button:disabled  {
 .buns {
     display: flex;
     align-content: center;
-
     background-color: var(--preset--color--black);
     margin-top: 60px;
     margin-bottom: 60px;
+}
+
+.buns a {
+    color: var(--preset--color--primary);
+}
+
+.buns a:hover {
+    color: var(--preset--color--secondary);
+}
+
+.homepage_container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 12%;
+}
+
+h1.homepage_title {
+    font-family: var(--preset--font--family);
+    font-size: var(--preset--font-size--xx-large);
+    font-weight: 400;
+    margin: 12%;
+}
+
+
+h3.homepage_subtitle {
+    font-family: var(--preset--font--family);
+    font-size: var(--preset--font-size--medium);
+    font-weight: 400;
+    margin-left: 16%;
+    margin-right: 16%;
+    margin-bottom: 12%;
+}
+
+.homepage_buttons_container {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: auto;
+}
+
+.homepage_button_container {
+    width: 280px;
+    height: 50px;
+    display: flex;
+    margin: 1%;
+}
+
+.homepage_button {
+    width: 100%;
+    height: 100%;
+    outline-style: solid;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.homepage_button:hover {
+    outline-color: var(--preset--color--secondary);
+    color: var(--preset--color--secondary);
 }
 
 #watermark_creation {
