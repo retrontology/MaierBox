@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Watermark, Font
 
-# Register your models here.
+admin.site.register(Watermark)
+admin.site.register(Font)
