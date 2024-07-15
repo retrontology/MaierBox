@@ -228,7 +228,8 @@ h3.homepage_subtitle {
 }
 
 .footer_title {
-    align-content: center;
+    width: 25%;
+    text-align: left;
 }
 
 .footer_title_link {
@@ -242,10 +243,16 @@ h3.homepage_subtitle {
     font-size: var(--preset--font-size--small);
 }
 
+.footer_icons_container {
+    width: 25%;
+}
+
 .footer_icons {
     display: flex;
     margin: 0px;
     padding: 0px;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 .footer_icon_item {
@@ -295,13 +302,22 @@ h3.homepage_subtitle {
 
 .webimage_classifiers {
     display: block;
-    max-width: 25%;
+    width: 25%;
+    text-align: left;
+}
+
+.webimage_delete_container {
+    text-align: center;
+}
+
+.webimage_uploaded {
+    text-align: right;
+    width: 25%;
 }
 
 .webimage_tags {
     display: flex;
     align-content: flex-start;
-    justify-content: space-evenly;
     flex-wrap: wrap;
 }
 

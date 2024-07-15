@@ -26,6 +26,11 @@
                 {% endif %}
             </div>
         </div>
+        {% if user.is_authenticated %}
+        <div class="webimage_delete_container">
+            <a class="webimage_delete_button">Delete</a>
+        </div>
+        {% endif %}
         <div class="webimage_uploaded">
             <span>Uploaded on {{ image.date_created.date }}</span>
         </div>
