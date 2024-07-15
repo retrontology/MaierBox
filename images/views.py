@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from maierbox.util import JsonErrorResponse
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.contrib.auth.decorators import login_required
@@ -59,3 +59,10 @@ def upload(request):
 @login_required
 def add(request):
     return render(request, 'images/add.html')
+
+
+@login_required
+def delete(request, id):
+    image = get_object_or_404(WebImage, id=id)
+    image.delete()
+    return redirect('/')

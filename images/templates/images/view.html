@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block head %}
+<script src="{% static 'images/delete.js' %}"></script>
 <title>View Image</title>
 {% endblock %}
 {% block body %}
@@ -27,8 +28,8 @@
             </div>
         </div>
         {% if user.is_authenticated %}
-        <div class="webimage_delete_container">
-            <a class="webimage_delete_button">Delete</a>
+        <div class="webimage_admin_container">
+            <a class="webimage_delete_button" onclick="delete_button_clicked('{{ image.id }}')">Delete</a>
         </div>
         {% endif %}
         <div class="webimage_uploaded">

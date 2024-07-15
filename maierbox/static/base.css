@@ -324,8 +324,13 @@ h3.homepage_subtitle {
     color: var(--preset--color--secondary);
 }
 
-.webimage_delete_container {
+.webimage_admin_container {
     text-align: center;
+}
+
+.webimage_delete_button:hover {
+    color: var(--preset--color--secondary);
+    cursor: pointer;
 }
 
 .webimage_uploaded {
