@@ -306,6 +306,24 @@ h3.homepage_subtitle {
     text-align: left;
 }
 
+.webimage_category span a {
+    color: var(--preset--color--primary);
+    margin-left: 4px;
+}
+
+.webimage_category span a:hover{
+    color: var(--preset--color--secondary);
+}
+
+.webimage_tags_tag {
+    margin-left: 4px;
+    color: var(--preset--color--primary);
+}
+
+.webimage_tags_tag:hover {
+    color: var(--preset--color--secondary);
+}
+
 .webimage_delete_container {
     text-align: center;
 }
