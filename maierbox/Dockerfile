@@ -14,3 +14,4 @@ COPY maierbox /opt/maierbox/maierbox
 COPY posts /opt/maierbox/posts
 COPY tags /opt/maierbox/tags
 COPY watermarks /opt/maierbox/watermarks
+COPY manage.py /opt/maierbox/manage.py
