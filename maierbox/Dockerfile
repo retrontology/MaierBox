@@ -8,9 +8,9 @@ RUN apt update
 RUN apt install nginx
 COPY albums /opt/maierbox/albums
 COPY categories /opt/maierbox/categories
-COPY categories /opt/maierbox/comments
-COPY categories /opt/maierbox/images
-COPY categories /opt/maierbox/maierbox
-COPY categories /opt/maierbox/posts
-COPY categories /opt/maierbox/tags
-COPY categories /opt/maierbox/watermarks
+COPY comments /opt/maierbox/comments
+COPY images /opt/maierbox/images
+COPY maierbox /opt/maierbox/maierbox
+COPY posts /opt/maierbox/posts
+COPY tags /opt/maierbox/tags
+COPY watermarks /opt/maierbox/watermarks
