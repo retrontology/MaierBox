@@ -703,7 +703,7 @@ h3.homepage_subtitle {
 }
 
 .posts_index_post_title {
-    color: var(--preset--color--primary);
+    color: var(--preset--color--contrast);
     font-size: var(--preset--font-size--large);
     margin: 4px;
 }
