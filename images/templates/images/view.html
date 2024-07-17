@@ -4,6 +4,13 @@
 <script src="{% static 'images/delete.js' %}"></script>
 <title>View Image</title>
 {% endblock %}
+{% block return %}
+    {% if referer != None %}
+    <div class="header_return_container">
+        <a class="header_return" id="header_return" href="{{ referer }}">Return</a>
+    </div>
+    {% endif %}
+{% endblock %}
 {% block body %}
 <div class="webimage_root">
     <div class="webimage_container">

@@ -8,8 +8,15 @@ from categories.models import Category
 from tags.models import Tag
 
 def view(request, id):
+    if request.method != "GET":
+        return HttpResponseNotAllowed(['GET'])
+    
+    referer = request.META.get('HTTP_REFERER')
     image = get_object_or_404(WebImage, id=id)
-    context = {'image': image}
+    context = {
+        'image': image,
+        'referer': referer,
+    }
     return render(request, 'images/view.html', context)
 
 @login_required
@@ -58,11 +65,16 @@ def upload(request):
 
 @login_required
 def add(request):
+    if request.method != "GET":
+        return HttpResponseNotAllowed(['GET'])
+    
     return render(request, 'images/add.html')
-
 
 @login_required
 def delete(request, id):
+    if request.method != "DELETE":
+        return HttpResponseNotAllowed(['DELETE'])
+    
     image = get_object_or_404(WebImage, id=id)
     image.delete()
     return redirect('/')
