@@ -1,11 +1,7 @@
-# syntax=docker/dockerfile:1
-
 FROM python:3.12.4-bookworm
 
 RUN mkdir /opt/maierbox
-
-RUN apt update
-RUN apt install -y nginx
+WORKDIR /opt/maierbox
 
 COPY requirements.txt /opt/maierbox/requirements.txt
 RUN python -m pip install -r /opt/maierbox/requirements.txt
@@ -22,7 +18,9 @@ COPY watermarks /opt/maierbox/watermarks
 COPY manage.py /opt/maierbox/manage.py
 
 RUN head /dev/random | head -c512 > /opt/maierbox/secret.key
+RUN python3 manage.py collectstatic
+RUN python3 manage.py migrate
 
 EXPOSE 8000
-WORKDIR /opt/maierbox
+
 CMD ["gunicorn", "maierbox.wsgi:application", "--bind", "0.0.0.0:8000"]

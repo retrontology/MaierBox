@@ -2,8 +2,8 @@ services:
   app:
     build: ./app
     volumes:
-      - static_volume:/mnt/static
-      - media_volume:/mnt/media
+      - static_volume:/opt/maierbox/static
+      - media_volume:/opt/maierbox/media
   nginx:
     build: ./nginx
     volumes:
