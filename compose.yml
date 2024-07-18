@@ -1,5 +1,11 @@
 services:
-  django:
-    build: .
+  app:
+    build: ./app
+  nginx:
+    build: ./nginx
     ports:
-      - "8000:8000"
+      - 80:80
+    depends_on:
+      - app
+
+
