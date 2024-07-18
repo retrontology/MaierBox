@@ -1,11 +1,19 @@
 services:
   app:
     build: ./app
+    volumes:
+      - static_volume:/mnt/static
+      - media_volume:/mnt/media
   nginx:
     build: ./nginx
+    volumes:
+      - static_volume:/mnt/static
+      - media_volume:/mnt/media
     ports:
       - 80:80
     depends_on:
       - app
 
-
+volumes:
+  static_volume:
+  media_volume:
