@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from os import environ
+import json
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,12 +24,13 @@ PRODUCTION = 'MAIERBOX_PROD' in environ
 if PRODUCTION:
     SECRET_KEY = environ['MAIERBOX_SECRET']
     DEBUG = False
+    mysql_creds = json.loads(environ['MYSQL_CREDENTIALS'])
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'maierbox',
-            'USER': environ['MYSQL_USER'],
-            'PASSWORD': environ['MYSQL_PASS'],
+            'USER': mysql_creds['username'],
+            'PASSWORD': mysql_creds['password'],
             'HOST': environ['MYSQL_HOST'],
             'PORT': environ['MYSQL_PORT'],
         }
