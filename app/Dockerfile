@@ -17,6 +17,9 @@ COPY tags /opt/maierbox/tags
 COPY watermarks /opt/maierbox/watermarks
 COPY manage.py /opt/maierbox/manage.py
 
+VOLUME /opt/maierbox/static
+VOLUME /opt/maierbox/media
+
 RUN head /dev/random | head -c512 > /opt/maierbox/secret.key
 RUN python3 manage.py collectstatic
 RUN python3 manage.py migrate
