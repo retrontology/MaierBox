@@ -11,19 +11,38 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from os import environ
+
+PRODUCTION = 'MAIERBOX_PROD' in environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-with open(BASE_DIR / "secret.key", 'rb') as secret:
-    SECRET_KEY = secret.read()
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if PRODUCTION:
+    SECRET_KEY = environ['MAIERBOX_SECRET']
+    DEBUG = False
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'maierbox',
+            'USER': environ['MYSQL_USER'],
+            'PASSWORD': environ['MYSQL_PASS'],
+            'HOST': environ['MYSQL_HOST'],
+            'PORT': environ['MYSQL_PORT'],
+        }
+    }
+else:
+    SECRET_KEY = 'django-insecure-1-_*npak+yg6(v2rcbe!p^3d#bg@o!y&zbu@&m*@-da+a(0$qw'
+    DEBUG = True
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 ALLOWED_HOSTS = ['*']
 
@@ -77,15 +96,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'maierbox.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+
 
 
 # Password validation

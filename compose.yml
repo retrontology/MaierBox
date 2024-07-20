@@ -1,5 +1,5 @@
 services:
-  app:
+  maierbox:
     build: ./app
     volumes:
       - static_volume:/opt/maierbox/static
@@ -12,7 +12,7 @@ services:
     ports:
       - 80:80
     depends_on:
-      - app
+      - maierbox
 
 volumes:
   static_volume:
