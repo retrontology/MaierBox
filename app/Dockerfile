@@ -16,13 +16,11 @@ COPY posts /opt/maierbox/posts
 COPY tags /opt/maierbox/tags
 COPY watermarks /opt/maierbox/watermarks
 COPY manage.py /opt/maierbox/manage.py
-
-RUN python3 manage.py collectstatic
-RUN python3 manage.py migrate
+COPY start.sh /opt/maierbox/start.sh
 
 VOLUME /opt/maierbox/static
 VOLUME /opt/maierbox/media
 
 EXPOSE 8000
 
-CMD ["gunicorn", "maierbox.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["/usr/bin/bash", "/opt/maierbox/start.sh"]

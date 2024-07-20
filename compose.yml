@@ -1,10 +1,12 @@
 services:
   maierbox:
+    platform: linux/arm64
     build: ./app
     volumes:
       - static_volume:/opt/maierbox/static
       - media_volume:/opt/maierbox/media
   nginx:
+    platform: linux/arm64
     build: ./nginx
     volumes:
       - static_volume:/mnt/static
