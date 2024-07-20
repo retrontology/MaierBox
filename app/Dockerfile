@@ -23,4 +23,7 @@ VOLUME /opt/maierbox/media
 
 EXPOSE 8000
 
+
 CMD ["/usr/bin/bash", "/opt/maierbox/start.sh"]
+HEALTHCHECK --interval=1m --timeout=3s \
+  CMD curl -f http://localhost:8000 || exit 1

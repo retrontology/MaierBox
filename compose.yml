@@ -2,12 +2,6 @@ services:
   maierbox:
     platform: linux/arm64
     build: ./app
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8000 || exit 1"]
-      interval: 10s
-      retries: 5
-      start_period: 30s
-      timeout: 10s
     volumes:
       - static_volume:/opt/maierbox/static
       - media_volume:/opt/maierbox/media
@@ -23,8 +17,6 @@ services:
       maierbox:
         condition: service_healthy
         restart: true
-
-
 volumes:
   static_volume:
   media_volume:
