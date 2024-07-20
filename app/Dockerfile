@@ -17,11 +17,11 @@ COPY tags /opt/maierbox/tags
 COPY watermarks /opt/maierbox/watermarks
 COPY manage.py /opt/maierbox/manage.py
 
-VOLUME /opt/maierbox/static
-VOLUME /opt/maierbox/media
-
 RUN python3 manage.py collectstatic
 RUN python3 manage.py migrate
+
+VOLUME /opt/maierbox/static
+VOLUME /opt/maierbox/media
 
 EXPOSE 8000
 
