@@ -10,5 +10,12 @@ MaierBox is a website application based on the Django framework and containerize
   - Categorize images with a one-to-many relationship
   - Tag images with a many-to-many relationship
 
+### Testing
+MaierBox can be tested locally by using the Docker Compose plugin:
+```
+docker compose up
+```
+Please note that the current application is designed to run on the arm64 platform. Please ensure you have the necessary requirements for emulation within Docker if you are going to test on an amd64 platform.
+
 ### Deployment
 MaierBox is currently being deployed to AWS CloudFormation using the templates found in [MaierBox-cf](https://github.com/retrontology/MaierBox-cf)
