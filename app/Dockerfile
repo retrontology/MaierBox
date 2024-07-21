@@ -20,9 +20,10 @@ COPY start.sh /opt/maierbox/start.sh
 
 VOLUME /opt/maierbox/static
 VOLUME /opt/maierbox/media
+VOLUME /opt/maierbox/socket
 
 EXPOSE 8000
 
 CMD ["/usr/bin/bash", "/opt/maierbox/start.sh"]
 HEALTHCHECK --interval=30s --timeout=3s \
-  CMD curl -f http://localhost:8000 || exit 1
+  CMD curl --unix-socket /opt/maierbox/socket/gunicorn.sock http://localhost/ || exit 1

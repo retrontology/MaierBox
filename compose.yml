@@ -3,12 +3,14 @@ services:
     platform: linux/arm64
     build: ./app
     volumes:
+      - socket_volume:/opt/maierbox/socket
       - static_volume:/opt/maierbox/static
       - media_volume:/opt/maierbox/media
   nginx:
     platform: linux/arm64
     build: ./nginx
     volumes:
+      - socket_volume:/mnt/socket
       - static_volume:/mnt/static
       - media_volume:/mnt/media
     ports:
@@ -18,5 +20,6 @@ services:
         condition: service_healthy
         restart: true
 volumes:
+  socket_volume:
   static_volume:
   media_volume:
