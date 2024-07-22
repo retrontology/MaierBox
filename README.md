@@ -21,6 +21,8 @@ MaierBox can be tested locally by using the Docker Compose plugin:
 ```
 docker compose up
 ```
+The application should then be accessible by visiting http://localhost
+
 Please note that the current application is designed to run on the arm64 platform. Please ensure you have the necessary requirements for emulation within Docker if you are going to test on an amd64 platform.
 
 ### Deployment
