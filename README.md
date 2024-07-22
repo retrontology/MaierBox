@@ -14,6 +14,7 @@ MaierBox is a website application based on the Django framework and containerize
   - Tag images with a many-to-many relationship
   - Custom JS image upload form for multiple images that includes classifiers
 - A link to my Github ( ͡° ͜ʖ ͡°)
+- Footer icons for social links
 
 ### Testing
 MaierBox can be tested locally by using the Docker Compose plugin:
