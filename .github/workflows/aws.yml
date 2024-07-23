@@ -15,12 +15,10 @@ env:
 permissions:
   contents: read
 
-runs-on: self-hosted
-
 jobs:
   deploy:
     name: Deploy
-    runs-on: debian-latest
+    runs-on: self-hosted
     environment: production
 
     steps:
