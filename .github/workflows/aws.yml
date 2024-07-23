@@ -40,6 +40,7 @@ jobs:
 
     - name: Build, tag, and push MaierBox image to Amazon ECR
       id: build-maierbox
+      working-directory: ./app
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
@@ -47,12 +48,13 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/maierbox:$IMAGE_TAG -t $ECR_REGISTRY/maierbox:latest .
+        docker build --platform linux/arm64 -t $ECR_REGISTRY/maierbox:$IMAGE_TAG -t $ECR_REGISTRY/maierbox:latest .
         docker push $ECR_REGISTRY/maierbox:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/maierbox:$IMAGE_TAG" >> $GITHUB_OUTPUT
     
     - name: Build, tag, and push nginx image to Amazon ECR
       id: build-nginx
+      working-directory: ./nginx
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: ${{ github.sha }}
@@ -60,7 +62,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/nginx:$IMAGE_TAG -t $ECR_REGISTRY/nginx:latest .
+        docker build --platform linux/arm64 -t $ECR_REGISTRY/nginx:$IMAGE_TAG -t $ECR_REGISTRY/nginx:latest .
         docker push $ECR_REGISTRY/nginx:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/nginx:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
