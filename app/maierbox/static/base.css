@@ -390,6 +390,14 @@ h3.homepage_subtitle {
     text-indent: 60px;
 }
 
+.post_content_container a {
+    color: var(--preset--color--primary);
+}
+
+.post_content_container a:hover {
+    color: var(--preset--color--secondary);
+}
+
 .drop_zone_root {
     justify-content: space-between;
     width: 99%;
