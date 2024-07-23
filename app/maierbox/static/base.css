@@ -274,9 +274,6 @@ h3.homepage_subtitle {
 
 .webimage {
     max-width:100%;
-    border-width: 4px;
-    border-style: solid;
-    border-color: var(--preset--color--black);
 }
 
 .webimage_container {
@@ -709,6 +706,10 @@ h3.homepage_subtitle {
     color: var(--preset--color--contrast);
     font-size: var(--preset--font-size--large);
     margin: 4px;
+}
+
+.posts_index_post_title:hover {
+    color: var(--preset--color--secondary);
 }
 
 .posts_index_post_date {
