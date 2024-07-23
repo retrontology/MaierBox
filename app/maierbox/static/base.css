@@ -751,6 +751,19 @@ h3.homepage_subtitle {
     height: 100%;
 }
 
+.categories_images_title_container {
+    width: 100%;
+    justify-items: center;
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
+.categories_images_title {
+    text-align: center;
+    font-size: var(--preset--font-size--x-large);
+}
+
 .categories_images_root {
     display: flex;
     flex-wrap: wrap;
