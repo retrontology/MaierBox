@@ -708,6 +708,10 @@ h3.homepage_subtitle {
     margin: 4px;
 }
 
+.posts_index_post_title:hover {
+    color: var(--preset--color--secondary);
+}
+
 .posts_index_post_date {
     color: var(--preset--color--primary);
     font-size: var(--preset--font-size--small);
@@ -745,6 +749,19 @@ h3.homepage_subtitle {
     object-fit: cover;
     width: 100%;
     height: 100%;
+}
+
+.categories_images_title_container {
+    width: 100%;
+    justify-items: center;
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
+.categories_images_title {
+    text-align: center;
+    font-size: var(--preset--font-size--x-large);
 }
 
 .categories_images_root {
@@ -797,4 +814,16 @@ h3.homepage_subtitle {
 
 .category_image_container figcaption :hover {
     color: var(--preset--color--secondary);
+}
+
+@media (min-width:320px) {
+    .album_images_container {
+      columns: 1;
+    }
+}
+
+@media (min-width:600px) {
+    .album_images_container {
+      columns: 2;
+    }
 }
