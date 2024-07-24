@@ -9,7 +9,7 @@ on:
 
 env:
   AWS_REGION: us-east-2
-  AWS_ROLE: arn:aws:iam::641334985368:role/MaierBoxGithubActions
+  AWS_ROLE: arn:aws:iam::641334985368:role/MaierBoxUpdateRole
   ECS_SERVICE: maierbox
   ECS_CLUSTER: maierbox
 
