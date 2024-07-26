@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'simplemde.css' %}">
+<script src="{% static 'simplemde.js' %}"></script>
+<script src="{% static 'images/upload.js' %}"></script>
+<script src="{% static 'posts/post.js' %}"></script>
+<title>Edit Post</title>
+{% endblock %}
+{% block body %}
+<div id="post_form" class="post_form"></div>
+<script>
+    post_form = new PostEditForm(
+        document.getElementById('post_form'),
+        "{{  }}",
+        "",
+
+    );
+</script>
+{% endblock %}

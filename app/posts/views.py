@@ -99,3 +99,9 @@ def create(request: HttpRequest):
         'post': post.id
     }
     return JsonResponse(data)
+
+@login_required
+def edit(request: HttpRequest, id):
+    post = get_object_or_404(Post, id=id)
+    context = {'post': post}
+    return render(request, 'posts/edit.html', context)
