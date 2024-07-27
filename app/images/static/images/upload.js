@@ -638,8 +638,10 @@ class DropZone {
     // Upload all images in the form
     async uploadImages(event) {
         let image_ids = [];
-        for (let i = 0; i < this.images.length; i++)
-            image_ids.push(await this.images[i].upload());
+        for (let i = 0; i < this.images.length; i++) {
+            if (this.images[i].upload != true)
+                image_ids.push(await this.images[i].upload());
+        }
         return image_ids;
     }
 
