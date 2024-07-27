@@ -70,3 +70,24 @@ class PostUploadForm {
         location.href = `/posts/view/${json['post']}`;
     };
 }
+
+class ExistingImage extends PendingImage {
+    constructor(drop_zone, image_id) {
+        
+    }
+}
+
+class PostEditForm extends PostUploadForm {
+    constructor(root, title, content, images) {
+        super(root);
+        this.original_title = title;
+        this.original_content = content;
+        this.original_images = images;
+
+        this.title_content.textContent = this.original_title;
+        this.post_editor.value(this.original_content);
+        for (let i = 0; i < images.length; i++) {
+            
+        }
+    }
+}

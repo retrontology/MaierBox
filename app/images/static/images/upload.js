@@ -409,8 +409,8 @@ class TagSelect extends InputSelect {
     }
 }
 
-class PendingImage {
-    constructor(parent, image) {
+class DropZoneImage {
+    constructor(parent) {
         this.parent = parent;
         this.image = image;
         this.selected = false;
@@ -465,6 +465,33 @@ class PendingImage {
 
     remove() {
         this.container.remove();
+    }
+}
+
+class PendingImage extends DropZoneImage {
+
+    constructor(parent, image) {
+        this.parent = parent;
+        this.image = image;
+        this.selected = false;
+        this.uploaded = false;
+        this.url = createObjectURL(this.image);
+
+        this.container = document.createElement('div');
+        this.container.classList.add('pending_image_container');
+        this.container.addEventListener('click', (event) => this.imageClicked(event));
+        this.container.addEventListener('dragstart', (event) => this.imageDragStart(event));
+        this.img = document.createElement('img');
+        this.img.classList.add('pending_image_image');
+        this.img.loading = 'lazy';
+        this.img.src = this.url;
+        this.container.appendChild(this.img);
+        this.remove_button = document.createElement('div');
+        this.remove_button.classList.add('pending_image_delete');
+        this.remove_button.addEventListener('click', (event) => this.removeClicked(event));
+        this.remove_button.textContent = '❌';
+        this.container.appendChild(this.remove_button);
+        this.parent.appendChild(this.container);
     }
 
     async upload(event) {
