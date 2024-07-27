@@ -412,22 +412,20 @@ class TagSelect extends InputSelect {
 class DropZoneImage {
     constructor(parent) {
         this.parent = parent;
-        this.image = image;
         this.selected = false;
-        this.uploaded = false;
-        this.url = createObjectURL(this.image);
+        this.uploaded = true;
 
         this.container = document.createElement('div');
-        this.container.classList.add('pending_image_container');
+        this.container.classList.add('dropzone_image_container');
         this.container.addEventListener('click', (event) => this.imageClicked(event));
         this.container.addEventListener('dragstart', (event) => this.imageDragStart(event));
         this.img = document.createElement('img');
-        this.img.classList.add('pending_image_image');
+        this.img.classList.add('dropzone_image_image');
         this.img.loading = 'lazy';
         this.img.src = this.url;
         this.container.appendChild(this.img);
         this.remove_button = document.createElement('div');
-        this.remove_button.classList.add('pending_image_delete');
+        this.remove_button.classList.add('dropzone_image_delete');
         this.remove_button.addEventListener('click', (event) => this.removeClicked(event));
         this.remove_button.textContent = '❌';
         this.container.appendChild(this.remove_button);
@@ -435,12 +433,12 @@ class DropZoneImage {
     }
 
     select(event) {
-        this.container.classList.add('pending_image_selected');
+        this.container.classList.add('dropzone_image_selected');
         this.selected = true;
     }
 
     deselect(event) {
-        this.container.classList.remove('pending_image_selected');
+        this.container.classList.remove('dropzone_image_selected');
         this.selected = false;
     }
 
@@ -466,32 +464,84 @@ class DropZoneImage {
     remove() {
         this.container.remove();
     }
+
+    showUploading() {
+        this.removeUploaded();
+        this.removeFailed();
+        this.uploading_container = document.createElement('div');
+        this.uploading_container.classList.add('dropzone_image_status_container');
+        this.uploading_container.classList.add('dropzone_image_uploading_container');
+        this.container.appendChild(this.uploading_container);
+        this.uploading_icon = document.createElement('div');
+        this.uploading_icon.classList.add('dropzone_image_status_icon');
+        this.uploading_icon.classList.add('dropzone_image_uploading_icon');
+        this.uploading_icon.textContent = '◠';
+        this.uploading_container.appendChild(this.uploading_icon);
+    }
+
+    removeUploading() {
+        if (this.uploading_container != null) {
+            this.uploading_icon.remove();
+            delete this.uploading_icon;
+            this.uploading_container.remove();
+            delete this.uploading_container;
+        }
+    }
+
+    showUploaded() {
+        this.removeUploading();
+        this.removeFailed();
+        this.uploaded_container = document.createElement('div');
+        this.uploaded_container.classList.add('dropzone_image_status_container');
+        this.uploaded_container.classList.add('dropzone_image_uploaded_container');
+        this.container.appendChild(this.uploaded_container);
+        this.uploaded_icon = document.createElement('div');
+        this.uploaded_icon.classList.add('dropzone_image_status_icon');
+        this.uploaded_icon.classList.add('dropzone_image_uploaded_icon');
+        this.uploaded_icon.textContent = '✔';
+        this.uploaded_container.appendChild(this.uploaded_icon);
+    }
+
+    removeUploaded() {
+        if (this.uploaded_container != null) {
+            this.uploaded_icon.remove();
+            delete this.uploaded_icon;
+            this.uploaded_container.remove();
+            delete this.uploaded_container;
+        }
+    }
+
+    showFailed() {
+        this.removeUploading();
+        this.removeUploaded();
+        this.failed_container = document.createElement('div');
+        this.failed_container.classList.add('dropzone_image_status_container');
+        this.failed_container.classList.add('dropzone_image_failed_container');
+        this.container.appendChild(this.failed_container);
+        this.failed_icon = document.createElement('div');
+        this.failed_icon.classList.add('dropzone_image_status_icon');
+        this.failed_icon.classList.add('dropzone_image_failed_icon');
+        this.failed_icon.textContent = '❌';
+        this.failed_container.appendChild(this.failed_icon);
+    }
+
+    removeFailed() {
+        if (this.failed_container != null) {
+            this.failed_icon.remove();
+            delete this.failed_icon;
+            this.failed_container.remove();
+            delete this.failed_container;
+        }
+    }
 }
 
 class PendingImage extends DropZoneImage {
 
     constructor(parent, image) {
-        this.parent = parent;
+        super(parent);
         this.image = image;
-        this.selected = false;
-        this.uploaded = false;
         this.url = createObjectURL(this.image);
-
-        this.container = document.createElement('div');
-        this.container.classList.add('pending_image_container');
-        this.container.addEventListener('click', (event) => this.imageClicked(event));
-        this.container.addEventListener('dragstart', (event) => this.imageDragStart(event));
-        this.img = document.createElement('img');
-        this.img.classList.add('pending_image_image');
-        this.img.loading = 'lazy';
         this.img.src = this.url;
-        this.container.appendChild(this.img);
-        this.remove_button = document.createElement('div');
-        this.remove_button.classList.add('pending_image_delete');
-        this.remove_button.addEventListener('click', (event) => this.removeClicked(event));
-        this.remove_button.textContent = '❌';
-        this.container.appendChild(this.remove_button);
-        this.parent.appendChild(this.container);
     }
 
     async upload(event) {
@@ -522,75 +572,6 @@ class PendingImage extends DropZoneImage {
             this.showFailed();
         }
     }
-
-    showUploading() {
-        this.removeUploaded();
-        this.removeFailed();
-        this.uploading_container = document.createElement('div');
-        this.uploading_container.classList.add('pending_image_status_container');
-        this.uploading_container.classList.add('pending_image_uploading_container');
-        this.container.appendChild(this.uploading_container);
-        this.uploading_icon = document.createElement('div');
-        this.uploading_icon.classList.add('pending_image_status_icon');
-        this.uploading_icon.classList.add('pending_image_uploading_icon');
-        this.uploading_icon.textContent = '◠';
-        this.uploading_container.appendChild(this.uploading_icon);
-    }
-
-    removeUploading() {
-        if (this.uploading_container != null) {
-            this.uploading_icon.remove();
-            delete this.uploading_icon;
-            this.uploading_container.remove();
-            delete this.uploading_container;
-        }
-    }
-
-    showUploaded() {
-        this.removeUploading();
-        this.removeFailed();
-        this.uploaded_container = document.createElement('div');
-        this.uploaded_container.classList.add('pending_image_status_container');
-        this.uploaded_container.classList.add('pending_image_uploaded_container');
-        this.container.appendChild(this.uploaded_container);
-        this.uploaded_icon = document.createElement('div');
-        this.uploaded_icon.classList.add('pending_image_status_icon');
-        this.uploaded_icon.classList.add('pending_image_uploaded_icon');
-        this.uploaded_icon.textContent = '✔';
-        this.uploaded_container.appendChild(this.uploaded_icon);
-    }
-
-    removeUploaded() {
-        if (this.uploaded_container != null) {
-            this.uploaded_icon.remove();
-            delete this.uploaded_icon;
-            this.uploaded_container.remove();
-            delete this.uploaded_container;
-        }
-    }
-
-    showFailed() {
-        this.removeUploading();
-        this.removeUploaded();
-        this.failed_container = document.createElement('div');
-        this.failed_container.classList.add('pending_image_status_container');
-        this.failed_container.classList.add('pending_image_failed_container');
-        this.container.appendChild(this.failed_container);
-        this.failed_icon = document.createElement('div');
-        this.failed_icon.classList.add('pending_image_status_icon');
-        this.failed_icon.classList.add('pending_image_failed_icon');
-        this.failed_icon.textContent = '❌';
-        this.failed_container.appendChild(this.failed_icon);
-    }
-
-    removeFailed() {
-        if (this.failed_container != null) {
-            this.failed_icon.remove();
-            delete this.failed_icon;
-            this.failed_container.remove();
-            delete this.failed_container;
-        }
-    }
 }
 
 class DropZone {
@@ -616,6 +597,9 @@ class DropZone {
         this.drop_zone.addEventListener('dragenter', (event) => this.imagesDragEnter(event));
         this.drop_zone.addEventListener('dragleave', (event) => this.imagesDragLeave(event));
         this.drop_zone_container.appendChild(this.drop_zone);
+        this.images_container = document.createElement('div');
+        this.images_container.classList.add('drop_zone_images_container');
+        this.drop_zone.appendChild(this.images_container);
 
         // Create button container
         this.button_container = document.createElement('div');
@@ -675,33 +659,35 @@ class DropZone {
         this.submit_button.disabled = true;
     }
 
-    // Populate the images container with selected images
-    populateImages(images) {
-        this.resetImages();
-        this.images_container = document.createElement('div');
-        this.images_container.classList.add('drop_zone_images_container');
-        for (let i = 0; i < images.length; i++) {
-            let image = new PendingImage(this.images_container, images[i]);
-            image.removeClicked = (event) => {
-                image.remove();
-                this.images.splice(i, 1);
-            };
-            image.imageClicked = (event) => {
-                if (this.parent.sidebar != null)
-                    this.parent.sidebar.remove();
-                if (image.selected) {
-                    image.deselect(event);
-                }
-                else {
-                    image.select();
-                    this.parent.sidebar = new ImageUploadSidebar(this.parent, image);
-                    for (let j = 0; j < this.images.length; j++) {
-                        if (j != i) 
-                            this.images[j].deselect();
-                    }
+    addImage(image) {
+        let index = this.images.length;
+        image.removeClicked = (event) => {
+            image.remove();
+            this.images.splice(index, 1);
+        };
+        image.imageClicked = (event) => {
+            if (this.parent.sidebar != null)
+                this.parent.sidebar.remove();
+            if (image.selected) {
+                image.deselect(event);
+            }
+            else {
+                image.select();
+                this.parent.sidebar = new ImageUploadSidebar(this.parent, image);
+                for (let j = 0; j < this.images.length; j++) {
+                    if (j != index) 
+                        this.images[j].deselect();
                 }
             }
-            this.images.push(image);
+        }
+        this.images.push(image);
+    }
+
+    // Populate the images container with selected images
+    populateImages(images) {
+        for (let i = 0; i < images.length; i++) {
+            let image = new PendingImage(this.images_container, images[i]);
+            this.addImage(image);
         }
         this.drop_zone.appendChild(this.images_container);
         this.submit_button.disabled = false;

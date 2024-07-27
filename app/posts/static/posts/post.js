@@ -71,9 +71,12 @@ class PostUploadForm {
     };
 }
 
-class ExistingImage extends PendingImage {
-    constructor(drop_zone, image_id) {
-        
+class ExistingImage extends DropZoneImage {
+    constructor(parent, image_id) {
+        super(parent);
+        this.image = image_id;
+        this.url = `/media/images/thumbnail/${image_id}.jpg`;
+        this.img.src = this.url;
     }
 }
 
@@ -87,7 +90,8 @@ class PostEditForm extends PostUploadForm {
         this.title_content.textContent = this.original_title;
         this.post_editor.value(this.original_content);
         for (let i = 0; i < images.length; i++) {
-            
+            let image = new ExistingImage(this.image_upload_form.drop_zone.images_container, images[i]);
+            this.image_upload_form.drop_zone.addImage(image);
         }
     }
 }
