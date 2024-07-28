@@ -8,6 +8,7 @@ from django.contrib.sitemaps.views import sitemap
 from images.sitemap import WebImageSitemap
 from posts.sitemap import PostSitemap
 from albums.sitemap import WebImageAlbumSitemap
+from categories.sitemap import ImageCategorySitemap
 from .sitemap import StaticSitemap
 
 sitemaps = {
@@ -16,6 +17,7 @@ sitemaps = {
         'post': PostSitemap,
         'album': WebImageAlbumSitemap,
         'image': WebImageSitemap,
+        'category': ImageCategorySitemap,
     }
 }
 

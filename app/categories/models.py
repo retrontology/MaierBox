@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.urls import reverse
 from .util import CATEGORY_MAX_LENGTH
 
 class Category(models.Model):
@@ -24,6 +24,9 @@ class Category(models.Model):
 
     def thumbnail(self):
         return self.webimage_set.first().thumbnail
+    
+    def get_absolute_url(self):
+        return reverse("categories:view_images", args=[self.category])
 
     def __str__(self) -> str:
         return self.category
