@@ -381,16 +381,28 @@ h3.homepage_subtitle {
 .post_title {
     text-align: center;
     margin-top: 80px;
-    margin-bottom: 40px;
+    margin-bottom: 0px;
+    font-size: var(--preset--font-size--xx-large);
+    font-weight: 400;
 }
 
 .post_content_container {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 40px;
+    margin-top: 80px;
     margin-bottom: 80px;
     text-indent: 60px;
+}
+
+.post_edit_container {
+    width: 100%;
+    text-align: center
+}
+
+.post_edit_link {
+    color: var(--preset--color--red);
+    font-size: var(--preset--font-size--medium);
 }
 
 .drop_zone_root {

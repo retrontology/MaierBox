@@ -39,6 +39,7 @@ def view(request: HttpRequest, id):
     post = get_object_or_404(Post, id=id)
     content = markdown(post.content, extras=["tables"])
     context = {
+        'id': post.id,
         'title': post.title,
         'content': content,
     }
