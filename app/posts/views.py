@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseNotAllowed, HttpRequest
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpRequest, Http404
 from django.core.paginator import Paginator
 from maierbox.util import JsonErrorResponse
 from .models import Post
@@ -26,7 +26,7 @@ def index(request: HttpRequest):
         max = MAX_POSTS
 
     paginator = Paginator(
-        Post.objects.order_by("-date_created"),
+        Post.objects.filter(published=True, unlisted=False).order_by("-date_created"),
         per_page=max,
     )
 
@@ -37,6 +37,10 @@ def index(request: HttpRequest):
 
 def view(request: HttpRequest, id):
     post = get_object_or_404(Post, id=id)
+
+    if not post.published and not request.user.is_authenticated:
+        raise Http404
+    
     content = markdown(post.content, extras=["tables"])
     context = {
         'id': post.id,

@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from categories.models import Category
 from tags.models import Tag
@@ -9,6 +8,7 @@ from PIL import Image
 from uuid import uuid4
 from .util import gen_thumbnail, gen_scaled, SCALED_MAX
 from os.path import splitext, basename
+from django.urls import reverse
 
 
 IMAGE_MAX_LENGTH = 64
@@ -171,6 +171,9 @@ class WebImage(models.Model):
 
     def get_scaled(self):
         return self.scaled.url if self.scaled else self.original.url
+
+    def get_absolute_url(self):
+        return reverse("images:view", args=[self.id])
 
     def __str__(self) -> str:
         return basename(self.original.path)

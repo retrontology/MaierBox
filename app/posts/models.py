@@ -3,6 +3,7 @@ from categories.models import Category
 from tags.models import Tag
 from albums.models import WebImageAlbum
 from uuid import uuid4
+from django.urls import reverse
 
 TITLE_MAX_LENGTH=64
 PREVIEW_LENGTH=256
@@ -33,13 +34,13 @@ class Post(models.Model):
     )
     category = models.ForeignKey(
         to=Category,
-        blank=False,
+        blank=True,
         null=True,
         on_delete=models.SET_NULL,
     )
     album = models.ForeignKey(
         to=WebImageAlbum,
-        blank=False,
+        blank=True,
         null=True,
         on_delete=models.SET_NULL,
     )
@@ -63,7 +64,7 @@ class Post(models.Model):
     published = models.BooleanField(
         null=False,
         blank=False,
-        default=False
+        default=True
     )
     unlisted = models.BooleanField(
         null=False,
@@ -85,3 +86,5 @@ class Post(models.Model):
     def hasImages(self):
         return self.album and self.album.hasImages()
     
+    def get_absolute_url(self):
+        return reverse("posts:view", args=[self.id])
