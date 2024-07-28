@@ -1,5 +1,7 @@
 from django.urls import path
+from django.contrib.sitemaps.views import sitemap
 from . import views
+from .sitemap import WebImageSitemap 
 
 app_name = "images"
 urlpatterns = [
