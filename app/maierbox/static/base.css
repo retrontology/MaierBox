@@ -386,6 +386,18 @@ h3.homepage_subtitle {
     font-weight: 400;
 }
 
+.post_date_container {
+    text-align:center;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.post_date {
+    text-align: center;
+    font-size: var(--preset--font-size--small);
+    color: var(--preset--color--primary)
+}
+
 .post_content_container {
     width: 80%;
     margin-left: auto;

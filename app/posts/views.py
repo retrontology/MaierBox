@@ -45,6 +45,7 @@ def view(request: HttpRequest, id):
     context = {
         'id': post.id,
         'title': post.title,
+        'date': post.date_created,
         'content': content,
     }
     if (post.album and post.album.images.count() > 0):
