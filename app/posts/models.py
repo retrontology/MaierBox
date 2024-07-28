@@ -34,13 +34,13 @@ class Post(models.Model):
     )
     category = models.ForeignKey(
         to=Category,
-        blank=False,
+        blank=True,
         null=True,
         on_delete=models.SET_NULL,
     )
     album = models.ForeignKey(
         to=WebImageAlbum,
-        blank=False,
+        blank=True,
         null=True,
         on_delete=models.SET_NULL,
     )
@@ -64,7 +64,7 @@ class Post(models.Model):
     published = models.BooleanField(
         null=False,
         blank=False,
-        default=False
+        default=True
     )
     unlisted = models.BooleanField(
         null=False,

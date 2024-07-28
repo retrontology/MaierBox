@@ -4,7 +4,7 @@ from django.urls import reverse
 
 class PostSitemap(Sitemap): 
 	def items(self): 
-		return Post.objects.all() 
+		return Post.objects.filter(published=True, unlisted=False) 
 		
 	def lastmod(self, webimage: Post): 
 		return webimage.date_modified
