@@ -44,7 +44,7 @@ hr {
 }
 
 a {
-    color: var(--preset--color--contrast);
+    color: var(--preset--color--primary);
     text-decoration: none;
 }
 
