@@ -6,12 +6,13 @@ from django.conf.urls.static import static
 from . import views
 from django.contrib.sitemaps.views import sitemap
 from images.sitemap import WebImageSitemap
-from posts.sitemap import PostSitemap, PostStaticSitemap
+from posts.sitemap import PostSitemap
+from .sitemap import StaticSitemap
 
 sitemaps = {
     'sitemaps': {
+        'static': StaticSitemap,
         'post': PostSitemap,
-        'postlist': PostStaticSitemap,
         'webimage': WebImageSitemap,
     }
 }
