@@ -8,6 +8,9 @@
     <div class="post_title">
         <span>{{ title }}</span>
     </div>
+    <div class="post_date_container">
+        <span class="post_date">{{ date }}</span>
+    </div>
     {% if user.is_authenticated %}
     <div class="post_edit_container">
         <a class="post_edit_link" href="{% url 'posts:edit' id %}">Edit</a>
