@@ -1,5 +1,7 @@
 class PostUploadForm {
-    constructor(root) {
+    constructor(root, url='/posts/create', method='POST') {
+        this.fetch_url=url;
+        this.fetch_method=method;
 
         // Set class variables
         this.container = root;
@@ -48,8 +50,9 @@ class PostUploadForm {
 
     async submitClicked(event) {
         this.submit_button.disabled = true;
-        let title = this.parent.parent.title_content.textContent;
-        let content = this.parent.parent.post_editor.value();
+        let post_form = this.parent.parent;
+        let title = post_form.title_content.textContent;
+        let content = post_form.post_editor.value();
         let images = await this.uploadImages();
 
         const formData = new FormData();
@@ -59,8 +62,8 @@ class PostUploadForm {
         if (images.length > 0)
             formData.append('images', images);
 
-        const response = await fetch('/posts/create', {
-            method: 'POST',
+        const response = await fetch(post_form.fetch_url, {
+            method: post_form.fetch_method,
             body: formData
         });
         if (!response.ok) {
@@ -69,4 +72,33 @@ class PostUploadForm {
         let json = await response.json();
         location.href = `/posts/view/${json['post']}`;
     };
+}
+
+class ExistingImage extends DropZoneImage {
+    constructor(parent, image_id) {
+        super(parent);
+        this.id = image_id;
+        this.url = `/media/images/thumbnail/${image_id}.jpg`;
+        this.img.src = this.url;
+    }
+}
+
+class PostEditForm extends PostUploadForm {
+    constructor(root, title, content, images) {
+        let post_id = window.location.href.split('/');
+        post_id = post_id[post_id.length-1];
+        super(root, `/posts/update/${post_id}`);
+        this.original_title = title;
+        this.original_content = content;
+        this.original_images = images;
+
+        this.title_content.textContent = this.original_title;
+        this.post_editor.value(this.original_content);
+        for (let i = 0; i < images.length; i++) {
+            let image = new ExistingImage(this.image_upload_form.drop_zone.images_container, images[i]);
+            this.image_upload_form.drop_zone.addImage(image);
+        }
+    }
+
+    
 }

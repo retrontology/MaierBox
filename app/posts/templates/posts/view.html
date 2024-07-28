@@ -6,8 +6,13 @@
 {% block body %}
 <div class="post_root">
     <div class="post_title">
-        <h1>{{ title }}</h1>
+        <span>{{ title }}</span>
     </div>
+    {% if user.is_authenticated %}
+    <div class="post_edit_container">
+        <a class="post_edit_link" href="{% url 'posts:edit' id %}">Edit</a>
+    </div>
+    {% endif %}
     {% if content %}
     <div class="post_content_container">
         {% autoescape off %}

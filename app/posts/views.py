@@ -39,6 +39,7 @@ def view(request: HttpRequest, id):
     post = get_object_or_404(Post, id=id)
     content = markdown(post.content, extras=["tables"])
     context = {
+        'id': post.id,
         'title': post.title,
         'content': content,
     }
@@ -94,6 +95,64 @@ def create(request: HttpRequest):
         content=content,
         album=album,
     )
+    post.save()
+    data = {
+        'post': post.id
+    }
+    return JsonResponse(data)
+
+@login_required
+def edit(request: HttpRequest, id):
+    post = get_object_or_404(Post, id=id)
+    context = {'post': post}
+    return render(request, 'posts/edit.html', context)
+
+@login_required
+def update(request: HttpRequest, id):
+    post = get_object_or_404(Post, id=id)
+
+    if request.method != "POST":
+        return HttpResponseNotAllowed(['POST'])
+    
+    if not 'title' in request.POST:
+        JsonErrorResponse(
+            data='The "title" field is required'
+        )
+    title = request.POST['title']
+
+    if not 'content' in request.POST:
+        JsonErrorResponse(
+            data='The "content" field is required'
+        )
+    content = request.POST['content']
+    
+    # Create album if images are specified
+    if 'images' in request.POST and len(request.POST['images']) > 0:
+        webimages = []
+        failed = []
+        for image_id in request.POST['images'].split(','):
+            try:
+                webimage = WebImage.objects.get(id=image_id)
+                webimages.append(webimage)
+            except Exception as e:
+                failed.append(image_id)
+        
+        if len(failed) > 0:
+            print(f'FAILED: {",".join(failed)}')
+            return JsonErrorResponse(
+                data=f'The following WebImage IDs did not match any existing WebImages: {", ".join(failed)}'
+            )
+        if post.album:
+            post.album.images.clear()
+            post.album.save()
+        else:
+            post.album = WebImageAlbum(title=title)
+            post.album.save()
+        for webimage in webimages:
+            post.album.images.add(webimage)
+        post.album.save()
+    post.title = title
+    post.content = content
     post.save()
     data = {
         'post': post.id

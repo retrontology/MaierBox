@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'simplemde.css' %}">
+<script src="{% static 'simplemde.js' %}"></script>
+<script src="{% static 'images/upload.js' %}"></script>
+<script src="{% static 'posts/post.js' %}"></script>
+<title>Edit Post</title>
+{% endblock %}
+{% block body %}
+<div id="post_edit_form" class="post_form"></div>
+<div id="original_post" class="original_post" hidden="true">
+    <div id="original_post_title" class="original_post_title">{{ post.title }}</div>
+    <div id="original_post_content" class="original_post_content">{{ post.content }}</div>
+    {% if post.hasImages %}
+    <div id="original_post_images" class="original_post_images">
+        {% for image in post.album.images.all %}
+        <div class="original_post_image">{{ image.id }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+<script>
+    let original_title = document.getElementById('original_post_title').innerHTML;
+    let original_content = document.getElementById('original_post_content').innerHTML;
+    let original_images_container = document.getElementById('original_post_images');
+    
+    let original_images = [];
+    for (let i = 0; i < original_images_container.children.length; i++)
+        original_images.push(original_images_container.children[i].textContent);
+
+    post_form = new PostEditForm(
+        document.getElementById('post_edit_form'),
+        original_title,
+        original_content,
+        original_images,
+    );
+</script>
+{% endblock %}
