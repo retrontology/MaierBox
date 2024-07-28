@@ -1,9 +1,7 @@
 from django.db import models
 from images.models import WebImage
-from tags.models import Tag
-from categories.models import Category
 from uuid import uuid4
-from django.contrib.auth.models import User
+from django.urls import reverse
 
 MAX_TITLE_LENGTH = 64
 MAX_PREVIEW_IMAGES = 4
@@ -60,3 +58,6 @@ class WebImageAlbum(models.Model):
         if length > MAX_PREVIEW_IMAGES:
             length = MAX_PREVIEW_IMAGES
         return self.images.order_by('date_created')[:length]
+
+    def get_absolute_url(self):
+        return reverse("albums:view", args=[self.id])
