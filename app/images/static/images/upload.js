@@ -639,7 +639,11 @@ class DropZone {
     async uploadImages(event) {
         let image_ids = [];
         for (let i = 0; i < this.images.length; i++) {
-            if (this.images[i].upload != true)
+            if (this.images[i].uploaded == true) {
+                this.images[i].showUploaded();
+                image_ids.push(this.images[i].id);
+            }
+            else
                 image_ids.push(await this.images[i].upload());
         }
         return image_ids;

@@ -650,7 +650,7 @@ h3.homepage_subtitle {
     margin: 8px
 }
 
-.dropzone_post_container {
+.pending_post_container {
     width: 99%;
     display: block;
     margin: auto;
@@ -660,12 +660,12 @@ h3.homepage_subtitle {
     margin-bottom: 20px;
 }
 
-.dropzone_post_title_container {
+.pending_post_title_container {
     width: 99%;
     margin: auto;
 }
 
-.dropzone_post_title_content {
+.pending_post_title_content {
     font-size: var(--preset--font-size--large);
     background-color: var(--preset--color--base);
     border-radius: 10px;
@@ -678,7 +678,7 @@ h3.homepage_subtitle {
     font-weight: normal;
 }
 
-.dropzone_post_title_content:focus-visible {
+.pending_post_title_content:focus-visible {
     outline-style: solid;
     border-style: none;
     outline-width: 4px;
