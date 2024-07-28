@@ -777,6 +777,9 @@ class ImageUploadSidebar {
 
     // Takes the current values of the selection fields and applies them to all images
     setAll(event) {
+        if (confirm("Are you sure you want to set all image classifiers equal to the currently selected image?") != true)
+            return;
+
         for (let i in this.drop_zone.images) {
             let image = this.drop_zone.images[i];
 
