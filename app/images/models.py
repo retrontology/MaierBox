@@ -12,7 +12,8 @@ from django.urls import reverse
 
 
 IMAGE_MAX_LENGTH = 64
-BASE_IMAGE_DIR = "images/full"
+ORIGINAL_IMAGE_DIR = "images/original"
+FULL_IMAGE_DIR = "images/full"
 SCALED_IMAGE_DIR = "images/scaled"
 THUMBNAIL_IMAGE_DIR = "images/thumbnail"
 ORIGINAL_SUBSAMPLING = 0
@@ -24,10 +25,14 @@ class WebImage(models.Model):
     def _split_filename(self, filename):
         filename = basename(filename)
         return splitext(filename)
-
-    def _upload_to_base(self, filename):
+    
+    def _upload_to_original(self, filename):
         ext = self._split_filename(filename)[1]
-        return f'{BASE_IMAGE_DIR}/{self.id}{ext}'
+        return f'{ORIGINAL_IMAGE_DIR}/{self.id}{ext}'
+
+    def _upload_to_full(self, filename):
+        ext = self._split_filename(filename)[1]
+        return f'{FULL_IMAGE_DIR}/{self.id}{ext}'
     
     def _upload_to_scaled(self, filename):
         ext = self._split_filename(filename)[1]
@@ -64,7 +69,13 @@ class WebImage(models.Model):
         null=False,
         blank=False,
         editable=False,
-        upload_to=_upload_to_base,
+        upload_to=_upload_to_original,
+    )
+    full = models.ImageField(
+        null=False,
+        blank=False,
+        editable=False,
+        upload_to=_upload_to_full,
     )
     scaled = models.ImageField(
         null=True,
