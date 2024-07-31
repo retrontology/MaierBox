@@ -181,10 +181,10 @@ class WebImage(models.Model):
         return image
 
     def get_scaled(self):
-        return self.scaled.url if self.scaled else self.original.url
+        return self.scaled.url if self.scaled else self.full.url
 
     def get_absolute_url(self):
         return reverse("images:view", args=[self.id])
 
     def __str__(self) -> str:
-        return basename(self.original.path)
+        return self.id
