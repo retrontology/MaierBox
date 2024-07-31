@@ -413,7 +413,6 @@ class DropZoneImage {
     constructor(parent) {
         this.parent = parent;
         this.selected = false;
-        this.uploaded = true;
 
         this.container = document.createElement('div');
         this.container.classList.add('dropzone_image_container');
@@ -542,6 +541,7 @@ class PendingImage extends DropZoneImage {
         this.image = image;
         this.url = createObjectURL(this.image);
         this.img.src = this.url;
+        this.uploaded = false;
     }
 
     async upload(event) {

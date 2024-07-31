@@ -124,6 +124,7 @@ class WebImage(models.Model):
             'name': image.name,
             'id': id,
             'category': category,
+            'original': image,
         }
 
         image_bytes = BytesIO(image.read())
@@ -160,7 +161,7 @@ class WebImage(models.Model):
             None,
             None
         )
-        fields['original'] = jpeg
+        fields['full'] = jpeg
 
         if any(lambda x: x > SCALED_MAX for x in image.size):
             scaled = InMemoryUploadedFile(
