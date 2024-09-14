@@ -24,6 +24,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("peepers", views.eyes, name='peepers'),
     path("images/", include("images.urls")),
     path("tags/", include("tags.urls")),
     path("categories/", include("categories.urls")),
