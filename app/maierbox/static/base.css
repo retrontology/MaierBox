@@ -22,11 +22,13 @@ body {
 
 h1 {
     font-size: var(--preset--font-size--xx-large);
+    color: var(--preset--color--primary);
     font-weight: 400;
 }
 
 h2 {
     font-size: var(--preset--font-size--x-large);
+    color: var(--preset--color--primary);
     font-weight: 400;
 }
 
@@ -387,6 +389,7 @@ h3.homepage_subtitle {
     margin-bottom: 0px;
     font-size: var(--preset--font-size--xx-large);
     font-weight: 400;
+    color: var(--preset--color--primary);
 }
 
 .post_date_container {

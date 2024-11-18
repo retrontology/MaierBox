@@ -6,15 +6,15 @@
 {% block body %}
 <div class="posts_index_container">
     <div class="posts_index_title_container">
-        <h2 class="posts_index_title">Posts</span>
+        <h1 class="posts_index_title">Posts</h1>
     </div>
     {% for post in page.object_list %}
     <div class="posts_index_post_container">
         <a href="{% url 'posts:view' post.id %}">
             <div class="posts_index_post_title_container">
-                <div class="posts_index_post_title">
+                <h2 class="posts_index_post_title">
                     {{ post.title }}
-                </div>
+                </h2>
             </div>
             <div class="posts_index_post_date_container">
                 <div class="posts_index_post_date">
