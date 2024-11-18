@@ -542,6 +542,7 @@ class PendingImage extends DropZoneImage {
         this.image = image;
         this.url = createObjectURL(this.image);
         this.img.src = this.url;
+        this.uploaded = false;
     }
 
     async upload(event) {
