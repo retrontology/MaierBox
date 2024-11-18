@@ -97,18 +97,20 @@ button:disabled  {
 }
 
 .header_return {
-    font-size: var(--preset--font-size--large);
+    font-size: var(--preset--font-size--medium);
 }
 
 .homepage_container {
     width: 80%;
     margin: auto;
     text-align: center;
-    margin-bottom: 12%;
+    margin-bottom: 8%;
 }
 
 h1.homepage_title {
-    margin: 12%;
+    margin-top: 12%;
+    margin-bottom: 12%;
+    color: var(--preset--color--primary);
 }
 
 h3.homepage_subtitle {
@@ -122,10 +124,10 @@ h3.homepage_subtitle {
 
 .homepage_buttons_container {
     width: 80%;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     justify-content: center;
     margin: auto;
+    grid-gap: 8px;
 }
 
 .homepage_button_container {
@@ -144,11 +146,13 @@ h3.homepage_subtitle {
     flex-wrap: wrap;
     align-content: center;
     justify-content: center;
+    outline-color: var(--preset--color--primary);
+    color: var(--preset--color--contrast);
 }
 
 .homepage_button:hover {
     outline-color: var(--preset--color--secondary);
-    color: var(--preset--color--secondary);
+    color: var(--preset--color--contrast);
 }
 
 #watermark_creation {
