@@ -650,7 +650,7 @@ class DropZone {
         return image_ids;
     }
 
-    // Reset the images of the form
+    // Reset the images of the form (BROKEN)
     resetImages() {
         this.images = [];
         if (this.parent.sidebar != null)
@@ -659,7 +659,7 @@ class DropZone {
             this.images_container.remove();
     }
     
-    // Reset the entire form
+    // Reset the entire form (BROKEN)
     resetForm() {
         this.resetImages();
         this.files_input.value = null;
@@ -669,6 +669,7 @@ class DropZone {
     addImage(image) {
         let index = this.images.length;
         image.removeClicked = (event) => {
+            event.preventDefault();
             image.remove();
             this.images.splice(index, 1);
         };
@@ -707,7 +708,6 @@ class DropZone {
     
     // Event callback for when the images are selected by the "Select Images" button
     imagesChanged(event) {
-        this.resetImages();
         this.populateImages(event.target.files);
     }
     
@@ -733,7 +733,6 @@ class DropZone {
     // Event callback for when files are dropped on the drop zone
     imagesDropped(event) {
         event.preventDefault();
-        this.resetForm();
         this.populateImages(event.dataTransfer.files);
         this.imagesDragLeave(event);
     }
