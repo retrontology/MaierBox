@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
 {% block head %}
-<title>{{ name }}</title>
+<title>{{ title }}</title>
+<meta property="og:title" content="{{ title }}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+{% if preview %}
+<meta property="og:image" content="{{ preview }}" />
+{% endif %}
 {% endblock %}
 {% block body %}
 <div class="post_root">

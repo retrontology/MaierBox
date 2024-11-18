@@ -46,10 +46,12 @@ def view(request: HttpRequest, id):
         'id': post.id,
         'title': post.title,
         'date': post.date_created,
+        'abs_url': post.get_absolute_url(),
         'content': content,
     }
     if (post.album and post.album.images.count() > 0):
         context['images'] = post.album.images.all()
+        context['preview'] = request.build_absolute_uri(post.album.images.first().thumbnail.url)
     return render(request, 'posts/view.html', context)
 
 @login_required

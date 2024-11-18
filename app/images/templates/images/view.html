@@ -3,6 +3,10 @@
 {% block head %}
 <script src="{% static 'images/delete.js' %}"></script>
 <title>View Image</title>
+<meta property="og:title" content="View Image" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+<meta property="og:image" content="{{ preview }}" />
 {% endblock %}
 {% block return %}
     {% if referer != None %}
