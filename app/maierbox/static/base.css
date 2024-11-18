@@ -389,7 +389,6 @@ h3.homepage_subtitle {
     margin-bottom: 0px;
     font-size: var(--preset--font-size--xx-large);
     font-weight: 400;
-    color: var(--preset--color--primary);
 }
 
 .post_date_container {
@@ -736,7 +735,6 @@ h3.homepage_subtitle {
 }
 
 .posts_index_post_title {
-    color: var(--preset--color--contrast);
     font-size: var(--preset--font-size--large);
     margin: 4px;
 }
