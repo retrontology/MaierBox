@@ -845,3 +845,31 @@ h3.homepage_subtitle {
 .category_image_container figcaption :hover {
     color: var(--preset--color--secondary);
 }
+
+.lightbox_base {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    display: flex;
+}
+
+.lightbox_background {
+    background: var(--preset--color--black);
+    opacity: 50%;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    position: absolute;
+}
+
+.lightbox_container {
+    width: 80%;
+    height: 80%;
+    background: var(--preset--color--contrast);
+    margin: auto;
+}
+
