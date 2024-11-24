@@ -69,7 +69,7 @@ def image_index(request: HttpRequest):
 
 def view_images(request: HttpRequest, category:str):
     category = get_object_or_404(Category, category=category)
-    images = category.webimage_set.all()
+    images = category.webimage_set.all().order_by('date_created')
     context = {
         'name': category.category,
         'images': images
