@@ -93,6 +93,10 @@ button:disabled  {
     line-height: 1.4;
 }
 
+.header_icon {
+    height: 48px;
+}
+
 .header_return_container {
     margin-right: 16px;
 }
