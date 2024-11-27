@@ -19,9 +19,61 @@ class LightBoxImage {
     }
 }
 
+class SwipeEvent {
+
+    static THRESHOLD = 50;
+
+    static RIGHT = 'right';
+    static LEFT = 'left';
+    static UP = 'up';
+    static DOWN = 'down';
+
+    constructor(event) {
+        this.direction = null;
+        this.start_event = event;
+    }
+
+    endSwipe(event) {
+        this.end_event = event;
+
+        let start = this.start_event.changedTouches[0];
+        let end = this.end_event.changedTouches[0];
+
+        if (!start || !end) { return; }
+
+        let d_x = start.screenX - end.screenX;
+        let d_y = start.screenY - end.screenY;
+        let abs_x = Math.abs(d_x);
+        let abs_y = Math.abs(d_y);
+
+        let biggest = abs_x > abs_y ? abs_x : abs_y;
+        if (biggest <= SwipeEvent.THRESHOLD) { return; }
+        
+        if (abs_x > abs_y) {
+            if (d_x > 0) {
+                this.direction = SwipeEvent.LEFT;
+            }
+            else {
+                this.direction = SwipeEvent.RIGHT;
+            }
+        }
+        else {
+            if (d_y > 0) {
+                this.direction = SwipeEvent.UP;
+            }
+            else {
+                this.direction = SwipeEvent.DOWN;
+            }
+        }
+
+        return this.direction;
+    }
+}
+
 class LightBox {
     constructor() {
         this.index = 0;
+        this.swipe_event = null;
         this.buildModal();
         this.populateImages();
     }
@@ -54,6 +106,8 @@ class LightBox {
 
         this.main_container = document.createElement('div');
         this.main_container.classList.add('lightbox_main_container');
+        this.main_container.addEventListener('touchstart', (event) => this.startSwipe(event));
+        this.main_container.addEventListener('touchend', (event) => this.endSwipe(event));
         this.container.appendChild(this.main_container);
 
         this.previous_container = document.createElement('div');
@@ -151,5 +205,25 @@ class LightBox {
         if (this.index > 0) {
             this.select(this.index-1)
         }
+    }
+
+    startSwipe(event) {
+        this.swipe_event = new SwipeEvent(event);
+    }
+
+    endSwipe(event) {
+        if (!this.swipe_event){ return; }
+
+        let direction = this.swipe_event.endSwipe(event)
+        switch(direction) {
+            case SwipeEvent.RIGHT:
+              this.previous();
+              break;
+            case SwipeEvent.LEFT:
+              this.next();
+              break;
+        }
+
+        this.swipe_event = null;
     }
 }
