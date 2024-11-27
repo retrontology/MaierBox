@@ -922,11 +922,12 @@ h3.homepage_subtitle {
 .lightbox_gallery_container {
     height: 20%;
     display: flex;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
     padding-bottom: 16px;
     scrollbar-width: thin;
     scrollbar-color: var(--preset--color--primary) var(--preset--color--base);
+    justify-content: center;
 }
 
 .lightbox_gallery_image_container {
