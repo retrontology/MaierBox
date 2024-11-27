@@ -1,13 +1,13 @@
 class LightBoxImage {
     constructor(id, index) {
 
-        this.index = index
+        this.index = index;
         this.id = id;
 
         this.thumbnail = `/media/images/thumbnail/${id}.jpg`;
         this.scaled = `/media/images/scaled/${id}.jpg`;
         this.full = `/media/images/full/${id}.jpg`;
-        this.page = `/images/view/${id}`
+        this.page = `/images/view/${id}`;
 
         this.container = document.createElement('div');
         this.container.classList.add('lightbox_gallery_image_container');
@@ -170,6 +170,7 @@ class LightBox {
     }
 
     select(index) {
+        this.img.src = '/static/loading.svg';
         this.images[this.index].img.classList.remove('lightbox_gallery_image_selected');
         this.index = index;
         this.images[this.index].img.classList.add('lightbox_gallery_image_selected');

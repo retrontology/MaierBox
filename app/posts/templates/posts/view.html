@@ -9,6 +9,7 @@
 {% if preview %}
 <meta property="og:image" content="{{ preview }}" />
 {% endif %}
+<link rel="prefetch" href="{% static 'loading.svg' %}" />
 {% endblock %}
 {% block body %}
 <div class="post_root">
