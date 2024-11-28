@@ -902,21 +902,31 @@ h3.homepage_subtitle {
     max-height: 100%;
     max-width: 100%;
     margin: auto;
-    border: 4px solid var(--preset--color--black);
+    outline: 4px solid var(--preset--color--black);
     cursor: pointer;
 }
 
 .lightbox_button_container {
     align-content: center;
     z-index: 1;
+    padding: 8px;
 }
 
 .lightbox_button {
     border-color: var(--preset--color--primary);
+    border-style: none;
+    outline-style: none;
+    background: none;
     font-size: 48px;
     line-height: 1;
     padding: 8px;
     border-radius: 0px;
+}
+
+.lightbox_button:focus {
+    background: none;
+    border-style: none;
+    outline-style: none;
 }
 
 .lightbox_gallery_container {

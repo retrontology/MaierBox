@@ -14,6 +14,7 @@ class LightBoxImage {
 
         this.img = document.createElement('img');
         this.img.src = this.thumbnail;
+        this.img.loading = 'lazy';
         this.img.classList.add('lightbox_gallery_image');
         this.container.appendChild(this.img);
     }
