@@ -141,12 +141,16 @@ class LightBox {
         this.gallery_container = document.createElement('div');
         this.gallery_container.classList.add('lightbox_gallery_container');
         this.container.appendChild(this.gallery_container);
+
+        this.gallery = document.createElement('div');
+        this.gallery.classList.add('lightbox_gallery');
+        this.gallery_container.appendChild(this.gallery);
     }
 
     clearImages() {
         this.images = [];
-        while (this.gallery_container.lastChild) {
-            this.gallery_container.removeChild(this.gallery_container.lastChild);
+        while (this.gallery.lastChild) {
+            this.gallery.removeChild(this.gallery.lastChild);
         }
     }
 
@@ -165,7 +169,7 @@ class LightBox {
                 this.select(i);
             });
             this.images.push(image);
-            this.gallery_container.appendChild(image.container);
+            this.gallery.appendChild(image.container);
         }
     }
 

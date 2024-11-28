@@ -1,16 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" width="200" height="200" style="shape-rendering: auto; display: block; background: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink"><g><g>
-  <circle fill="#ffb897" r="4" cy="50" cx="60">
-    <animate begin="-0.67s" keyTimes="0;1" values="95;35" dur="1s" repeatCount="indefinite" attributeName="cx"></animate>
-    <animate begin="-0.67s" keyTimes="0;0.2;1" values="0;1;1" dur="1s" repeatCount="indefinite" attributeName="fill-opacity"></animate>
-  </circle>
-  <circle fill="#ffb897" r="4" cy="50" cx="60">
-    <animate begin="-0.33s" keyTimes="0;1" values="95;35" dur="1s" repeatCount="indefinite" attributeName="cx"></animate>
-    <animate begin="-0.33s" keyTimes="0;0.2;1" values="0;1;1" dur="1s" repeatCount="indefinite" attributeName="fill-opacity"></animate>
-  </circle>
-  <circle fill="#ffb897" r="4" cy="50" cx="60">
-    <animate begin="0s" keyTimes="0;1" values="95;35" dur="1s" repeatCount="indefinite" attributeName="cx"></animate>
+  <rect fill="#ffb897" width="6" height="6" y="47" x="60">
+    <animate begin="-0.5s" keyTimes="0;1" values="95;25" dur="1s" repeatCount="indefinite" attributeName="x"></animate>
+    <animate begin="-0.5s" keyTimes="0;0.2;1" values="0;1;1" dur="1s" repeatCount="indefinite" attributeName="fill-opacity"></animate>
+  </rect>
+  <rect fill="#ffb897" width="6" height="6" y="47" x="60">
+    <animate begin="0s" keyTimes="0;1" values="95;25" dur="1s" repeatCount="indefinite" attributeName="x"></animate>
     <animate begin="0s" keyTimes="0;0.2;1" values="0;1;1" dur="1s" repeatCount="indefinite" attributeName="fill-opacity"></animate>
-  </circle>
+  </rect>
 </g><g transform="translate(-15 0)">
   <path transform="rotate(90 50 50)" fill="#fdff00" d="M50 50L20 50A30 30 0 0 0 80 50Z"></path>
   <path fill="#fdff00" d="M50 50L20 50A30 30 0 0 0 80 50Z">
