@@ -10,9 +10,9 @@
 </g><g transform="translate(-15 0)">
   <path transform="rotate(90 50 50)" fill="#fdff00" d="M50 50L20 50A30 30 0 0 0 80 50Z"></path>
   <path fill="#fdff00" d="M50 50L20 50A30 30 0 0 0 80 50Z">
-    <animateTransform keyTimes="0;0.5;1" values="0 50 50;45 50 50;0 50 50" dur="1s" repeatCount="indefinite" type="rotate" attributeName="transform"></animateTransform>
+    <animateTransform keyTimes="0;0.5;1" values="45 50 50;0 50 50;45 50 50" dur="1s" repeatCount="indefinite" type="rotate" attributeName="transform"></animateTransform>
   </path>
   <path fill="#fdff00" d="M50 50L20 50A30 30 0 0 1 80 50Z">
-    <animateTransform keyTimes="0;0.5;1" values="0 50 50;-45 50 50;0 50 50" dur="1s" repeatCount="indefinite" type="rotate" attributeName="transform"></animateTransform>
+    <animateTransform keyTimes="0;0.5;1" values="-45 50 50;0 50 50;-45 50 50" dur="1s" repeatCount="indefinite" type="rotate" attributeName="transform"></animateTransform>
   </path>
 </g><g></g></g></svg>
