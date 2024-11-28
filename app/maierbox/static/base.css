@@ -907,6 +907,7 @@ h3.homepage_subtitle {
 }
 
 .lightbox_button_container {
+    display: flex;
     align-content: center;
     z-index: 1;
     padding: 8px;
