@@ -228,6 +228,12 @@ class LightBox {
             case SwipeEvent.LEFT:
               this.next();
               break;
+            case SwipeEvent.UP:
+              this.next();
+              break;
+            case SwipeEvent.DOWN:
+              this.previous();
+              break;
         }
 
         this.swipe_event = null;
