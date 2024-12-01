@@ -1,20 +1,22 @@
 class LightBoxImage {
-    constructor(id, index) {
-
+    constructor(img, index) {
+        this.original = img;
         this.index = index;
-        this.id = id;
+        this.id = this.original.alt;
 
-        this.thumbnail = `/media/images/thumbnail/${id}.jpg`;
-        this.scaled = `/media/images/scaled/${id}.jpg`;
-        this.full = `/media/images/full/${id}.jpg`;
-        this.page = `/images/view/${id}`;
+        this.thumbnail = `/media/images/thumbnail/${this.id}.jpg`;
+        this.scaled = `/media/images/scaled/${this.id}.jpg`;
+        this.full = `/media/images/full/${this.id}.jpg`;
+        this.page = `/images/view/${this.id}`;
 
         this.container = document.createElement('div');
         this.container.classList.add('lightbox_gallery_image_container');
 
         this.img = document.createElement('img');
-        this.img.src = this.thumbnail;
         this.img.loading = 'lazy';
+        this.img.width = this.original.width;
+        this.img.height = this.original.height;
+        this.img.src = this.thumbnail;
         this.img.classList.add('lightbox_gallery_image');
         this.container.appendChild(this.img);
     }
@@ -164,7 +166,7 @@ class LightBox {
                 event.preventDefault();
                 this.select(i);
             });
-            let image = new LightBoxImage(image_container.firstElementChild.firstElementChild.alt, i);
+            let image = new LightBoxImage(image_container.firstElementChild.firstElementChild, i);
             image.container.addEventListener('click', (event) => {
                 event.preventDefault();
                 this.select(i);
@@ -186,7 +188,6 @@ class LightBox {
         }
         this.show();
         this.images[index].container.scrollIntoView({ behavior: "smooth", inline: "center" });
-        
     }
 
     show() {

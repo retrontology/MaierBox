@@ -282,10 +282,11 @@ h3.homepage_subtitle {
 }
 
 .webimage {
-    max-width:100%;
+    max-width: 100%;
     border-style: solid;
     border-width: 4px;
     border-color: var(--preset--color--black);
+    box-sizing: border-box;
 }
 
 .webimage_container {
@@ -931,7 +932,6 @@ h3.homepage_subtitle {
     overflow-x: hidden;
     overflow-y: hidden;
     justify-content: center;
-    padding-bottom: 16px;
 }
 
 .lightbox_gallery {
@@ -950,7 +950,7 @@ h3.homepage_subtitle {
     align-content: center;
     margin-left: 4px;
     margin-right: 4px;
-    width: max-content;
+    margin-bottom: 12px;
 }
 
 .lightbox_gallery_image {
@@ -958,6 +958,9 @@ h3.homepage_subtitle {
     margin: 0px;
     border: 2px solid var(--preset--color--black);
     cursor: pointer;
+    object-fit: contain;
+    width: max-content;
+    box-sizing: border-box;
 }
 
 .lightbox_gallery_image_selected {
