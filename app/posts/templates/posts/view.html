@@ -36,7 +36,7 @@
         {% for image in images %}
         <div class="album_image_container">
             <a class="album_image_link" href="{% url 'images:view' image.id %}">
-                <img style="width: {{image.thumbnail.width}}px; height: {{image.thumbnail.height}}px;" class="album_image" loading="lazy" alt="{{ image.id }}" src="{{ image.thumbnail.url }}">
+                <img width="{{image.thumbnail.width}}px" height="{{image.thumbnail.height}}px" class="album_image" loading="lazy" alt="{{ image.id }}" src="{{ image.thumbnail.url }}">
             </a>
         </div>
         {% endfor %}
