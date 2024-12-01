@@ -352,21 +352,14 @@ h3.homepage_subtitle {
 .album_images_container {
     margin-top: 40px;
     padding: 2px;
-    display: block;
-    position: relative;
     columns: 3;
-    column-fill: balance-all;
     column-gap: 0px;
     margin-bottom: 80px;
 }
 
 .album_image_container {
-    position: relative;
     border-style: solid;
     border-width: 2px;
-    outline-style: 2px;
-    outline-style: solid;
-    outline-color: var(--preset--color--black);
     border-color: var(--preset--color--black);
 }
 
