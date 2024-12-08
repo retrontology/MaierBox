@@ -18,7 +18,7 @@
 {% block body %}
 <div class="webimage_root">
     <div class="webimage_container">
-        <a href="{{ image.original.url }}">
+        <a href="{{ image.full.url }}">
             <img class="webimage" alt="{{ image.id }}" src="{{ image.get_scaled }}">
         </a>
     </div>

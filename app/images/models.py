@@ -12,7 +12,8 @@ from django.urls import reverse
 
 
 IMAGE_MAX_LENGTH = 64
-BASE_IMAGE_DIR = "images/full"
+ORIGINAL_IMAGE_DIR = "images/private"
+BASE_IMAGE_DIR = "images/original"
 SCALED_IMAGE_DIR = "images/scaled"
 THUMBNAIL_IMAGE_DIR = "images/thumbnail"
 ORIGINAL_SUBSAMPLING = 0
@@ -24,6 +25,11 @@ class WebImage(models.Model):
     def _split_filename(self, filename):
         filename = basename(filename)
         return splitext(filename)
+    
+    
+    def _upload_to_original(self, filename):
+        ext = self._split_filename(filename)[1]
+        return f'{ORIGINAL_IMAGE_DIR}/{self.id}{ext}'
 
     def _upload_to_base(self, filename):
         ext = self._split_filename(filename)[1]
@@ -61,6 +67,12 @@ class WebImage(models.Model):
         on_delete=models.SET_NULL,
     )
     original = models.ImageField(
+        null=True,
+        blank=True,
+        editable=False,
+        upload_to=_upload_to_original,
+    )
+    full = models.ImageField(
         null=False,
         blank=False,
         editable=False,
@@ -113,6 +125,7 @@ class WebImage(models.Model):
             'name': image.name,
             'id': id,
             'category': category,
+            'original': image,
         }
 
         image_bytes = BytesIO(image.read())
@@ -149,7 +162,7 @@ class WebImage(models.Model):
             None,
             None
         )
-        fields['original'] = jpeg
+        fields['full'] = jpeg
 
         if any(lambda x: x > SCALED_MAX for x in image.size):
             scaled = InMemoryUploadedFile(
@@ -170,10 +183,10 @@ class WebImage(models.Model):
         return image
 
     def get_scaled(self):
-        return self.scaled.url if self.scaled else self.original.url
+        return self.scaled.url if self.scaled else self.full.url
 
     def get_absolute_url(self):
         return reverse("images:view", args=[self.id])
 
     def __str__(self) -> str:
-        return basename(self.original.path)
+        return basename(self.full.path)
