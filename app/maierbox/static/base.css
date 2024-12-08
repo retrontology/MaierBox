@@ -153,6 +153,7 @@ h3.homepage_subtitle {
     justify-content: center;
     outline-color: var(--preset--color--primary);
     color: var(--preset--color--contrast);
+    font-size: var(--preset--font-size--medium);
 }
 
 .homepage_button:hover {
