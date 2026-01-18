@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from os import environ
-import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,24 +22,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 PRODUCTION = 'MAIERBOX_PROD' in environ
+DEBUG = not PRODUCTION
 
-if PRODUCTION:
+if 'MAIERBOX_SECRET' in environ:
     SECRET_KEY = environ['MAIERBOX_SECRET']
-    DEBUG = False
-    mysql_creds = json.loads(environ['MYSQL_CREDENTIALS'])
+else:
+    if PRODUCTION:
+        raise ValueError('The MAIERBOX_SECRET environment variable must be set in production')
+    SECRET_KEY = 'django-insecure-1-_*npak+yg6(v2rcbe!p^3d#bg@o!y&zbu@&m*@-da+a(0$qw'
+
+if 'MYSQL_HOST' in environ:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'maierbox',
-            'USER': mysql_creds['username'],
-            'PASSWORD': mysql_creds['password'],
+            'USER': environ['MYSQL_USER'],
+            'PASSWORD': environ['MYSQL_PASSWORD'],
             'HOST': environ['MYSQL_HOST'],
             'PORT': environ['MYSQL_PORT'],
         }
     }
 else:
-    SECRET_KEY = 'django-insecure-1-_*npak+yg6(v2rcbe!p^3d#bg@o!y&zbu@&m*@-da+a(0$qw'
-    DEBUG = True
+    if PRODUCTION:
+        raise ValueError('The MYSQL_HOST environment variable must be set in production')
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

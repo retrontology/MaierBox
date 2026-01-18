@@ -7,6 +7,7 @@ from .models import Post
 from images.models import WebImage
 from albums.models import WebImageAlbum
 from markdown2 import markdown
+import uuid
 
 MAX_POSTS = 6
 
