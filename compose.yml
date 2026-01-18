@@ -25,3 +25,8 @@ volumes:
   socket_volume:
   static_volume:
   media_volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./media
