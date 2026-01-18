@@ -1,14 +1,16 @@
 services:
   maierbox:
-    platform: linux/arm64
+    env_file:
+      - ./.env
     build: ./app
+    restart: unless-stopped
     volumes:
       - socket_volume:/opt/maierbox/socket
       - static_volume:/opt/maierbox/static
       - media_volume:/opt/maierbox/media
   nginx:
-    platform: linux/arm64
     build: ./nginx
+    restart: unless-stopped
     volumes:
       - socket_volume:/mnt/socket
       - static_volume:/mnt/static
