@@ -23,6 +23,10 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: docker compose build
 
+      - name: Copy env file
+        id: copy-env
+        run: cp ../../../.env .env
+
       - name: Deploy to Pi
         id: deploy
         run: docker compose up -d
