@@ -79,3 +79,55 @@ def delete(request: HttpRequest, id):
     image = get_object_or_404(WebImage, id=id)
     image.delete()
     return redirect('/')
+
+@login_required
+def update_category(request: HttpRequest, id):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(['POST'])
+
+    image = get_object_or_404(WebImage, id=id)
+    category = request.POST.get('category', '').strip()
+    if category == '':
+        image.category = None
+    else:
+        try:
+            image.category = Category.objects.get(category=category)
+        except Category.DoesNotExist:
+            return JsonErrorResponse(f'Category "{category}" does not exist')
+
+    image.save()
+    return JsonResponse(
+        status=200,
+        data={
+            'category': category
+        }
+    )
+
+@login_required
+def update_tags(request: HttpRequest, id):
+    if request.method != "POST":
+        return HttpResponseNotAllowed(['POST'])
+
+    image = get_object_or_404(WebImage, id=id)
+    tags_str = request.POST.get('tags', '').strip()
+    image.tags.clear()
+
+    tags = []
+    if tags_str != '':
+        for tag in tags_str.split(','):
+            cleaned_tag = tag.strip().lower()
+            if cleaned_tag == '' or cleaned_tag in tags:
+                continue
+            tag_obj, created = Tag.objects.get_or_create(tag=cleaned_tag)
+            if created:
+                tag_obj.save()
+            image.tags.add(tag_obj)
+            tags.append(cleaned_tag)
+
+    image.save()
+    return JsonResponse(
+        status=200,
+        data={
+            'tags': tags
+        }
+    )

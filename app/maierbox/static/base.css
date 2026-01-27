@@ -329,9 +329,38 @@ h3.homepage_subtitle {
     text-align: center;
 }
 
+.webimage_edit_button:hover {
+    color: var(--preset--color--secondary);
+    cursor: pointer;
+}
+
 .webimage_delete_button:hover {
     color: var(--preset--color--secondary);
     cursor: pointer;
+}
+
+.webimage_edit_panel {
+    display: none;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.webimage_edit_panel.is_active {
+    display: block;
+}
+
+.webimage_edit_actions {
+    margin-top: 8px;
+    text-align: center;
+}
+
+.webimage_classifiers.is_editing {
+    width: 25%;
+}
+
+.webimage_category.is_hidden,
+.webimage_tags.is_hidden {
+    display: none;
 }
 
 .webimage_uploaded {

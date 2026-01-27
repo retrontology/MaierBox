@@ -8,6 +8,9 @@ function getCSRF() {
             return cookie.substring(name.length, cookie.length);
         }
     }
+    let meta = document.querySelector('meta[name="csrf-token"]');
+    if (meta)
+        return meta.getAttribute('content');
     return null;
 }
 

@@ -2,6 +2,9 @@
 {% load static %}
 {% block head %}
 <script src="{% static 'images/delete.js' %}"></script>
+<script src="{% static 'images/image_metadata_selects.js' %}"></script>
+<script src="{% static 'images/view.js' %}"></script>
+<meta name="csrf-token" content="{{ csrf_token }}">
 <title>View Image</title>
 <meta property="og:title" content="View Image" />
 <meta property="og:type" content="website" />
@@ -23,13 +26,13 @@
         </a>
     </div>
     <div class="webimage_details">
-        <div class="webimage_classifiers">
-            <div class="webimage_category">
+        <div class="webimage_classifiers" id="webimage_classifiers">
+            <div class="webimage_category" id="webimage_category_display">
                 {% if image.category %}
                 <span>Category:<a href="{% url 'categories:view_images' image.category %}">{{ image.category }}</a></span>
                 {% endif %}
             </div>
-            <div class="webimage_tags">
+            <div class="webimage_tags" id="webimage_tags_display">
                 {% if image.tags.exists %}
                 <span class="webimage_tags_label">Tags:</span>
                 {% for tag in image.tags.all %}
@@ -37,11 +40,28 @@
                 {% endfor %}
                 {% endif %}
             </div>
+            {% if user.is_authenticated %}
+            <div class="webimage_edit_panel" id="webimage_edit_panel">
+                <div class="webimage_edit_sidebar" id="webimage_edit_sidebar"></div>
+                <div class="webimage_edit_actions">
+                    <button class="webimage_edit_save" type="button">Save</button>
+                    <button class="webimage_edit_cancel" type="button">Cancel</button>
+                </div>
+            </div>
+            {% endif %}
         </div>
         {% if user.is_authenticated %}
         <div class="webimage_admin_container">
+            <a class="webimage_edit_button">Edit</a>
             <a class="webimage_delete_button" onclick="delete_button_clicked('{{ image.id }}')">Delete</a>
         </div>
+        <script>
+            window.webimageEditContext = {
+                id: "{{ image.id|escapejs }}",
+                category: "{{ image.category|default_if_none:''|escapejs }}",
+                tags: [{% for tag in image.tags.all %}"{{ tag.tag|escapejs }}"{% if not forloop.last %},{% endif %}{% endfor %}]
+            };
+        </script>
         {% endif %}
         <div class="webimage_uploaded">
             <span>Uploaded on {{ image.date_created.date }}</span>
