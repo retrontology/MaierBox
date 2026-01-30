@@ -15,3 +15,6 @@ MaierBox is a website application based on the Django framework and containerize
   - Custom JS image upload form for multiple images that includes classifiers
 - A link to my Github ( ͡° ͜ʖ ͡°)
 - Footer icons for social links
+
+### AI Disclaimer
+The code for this project was written 100% by myself up to [Release v1.1.2](https://github.com/retrontology/MaierBox/releases/tag/v1.1.2). Anything after this release was created with the assistance of generative AI
