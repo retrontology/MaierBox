@@ -75,8 +75,15 @@ class PostUploadForm {
 }
 
 class ExistingImage extends DropZoneImage {
-    constructor(parent, image_id) {
+    constructor(parent, imageData) {
         super(parent);
+        let image_id = imageData;
+        if (imageData && typeof imageData === 'object') {
+            image_id = imageData.id;
+            this.category = imageData.category || '';
+            this.watermark = imageData.watermark || '';
+            this.tags = Array.isArray(imageData.tags) ? imageData.tags.slice() : [];
+        }
         this.id = image_id;
         this.url = `/media/images/thumbnail/${image_id}.jpg`;
         this.img.src = this.url;

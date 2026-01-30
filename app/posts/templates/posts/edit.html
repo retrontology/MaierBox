@@ -16,7 +16,13 @@
     {% if post.hasImages %}
     <div id="original_post_images" class="original_post_images">
         {% for image in post.album.images.all %}
-        <div class="original_post_image">{{ image.id }}</div>
+        <div class="original_post_image"
+             data-id="{{ image.id }}"
+             data-category="{{ image.category|default_if_none:'' }}"
+             data-watermark="{% if image.watermark %}{{ image.watermark.id }}{% endif %}"
+             data-tags="{% for tag in image.tags.all %}{{ tag.tag }}{% if not forloop.last %},{% endif %}{% endfor %}">
+            {{ image.id }}
+        </div>
         {% endfor %}
     </div>
     {% endif %}
@@ -28,8 +34,19 @@
     
     let original_images = [];
     if (original_images_container) {
-        for (let i = 0; i < original_images_container.children.length; i++)
-            original_images.push(original_images_container.children[i].textContent);
+        for (let i = 0; i < original_images_container.children.length; i++) {
+            let imageNode = original_images_container.children[i];
+            let tags = (imageNode.dataset.tags || '')
+                .split(',')
+                .map((tag) => tag.trim())
+                .filter((tag) => tag.length > 0);
+            original_images.push({
+                id: imageNode.dataset.id || imageNode.textContent.trim(),
+                category: imageNode.dataset.category || '',
+                watermark: imageNode.dataset.watermark || '',
+                tags: tags,
+            });
+        }
     }
 
     post_form = new PostEditForm(
