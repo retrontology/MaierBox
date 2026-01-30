@@ -1,41 +1,50 @@
-{% extends base.html %}
+{% extends "base.html" %}
 {% load static %}
 {% block body %}
+    <div class="auth_container">
+        <div class="auth_panel">
+            <h1 class="auth_title">Log in</h1>
 
-    {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
+            {% if form.errors %}
+                <p class="auth_error">Your username and password didn't match. Please try again.</p>
+            {% endif %}
 
-    {% if next %}
-        {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
-        {% else %}
-            <p>Please login to see this page.</p>
-        {% endif %}
-    {% endif %}
+            {% if next %}
+                {% if user.is_authenticated %}
+                    <p class="auth_message">Your account doesn't have access to this page. To proceed, please log in with an account that has access.</p>
+                {% else %}
+                    <p class="auth_message">Please log in to see this page.</p>
+                {% endif %}
+            {% endif %}
 
-    {% if user.is_authenticated %}
-        <p>You're already logged in ya dingus!</p>
-        <p><a href="{% url 'logout' %}">Click here to log out</a></p>
-    {% else %}
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td>{{ form.username.label_tag }}</td>
-                    <td>{{ form.username }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.password.label_tag }}</td>
-                    <td>{{ form.password }}</td>
-                </tr>
-            </table>
-            <input type="submit" value="login">
-            <input type="hidden" name="next" value="{{ next }}">
-        </form>
-    {% endif %}
-
-    {# Assumes you set up the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
-
+            {% if user.is_authenticated %}
+                <p class="auth_message">You're already logged in.</p>
+                <div class="auth_links">
+                    <form class="auth_form" method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Log out">
+                    </form>
+                </div>
+            {% else %}
+                <form class="auth_form" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <table class="auth_table">
+                        <tr>
+                            <td>{{ form.username.label_tag }}</td>
+                            <td>{{ form.username }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.password.label_tag }}</td>
+                            <td>{{ form.password }}</td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="Log in">
+                    <input type="hidden" name="next" value="{{ next }}">
+                </form>
+                <div class="auth_links">
+                    <a href="{% url 'password_reset' %}">Lost password?</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

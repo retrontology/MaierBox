@@ -1,4 +1,4 @@
-from django.contrib import admin, auth
+from django.contrib import auth
 from django.urls import include, path
 from django.views.static import serve
 from django.conf import settings
@@ -30,7 +30,6 @@ urlpatterns = [
     path("watermarks/", include("watermarks.urls")),
     path("albums/", include("albums.urls")),
     path("posts/", include("posts.urls")),
-    path('admin/', admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path('sitemap.xml', sitemap, sitemaps, name='django.contrib.sitemaps.views.sitemap'),
 ]
