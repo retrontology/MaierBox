@@ -42,7 +42,7 @@ def view(request: HttpRequest, id):
     if not post.published and not request.user.is_authenticated:
         raise Http404
     
-    content = markdown(post.content, extras=["tables"])
+    content = markdown(post.content, extras=["tables", "break-on-newline"])
     context = {
         'id': post.id,
         'title': post.title,

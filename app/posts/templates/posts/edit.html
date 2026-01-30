@@ -3,6 +3,7 @@
 {% block head %}
 <link rel="stylesheet" href="{% static 'simplemde.css' %}">
 <script src="{% static 'simplemde.js' %}"></script>
+<script src="{% static 'images/image_metadata_selects.js' %}"></script>
 <script src="{% static 'images/upload.js' %}"></script>
 <script src="{% static 'posts/post.js' %}"></script>
 <title>Edit Post</title>
@@ -15,7 +16,13 @@
     {% if post.hasImages %}
     <div id="original_post_images" class="original_post_images">
         {% for image in post.album.images.all %}
-        <div class="original_post_image">{{ image.id }}</div>
+        <div class="original_post_image"
+             data-id="{{ image.id }}"
+             data-category="{{ image.category|default_if_none:'' }}"
+             data-watermark="{% if image.watermark %}{{ image.watermark.id }}{% endif %}"
+             data-tags="{% for tag in image.tags.all %}{{ tag.tag }}{% if not forloop.last %},{% endif %}{% endfor %}">
+            {{ image.id }}
+        </div>
         {% endfor %}
     </div>
     {% endif %}
@@ -26,8 +33,21 @@
     let original_images_container = document.getElementById('original_post_images');
     
     let original_images = [];
-    for (let i = 0; i < original_images_container.children.length; i++)
-        original_images.push(original_images_container.children[i].textContent);
+    if (original_images_container) {
+        for (let i = 0; i < original_images_container.children.length; i++) {
+            let imageNode = original_images_container.children[i];
+            let tags = (imageNode.dataset.tags || '')
+                .split(',')
+                .map((tag) => tag.trim())
+                .filter((tag) => tag.length > 0);
+            original_images.push({
+                id: imageNode.dataset.id || imageNode.textContent.trim(),
+                category: imageNode.dataset.category || '',
+                watermark: imageNode.dataset.watermark || '',
+                tags: tags,
+            });
+        }
+    }
 
     post_form = new PostEditForm(
         document.getElementById('post_edit_form'),
