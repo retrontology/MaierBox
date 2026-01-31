@@ -2,18 +2,45 @@
     {% if page.paginator.count > 0 %}
         <span class="step-links">
             {% if page.has_previous %}
-                <a href="?page=1&max={{ page.paginator.per_page }}">&laquo; first</a>
-                <a href="?page={{ page.previous_page_number }}&max={{ page.paginator.per_page }}">previous</a>
+                <a href="?page=1{{ pagination_query }}">&laquo; first</a>
+                <a href="?page={{ page.previous_page_number }}{{ pagination_query }}">previous</a>
             {% endif %}
 
+            {% if page.has_next %}
+                <a href="?page={{ page.next_page_number }}{{ pagination_query }}">next</a>
+                <a href="?page={{ page.paginator.num_pages }}{{ pagination_query }}">last &raquo;</a>
+            {% endif %}
+        </span>
+        <div class="pagination_footer">
+            <form class="posts_index_filters posts_index_filters_inline" method="get">
+            <label>
+                From
+                <input type="date" name="start" value="{{ filters.start }}">
+            </label>
+            <label>
+                To
+                <input type="date" name="end" value="{{ filters.end }}">
+            </label>
+            <label>
+                Sort
+                <select name="sort">
+                    <option value="newest"{% if filters.sort == "newest" %} selected{% endif %}>Newest</option>
+                    <option value="oldest"{% if filters.sort == "oldest" %} selected{% endif %}>Oldest</option>
+                </select>
+            </label>
+            <label>
+                Per page
+                <select name="max">
+                    {% for option in per_page_options %}
+                        <option value="{{ option }}"{% if filters.max == option %} selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit">Apply</button>
+            </form>
             <span class="current">
                 Page {{ page.number }} of {{ page.paginator.num_pages }}
             </span>
-
-            {% if page.has_next %}
-                <a href="?page={{ page.next_page_number }}&max={{ page.paginator.per_page }}">next</a>
-                <a href="?page={{ page.paginator.num_pages }}&max={{ page.paginator.per_page }}">last &raquo;</a>
-            {% endif %}
-        </span>
+        </div>
     {% endif %}
 </div>

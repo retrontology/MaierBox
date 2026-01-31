@@ -878,6 +878,74 @@ h3.homepage_subtitle {
     margin: auto;
 }
 
+.posts_index_filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 12px 16px;
+    margin: 16px auto 8px auto;
+    padding: 12px 16px;
+    background-color: var(--preset--color--base);
+    outline-style: solid;
+    outline-width: 2px;
+    outline-color: var(--preset--color--primary);
+    border-radius: 10px;
+}
+
+.posts_index_filters_inline {
+    margin: 12px 0 0 0;
+    padding: 8px 12px;
+    gap: 8px 12px;
+    background: none;
+    outline: none;
+}
+
+.posts_index_filters_inline label {
+    font-size: 14px;
+}
+
+.posts_index_filters_inline input[type="date"],
+.posts_index_filters_inline select {
+    font-size: 14px;
+    padding: 4px 6px;
+}
+
+.posts_index_filters_inline button {
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+.posts_index_filters label {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--preset--font-size--small);
+    color: var(--preset--color--contrast);
+    gap: 6px;
+}
+
+.posts_index_filters input[type="date"],
+.posts_index_filters select {
+    background-color: var(--preset--color--base);
+    color: var(--preset--color--contrast);
+    border: 2px solid var(--preset--color--primary);
+    border-radius: 6px;
+    padding: 6px 8px;
+    font-family: var(--preset--font--family);
+    font-size: var(--preset--font-size--small);
+}
+
+.posts_index_filters button {
+    font-size: var(--preset--font-size--small);
+    padding: 8px 12px;
+    outline-width: 2px;
+    cursor: pointer;
+}
+
+.posts_index_filters button:hover {
+    color: var(--preset--color--secondary);
+}
+
 .posts_index_post_container {
     margin-top: 40px;
     margin-bottom: 60px;
@@ -933,6 +1001,52 @@ h3.homepage_subtitle {
     object-fit: cover;
     width: 100%;
     height: 100%;
+}
+
+.pagination {
+    text-align: center;
+    margin: 16px auto 32px auto;
+}
+
+.pagination .step-links {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 6px 10px;
+}
+
+.pagination_footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px 14px;
+    margin-top: 10px;
+}
+
+.pagination_footer .posts_index_filters_inline {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 6px 10px;
+    margin: 0;
+}
+
+.pagination_footer .current {
+    margin-left: 10px;
+    align-self: flex-end;
+}
+
+.pagination .step-links a {
+    margin: 0 8px;
+}
+
+.pagination .current {
+    font-size: var(--preset--font-size--small);
+    color: var(--preset--color--contrast);
+    margin: 0 10px;
 }
 
 .categories_images_title_container {
