@@ -12,5 +12,18 @@ async function delete_post_clicked(id) {
     if (!response.ok)
         throw new Error(`Response status: ${response.status}`);
 
-    window.location.href = '/posts';
+    let returnUrl = '/';
+    if (document.referrer) {
+        try {
+            const referrerUrl = new URL(document.referrer);
+            if (referrerUrl.origin === window.location.origin &&
+                referrerUrl.href !== window.location.href) {
+                returnUrl = referrerUrl.href;
+            }
+        } catch (error) {
+            returnUrl = '/';
+        }
+    }
+
+    window.location.href = returnUrl;
 }

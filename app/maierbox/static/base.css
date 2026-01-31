@@ -548,6 +548,16 @@ h3.homepage_subtitle {
     font-size: var(--preset--font-size--medium);
 }
 
+.post_edit_link:hover,
+.post_delete_link:hover {
+    color: var(--preset--color--secondary);
+    cursor: pointer;
+}
+
+.post_delete_link {
+    cursor: pointer;
+}
+
 .post_edit_separator {
     color: var(--preset--color--primary);
     margin: 0 8px;
@@ -703,8 +713,20 @@ h3.homepage_subtitle {
     animation-duration: 1s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
-    font-weight:600;
-    padding-right: 4px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    line-height: 1;
+}
+
+.dropzone_image_uploading_icon path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3px;
+    stroke-linecap: round;
 }
 
 .sidebar_select {

@@ -91,10 +91,15 @@ class DropZoneImage {
         this.uploading_container.classList.add('dropzone_image_status_container');
         this.uploading_container.classList.add('dropzone_image_uploading_container');
         this.container.appendChild(this.uploading_container);
-        this.uploading_icon = document.createElement('div');
+        this.uploading_icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         this.uploading_icon.classList.add('dropzone_image_status_icon');
         this.uploading_icon.classList.add('dropzone_image_uploading_icon');
-        this.uploading_icon.textContent = '◠';
+        this.uploading_icon.setAttribute('viewBox', '0 0 24 24');
+        this.uploading_icon.setAttribute('aria-hidden', 'true');
+        this.uploading_icon.setAttribute('focusable', 'false');
+        const spinnerPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        spinnerPath.setAttribute('d', 'M4 12a8 8 0 0 1 16 0');
+        this.uploading_icon.appendChild(spinnerPath);
         this.uploading_container.appendChild(this.uploading_icon);
     }
 
