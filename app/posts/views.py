@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseNotAllowed, HttpRequest, Http404
 from django.core.paginator import Paginator
@@ -166,3 +166,12 @@ def update(request: HttpRequest, id):
         'post': post.id
     }
     return JsonResponse(data)
+
+@login_required
+def delete(request: HttpRequest, id):
+    if request.method != "DELETE":
+        return HttpResponseNotAllowed(['DELETE'])
+    
+    post = get_object_or_404(Post, id=id)
+    post.delete()
+    return redirect('/posts')

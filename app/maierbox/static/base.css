@@ -413,6 +413,17 @@ h3.homepage_subtitle {
     text-align: center;
 }
 
+.webimage_admin_container a,
+.webimage_admin_separator {
+    color: var(--preset--color--tertiary);
+    font-size: var(--preset--font-size--medium);
+}
+
+.webimage_admin_separator {
+    color: var(--preset--color--primary);
+    margin: 0 8px;
+}
+
 .webimage_edit_button:hover {
     color: var(--preset--color--secondary);
     cursor: pointer;
@@ -531,9 +542,15 @@ h3.homepage_subtitle {
     text-align: center
 }
 
-.post_edit_link {
+.post_edit_container a,
+.post_edit_separator {
     color: var(--preset--color--tertiary);
     font-size: var(--preset--font-size--medium);
+}
+
+.post_edit_separator {
+    color: var(--preset--color--primary);
+    margin: 0 8px;
 }
 
 .drop_zone_root {

@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 {% block head %}
+<script src="{% static 'posts/delete.js' %}"></script>
 <script src="{% static 'lightbox.js' %}"></script>
+<meta name="csrf-token" content="{{ csrf_token }}">
 <title>{{ title }}</title>
 <meta property="og:title" content="{{ title }}" />
 <meta property="og:type" content="website" />
@@ -22,6 +24,8 @@
     {% if user.is_authenticated %}
     <div class="post_edit_container">
         <a class="post_edit_link" href="{% url 'posts:edit' id %}">Edit</a>
+        <span class="post_edit_separator">|</span>
+        <a class="post_delete_link" onclick="delete_post_clicked('{{ id }}')">Delete</a>
     </div>
     {% endif %}
     {% if content %}
