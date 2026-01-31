@@ -53,6 +53,7 @@
         {% if user.is_authenticated %}
         <div class="webimage_admin_container">
             <a class="webimage_edit_button">Edit</a>
+            <span class="webimage_admin_separator">|</span>
             <a class="webimage_delete_button" onclick="delete_button_clicked('{{ image.id }}')">Delete</a>
         </div>
         <script>
