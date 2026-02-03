@@ -349,11 +349,12 @@ class TagSelect extends InputSelect {
             return;
 
         this.tags.splice(index, 1);
-        let child_count = this.collection.children.length;
-        for (let i = 0; i < child_count; i++) {
+        for (let i = this.collection.children.length - 1; i >= 0; i--) {
             let tag_container = this.collection.children[i];
-            if(tag == tag_container.firstChild.textContent)
+            if (tag_container && tag_container.firstChild && tag == tag_container.firstChild.textContent) {
                 tag_container.remove();
+                break;
+            }
         }
 
         this.saveData();
