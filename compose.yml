@@ -9,12 +9,13 @@ services:
       - static_volume:/opt/maierbox/static
       - media_volume:/opt/maierbox/media
   nginx:
-    build: ./nginx
+    image: nginx:1.27.0-bookworm
     restart: unless-stopped
     volumes:
       - socket_volume:/mnt/socket
       - static_volume:/mnt/static
       - media_volume:/mnt/media
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - 80:80
       - 9091:9091
