@@ -22,6 +22,7 @@ sitemaps = {
 }
 
 urlpatterns = [
+    path("", include("django_prometheus.urls")),
     path("", views.index, name="index"),
     path("peepers", views.eyes, name='peepers'),
     path("images/", include("images.urls")),
