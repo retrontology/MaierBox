@@ -17,6 +17,7 @@ services:
       - media_volume:/mnt/media
     ports:
       - 80:80
+      - 9091:9091
     depends_on:
       maierbox:
         condition: service_healthy
@@ -40,6 +41,13 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
+  nginx_exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    restart: unless-stopped
+    command:
+      - --nginx.scrape-uri=http://nginx:8080/nginx_status
+    depends_on:
+      - nginx
 volumes:
   socket_volume:
   static_volume:
